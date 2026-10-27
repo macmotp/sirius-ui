@@ -1,0 +1,15 @@
+{
+  "name": "@sirius-ui/theme",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": ["dist"],
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": "./dist/index.css",
+    "./tailwind.css": "./dist/tailwind.css"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  }
+}

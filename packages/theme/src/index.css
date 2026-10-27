@@ -1,0 +1,106 @@
+/* Plain CSS tokens: usable with or without Tailwind. Application overrides
+   should come after this import. Theme defaults have deliberately low specificity. */
+@layer theme {
+  :where(:root) {
+    /* Brand palette: teal by default. Override these values to rebrand an app. */
+    --sirius-brand-50: oklch(98.4% 0.014 180.72);
+    --sirius-brand-100: oklch(95.3% 0.051 180.801);
+    --sirius-brand-200: oklch(91% 0.096 180.426);
+    --sirius-brand-300: oklch(85.5% 0.138 181.071);
+    --sirius-brand-400: oklch(77.7% 0.152 181.912);
+    --sirius-brand-500: oklch(70.4% 0.14 182.503);
+    --sirius-brand-600: oklch(60% 0.118 184.704);
+    --sirius-brand-700: oklch(51.1% 0.096 186.391);
+    --sirius-brand-800: oklch(43.7% 0.078 188.216);
+    --sirius-brand-900: oklch(38.6% 0.063 188.416);
+    --sirius-brand-950: oklch(27.7% 0.046 192.524);
+
+    /* Neutral palette: mist by default. */
+    --sirius-neutral-50: oklch(98.7% 0.002 197.1);
+    --sirius-neutral-100: oklch(96.3% 0.002 197.1);
+    --sirius-neutral-200: oklch(92.5% 0.005 214.3);
+    --sirius-neutral-300: oklch(87.2% 0.007 219.6);
+    --sirius-neutral-400: oklch(72.3% 0.014 214.4);
+    --sirius-neutral-500: oklch(56% 0.021 213.5);
+    --sirius-neutral-600: oklch(45% 0.017 213.2);
+    --sirius-neutral-700: oklch(37.8% 0.015 216);
+    --sirius-neutral-800: oklch(27.5% 0.011 216.9);
+    --sirius-neutral-900: oklch(21.8% 0.008 223.9);
+    --sirius-neutral-950: oklch(14.8% 0.004 228.8);
+
+    --sirius-font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --sirius-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --sirius-text-xs: 0.75rem;
+    --sirius-text-sm: 0.875rem;
+    --sirius-text-base: 1rem;
+    --sirius-text-lg: 1.125rem;
+    --sirius-text-xl: 1.25rem;
+    --sirius-text-2xl: 1.5rem;
+    --sirius-leading: 1.5;
+    --sirius-spacing: 0.25rem;
+    --sirius-radius-sm: 0.25rem;
+    --sirius-radius-md: 0.5rem;
+    --sirius-radius-lg: 0.75rem;
+    --sirius-radius-xl: 1rem;
+    --sirius-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
+    --sirius-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.12), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+    --sirius-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.14), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  /* Light is the default. Explicit selectors also allow themed subtrees. */
+  :where(:root, [data-theme='light']) {
+    color-scheme: light;
+    --sirius-canvas: var(--sirius-neutral-50);
+    --sirius-surface: #fff;
+    --sirius-surface-muted: var(--sirius-neutral-100);
+    --sirius-surface-hover: var(--sirius-neutral-200);
+    --sirius-content: var(--sirius-neutral-950);
+    --sirius-content-muted: var(--sirius-neutral-600);
+    --sirius-content-subtle: var(--sirius-neutral-500);
+    --sirius-line: var(--sirius-neutral-200);
+    --sirius-line-strong: var(--sirius-neutral-500);
+    --sirius-primary: var(--sirius-brand-700);
+    --sirius-primary-hover: var(--sirius-brand-800);
+    --sirius-primary-active: var(--sirius-brand-900);
+    --sirius-on-primary: #fff;
+    --sirius-primary-soft: var(--sirius-brand-50);
+    --sirius-primary-content: var(--sirius-brand-800);
+    --sirius-focus: var(--sirius-brand-700);
+    --sirius-success: #15803d;
+    --sirius-success-soft: #f0fdf4;
+    --sirius-warning: #92400e;
+    --sirius-warning-soft: #fffbeb;
+    --sirius-danger: #b91c1c;
+    --sirius-danger-soft: #fef2f2;
+    --sirius-info: #1d4ed8;
+    --sirius-info-soft: #eff6ff;
+  }
+
+  :where([data-theme='dark']) {
+    color-scheme: dark;
+    --sirius-canvas: var(--sirius-neutral-950);
+    --sirius-surface: var(--sirius-neutral-900);
+    --sirius-surface-muted: var(--sirius-neutral-800);
+    --sirius-surface-hover: var(--sirius-neutral-700);
+    --sirius-content: var(--sirius-neutral-50);
+    --sirius-content-muted: var(--sirius-neutral-300);
+    --sirius-content-subtle: var(--sirius-neutral-400);
+    --sirius-line: var(--sirius-neutral-700);
+    --sirius-line-strong: var(--sirius-neutral-500);
+    --sirius-primary: var(--sirius-brand-300);
+    --sirius-primary-hover: var(--sirius-brand-200);
+    --sirius-primary-active: var(--sirius-brand-100);
+    --sirius-on-primary: var(--sirius-neutral-950);
+    --sirius-primary-soft: var(--sirius-brand-950);
+    --sirius-primary-content: var(--sirius-brand-200);
+    --sirius-focus: var(--sirius-brand-300);
+    --sirius-success: #86efac;
+    --sirius-success-soft: #052e16;
+    --sirius-warning: #fcd34d;
+    --sirius-warning-soft: #451a03;
+    --sirius-danger: #fca5a5;
+    --sirius-danger-soft: #450a0a;
+    --sirius-info: #93c5fd;
+    --sirius-info-soft: #172554;
+  }
+}

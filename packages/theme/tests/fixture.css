@@ -1,0 +1,6 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import '@sirius-ui/theme/tailwind.css';
+
+@source inline('bg-canvas bg-surface text-content text-content-muted bg-primary text-on-primary hover:bg-primary-hover border-line rounded-md p-4 shadow-sm dark:bg-surface-muted');

@@ -1,0 +1,49 @@
+@import './index.css';
+
+/* Inline mappings keep utilities tied to runtime tokens in themed subtrees. */
+@theme inline {
+  --color-canvas: var(--sirius-canvas);
+  --color-surface: var(--sirius-surface);
+  --color-surface-muted: var(--sirius-surface-muted);
+  --color-surface-hover: var(--sirius-surface-hover);
+  --color-content: var(--sirius-content);
+  --color-content-muted: var(--sirius-content-muted);
+  --color-content-subtle: var(--sirius-content-subtle);
+  --color-line: var(--sirius-line);
+  --color-line-strong: var(--sirius-line-strong);
+  --color-primary: var(--sirius-primary);
+  --color-primary-hover: var(--sirius-primary-hover);
+  --color-primary-active: var(--sirius-primary-active);
+  --color-on-primary: var(--sirius-on-primary);
+  --color-primary-soft: var(--sirius-primary-soft);
+  --color-primary-content: var(--sirius-primary-content);
+  --color-focus: var(--sirius-focus);
+  --color-success: var(--sirius-success);
+  --color-success-soft: var(--sirius-success-soft);
+  --color-warning: var(--sirius-warning);
+  --color-warning-soft: var(--sirius-warning-soft);
+  --color-danger: var(--sirius-danger);
+  --color-danger-soft: var(--sirius-danger-soft);
+  --color-info: var(--sirius-info);
+  --color-info-soft: var(--sirius-info-soft);
+  --font-sans: var(--sirius-font-sans);
+  --font-mono: var(--sirius-font-mono);
+  --text-xs: var(--sirius-text-xs);
+  --text-sm: var(--sirius-text-sm);
+  --text-base: var(--sirius-text-base);
+  --text-lg: var(--sirius-text-lg);
+  --text-xl: var(--sirius-text-xl);
+  --text-2xl: var(--sirius-text-2xl);
+  --spacing: var(--sirius-spacing);
+  --radius-sm: var(--sirius-radius-sm);
+  --radius-md: var(--sirius-radius-md);
+  --radius-lg: var(--sirius-radius-lg);
+  --radius-xl: var(--sirius-radius-xl);
+  --shadow-sm: var(--sirius-shadow-sm);
+  --shadow-md: var(--sirius-shadow-md);
+  --shadow-lg: var(--sirius-shadow-lg);
+}
+
+/* Optional dark: utilities follow the document theme. Semantic color utilities
+   already change automatically and also support nested theme regions. */
+@custom-variant dark (&:where(:root[data-theme='dark'], :root[data-theme='dark'] *));
