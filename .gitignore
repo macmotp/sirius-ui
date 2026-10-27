@@ -4,3 +4,14 @@ dist/
 *.tgz
 *.log
 .DS_Store
+
+# Local environment values; sanitized examples belong in Git.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Generated coverage and local test reports.
+coverage/
+playwright-report/
+test-results/

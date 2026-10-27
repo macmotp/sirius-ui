@@ -1,0 +1,51 @@
+@import 'tailwindcss';
+@import '@sirius-ui/theme/tailwind.css';
+@source '../../../packages/vue/src';
+
+/* Playground branding override, intentionally outside the shared packages. */
+:root[data-brand='indigo'] {
+  --sirius-brand-50: #eef2ff;
+  --sirius-brand-100: #e0e7ff;
+  --sirius-brand-200: #c7d2fe;
+  --sirius-brand-300: #a5b4fc;
+  --sirius-brand-400: #818cf8;
+  --sirius-brand-500: #6366f1;
+  --sirius-brand-600: #4f46e5;
+  --sirius-brand-700: #4338ca;
+  --sirius-brand-800: #3730a3;
+  --sirius-brand-900: #312e81;
+  --sirius-brand-950: #1e1b4b;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 2rem;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--sirius-canvas);
+    color: var(--sirius-content);
+    font-family: var(--sirius-font-sans);
+    line-height: var(--sirius-leading);
+  }
+
+  button, select, input {
+    font: inherit;
+  }
+
+  button:not(:disabled), select {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--sirius-focus);
+    outline-offset: 4px;
+  }
+
+  ::selection {
+    background: var(--sirius-primary);
+    color: var(--sirius-on-primary);
+  }
+}
