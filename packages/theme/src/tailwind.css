@@ -2,6 +2,13 @@
 
 /* Inline mappings keep utilities tied to runtime tokens in themed subtrees. */
 @theme inline {
+  --color-control: var(--sirius-control);
+  --color-control-content: var(--sirius-control-content);
+  --color-control-line: var(--sirius-control-line);
+  --color-control-placeholder: var(--sirius-control-placeholder);
+  --color-control-valid: var(--sirius-control-valid);
+  --color-control-invalid: var(--sirius-control-invalid);
+  --color-control-focus: var(--sirius-control-focus);
   --color-canvas: var(--sirius-canvas);
   --color-surface: var(--sirius-surface);
   --color-surface-muted: var(--sirius-surface-muted);
@@ -15,17 +22,28 @@
   --color-primary-hover: var(--sirius-primary-hover);
   --color-primary-active: var(--sirius-primary-active);
   --color-on-primary: var(--sirius-on-primary);
+  --color-on-solid: var(--sirius-on-solid);
   --color-primary-soft: var(--sirius-primary-soft);
   --color-primary-content: var(--sirius-primary-content);
   --color-focus: var(--sirius-focus);
-  --color-success: var(--sirius-success);
-  --color-success-soft: var(--sirius-success-soft);
   --color-warning: var(--sirius-warning);
+  --color-warning-hover: var(--sirius-warning-hover);
+  --color-warning-active: var(--sirius-warning-active);
+  --color-on-warning: var(--sirius-on-warning);
   --color-warning-soft: var(--sirius-warning-soft);
+  --color-warning-content: var(--sirius-warning-content);
+  --color-success: var(--sirius-success);
+  --color-success-hover: var(--sirius-success-hover);
+  --color-success-active: var(--sirius-success-active);
+  --color-on-success: var(--sirius-on-success);
+  --color-success-soft: var(--sirius-success-soft);
+  --color-success-content: var(--sirius-success-content);
   --color-danger: var(--sirius-danger);
+  --color-danger-hover: var(--sirius-danger-hover);
+  --color-danger-active: var(--sirius-danger-active);
+  --color-on-danger: var(--sirius-on-danger);
   --color-danger-soft: var(--sirius-danger-soft);
-  --color-info: var(--sirius-info);
-  --color-info-soft: var(--sirius-info-soft);
+  --color-danger-content: var(--sirius-danger-content);
   --font-sans: var(--sirius-font-sans);
   --font-mono: var(--sirius-font-mono);
   --text-xs: var(--sirius-text-xs);
@@ -35,10 +53,15 @@
   --text-xl: var(--sirius-text-xl);
   --text-2xl: var(--sirius-text-2xl);
   --spacing: var(--sirius-spacing);
+  --radius: var(--sirius-radius);
+  --radius-control: var(--sirius-radius-control);
+  --radius-2xl: var(--sirius-radius-2xl);
+  --radius-full: var(--sirius-radius-full);
   --radius-sm: var(--sirius-radius-sm);
   --radius-md: var(--sirius-radius-md);
   --radius-lg: var(--sirius-radius-lg);
   --radius-xl: var(--sirius-radius-xl);
+  --shadow-xs: var(--sirius-shadow-xs);
   --shadow-sm: var(--sirius-shadow-sm);
   --shadow-md: var(--sirius-shadow-md);
   --shadow-lg: var(--sirius-shadow-lg);
@@ -47,3 +70,7 @@
 /* Optional dark: utilities follow the document theme. Semantic color utilities
    already change automatically and also support nested theme regions. */
 @custom-variant dark (&:where(:root[data-theme='dark'], :root[data-theme='dark'] *));
+
+@utility rounded {
+  border-radius: var(--sirius-radius);
+}

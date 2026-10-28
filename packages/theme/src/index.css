@@ -1,34 +1,7 @@
-/* Plain CSS tokens: usable with or without Tailwind. Application overrides
-   should come after this import. Theme defaults have deliberately low specificity. */
+/* Plain CSS tokens. Accent, neutral background, and appearance are independent. */
 @layer theme {
   :where(:root) {
-    /* Brand palette: teal by default. Override these values to rebrand an app. */
-    --sirius-brand-50: oklch(98.4% 0.014 180.72);
-    --sirius-brand-100: oklch(95.3% 0.051 180.801);
-    --sirius-brand-200: oklch(91% 0.096 180.426);
-    --sirius-brand-300: oklch(85.5% 0.138 181.071);
-    --sirius-brand-400: oklch(77.7% 0.152 181.912);
-    --sirius-brand-500: oklch(70.4% 0.14 182.503);
-    --sirius-brand-600: oklch(60% 0.118 184.704);
-    --sirius-brand-700: oklch(51.1% 0.096 186.391);
-    --sirius-brand-800: oklch(43.7% 0.078 188.216);
-    --sirius-brand-900: oklch(38.6% 0.063 188.416);
-    --sirius-brand-950: oklch(27.7% 0.046 192.524);
-
-    /* Neutral palette: mist by default. */
-    --sirius-neutral-50: oklch(98.7% 0.002 197.1);
-    --sirius-neutral-100: oklch(96.3% 0.002 197.1);
-    --sirius-neutral-200: oklch(92.5% 0.005 214.3);
-    --sirius-neutral-300: oklch(87.2% 0.007 219.6);
-    --sirius-neutral-400: oklch(72.3% 0.014 214.4);
-    --sirius-neutral-500: oklch(56% 0.021 213.5);
-    --sirius-neutral-600: oklch(45% 0.017 213.2);
-    --sirius-neutral-700: oklch(37.8% 0.015 216);
-    --sirius-neutral-800: oklch(27.5% 0.011 216.9);
-    --sirius-neutral-900: oklch(21.8% 0.008 223.9);
-    --sirius-neutral-950: oklch(14.8% 0.004 228.8);
-
-    --sirius-font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --sirius-font-sans: 'InterVariable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
     --sirius-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     --sirius-text-xs: 0.75rem;
     --sirius-text-sm: 0.875rem;
@@ -42,65 +15,265 @@
     --sirius-radius-md: 0.5rem;
     --sirius-radius-lg: 0.75rem;
     --sirius-radius-xl: 1rem;
+    --sirius-radius-2xl: 1.5rem;
+    --sirius-radius-full: 9999px;
+    --sirius-radius: var(--sirius-radius-2xl);
+    --sirius-radius-control: var(--sirius-radius-full);
+    /* White labels for solid buttons; other role foregrounds remain independent. */
+    --sirius-on-solid: #fff;
+    --sirius-control-valid: var(--sirius-success-500);
+    --sirius-control-invalid: var(--sirius-danger-500);
+    --sirius-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.05);
     --sirius-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.08);
     --sirius-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.12), 0 2px 4px -2px rgb(0 0 0 / 0.08);
     --sirius-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.14), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+    /* Fixed status palettes, independent of accent and background choices. */
+    --sirius-success-50: oklch(98.2% 0.018 155.826);
+    --sirius-success-100: oklch(96.2% 0.044 156.743);
+    --sirius-success-200: oklch(92.5% 0.084 155.995);
+    --sirius-success-300: oklch(87.1% 0.15 154.449);
+    --sirius-success-400: oklch(79.2% 0.209 151.711);
+    --sirius-success-500: oklch(72.3% 0.219 149.579);
+    --sirius-success-600: oklch(62.7% 0.194 149.214);
+    --sirius-success-700: oklch(52.7% 0.154 150.069);
+    --sirius-success-800: oklch(44.8% 0.119 151.328);
+    --sirius-success-900: oklch(39.3% 0.095 152.535);
+    --sirius-success-950: oklch(26.6% 0.065 152.934);
+    --sirius-warning-50: oklch(98.7% 0.026 102.212);
+    --sirius-warning-100: oklch(97.3% 0.071 103.193);
+    --sirius-warning-200: oklch(94.5% 0.129 101.54);
+    --sirius-warning-300: oklch(90.5% 0.182 98.111);
+    --sirius-warning-400: oklch(85.2% 0.199 91.936);
+    --sirius-warning-500: oklch(79.5% 0.184 86.047);
+    --sirius-warning-600: oklch(68.1% 0.162 75.834);
+    --sirius-warning-700: oklch(55.4% 0.135 66.442);
+    --sirius-warning-800: oklch(47.6% 0.114 61.907);
+    --sirius-warning-900: oklch(42.1% 0.095 57.708);
+    --sirius-warning-950: oklch(28.6% 0.066 53.813);
+    --sirius-danger-50: oklch(97.1% 0.013 17.38);
+    --sirius-danger-100: oklch(93.6% 0.032 17.717);
+    --sirius-danger-200: oklch(88.5% 0.062 18.334);
+    --sirius-danger-300: oklch(80.8% 0.114 19.571);
+    --sirius-danger-400: oklch(70.4% 0.191 22.216);
+    --sirius-danger-500: oklch(63.7% 0.237 25.331);
+    --sirius-danger-600: oklch(57.7% 0.245 27.325);
+    --sirius-danger-700: oklch(50.5% 0.213 27.518);
+    --sirius-danger-800: oklch(44.4% 0.177 26.899);
+    --sirius-danger-900: oklch(39.6% 0.141 25.723);
+    --sirius-danger-950: oklch(25.8% 0.092 26.042);
   }
 
-  /* Light is the default. Explicit selectors also allow themed subtrees. */
+  :where(:root, [data-sirius-color='teal']) {
+    --sirius-brand-50: oklch(98.4% 0.014 180.72);
+    --sirius-brand-100: oklch(95.3% 0.051 180.801);
+    --sirius-brand-200: oklch(91% 0.096 180.426);
+    --sirius-brand-300: oklch(85.5% 0.138 181.071);
+    --sirius-brand-400: oklch(77.7% 0.152 181.912);
+    --sirius-brand-500: oklch(70.4% 0.14 182.503);
+    --sirius-brand-600: oklch(60% 0.118 184.704);
+    --sirius-brand-700: oklch(51.1% 0.096 186.391);
+    --sirius-brand-800: oklch(43.7% 0.078 188.216);
+    --sirius-brand-900: oklch(38.6% 0.063 188.416);
+    --sirius-brand-950: oklch(27.7% 0.046 192.524);
+  }
+
+  :where([data-sirius-color='emerald']) {
+    --sirius-brand-50: oklch(97.9% 0.021 166.113);
+    --sirius-brand-100: oklch(95% 0.052 163.051);
+    --sirius-brand-200: oklch(90.5% 0.093 164.15);
+    --sirius-brand-300: oklch(84.5% 0.143 164.978);
+    --sirius-brand-400: oklch(76.5% 0.177 163.223);
+    --sirius-brand-500: oklch(69.6% 0.17 162.48);
+    --sirius-brand-600: oklch(59.6% 0.145 163.225);
+    --sirius-brand-700: oklch(50.8% 0.118 165.612);
+    --sirius-brand-800: oklch(43.2% 0.095 166.913);
+    --sirius-brand-900: oklch(37.8% 0.077 168.94);
+    --sirius-brand-950: oklch(26.2% 0.051 172.552);
+  }
+
+  :where([data-sirius-color='cyan']) {
+    --sirius-brand-50: oklch(98.4% 0.019 200.873);
+    --sirius-brand-100: oklch(95.6% 0.045 203.388);
+    --sirius-brand-200: oklch(91.7% 0.08 205.041);
+    --sirius-brand-300: oklch(86.5% 0.127 207.078);
+    --sirius-brand-400: oklch(78.9% 0.154 211.53);
+    --sirius-brand-500: oklch(71.5% 0.143 215.221);
+    --sirius-brand-600: oklch(60.9% 0.126 221.723);
+    --sirius-brand-700: oklch(52% 0.105 223.128);
+    --sirius-brand-800: oklch(45% 0.085 224.283);
+    --sirius-brand-900: oklch(39.8% 0.07 227.392);
+    --sirius-brand-950: oklch(30.2% 0.056 229.695);
+  }
+
+  :where([data-sirius-color='indigo']) {
+    --sirius-brand-50: oklch(96.2% 0.018 272.314);
+    --sirius-brand-100: oklch(93% 0.034 272.788);
+    --sirius-brand-200: oklch(87% 0.065 274.039);
+    --sirius-brand-300: oklch(78.5% 0.115 274.713);
+    --sirius-brand-400: oklch(67.3% 0.182 276.935);
+    --sirius-brand-500: oklch(58.5% 0.233 277.117);
+    --sirius-brand-600: oklch(51.1% 0.262 276.966);
+    --sirius-brand-700: oklch(45.7% 0.24 277.023);
+    --sirius-brand-800: oklch(39.8% 0.195 277.366);
+    --sirius-brand-900: oklch(35.9% 0.144 278.697);
+    --sirius-brand-950: oklch(25.7% 0.09 281.288);
+  }
+
+  :where([data-sirius-color='pink']) {
+    --sirius-brand-50: oklch(97.1% 0.014 343.198);
+    --sirius-brand-100: oklch(94.8% 0.028 342.258);
+    --sirius-brand-200: oklch(89.9% 0.061 343.231);
+    --sirius-brand-300: oklch(82.3% 0.12 346.018);
+    --sirius-brand-400: oklch(71.8% 0.202 349.761);
+    --sirius-brand-500: oklch(65.6% 0.241 354.308);
+    --sirius-brand-600: oklch(59.2% 0.249 0.584);
+    --sirius-brand-700: oklch(52.5% 0.223 3.958);
+    --sirius-brand-800: oklch(45.9% 0.187 3.815);
+    --sirius-brand-900: oklch(40.8% 0.153 2.432);
+    --sirius-brand-950: oklch(28.4% 0.109 3.907);
+  }
+
+  :where([data-sirius-color='orange']) {
+    --sirius-brand-50: oklch(98% 0.016 73.684);
+    --sirius-brand-100: oklch(95.4% 0.038 75.164);
+    --sirius-brand-200: oklch(90.1% 0.076 70.697);
+    --sirius-brand-300: oklch(83.7% 0.128 66.29);
+    --sirius-brand-400: oklch(75% 0.183 55.934);
+    --sirius-brand-500: oklch(70.5% 0.213 47.604);
+    --sirius-brand-600: oklch(64.6% 0.222 41.116);
+    --sirius-brand-700: oklch(55.3% 0.195 38.402);
+    --sirius-brand-800: oklch(47% 0.157 37.304);
+    --sirius-brand-900: oklch(40.8% 0.123 38.172);
+    --sirius-brand-950: oklch(26.6% 0.079 36.259);
+  }
+
+  :where(:root, [data-sirius-background='mist']) {
+    --sirius-neutral-50: oklch(98.7% 0.002 197.1);
+    --sirius-neutral-100: oklch(96.3% 0.002 197.1);
+    --sirius-neutral-200: oklch(92.5% 0.005 214.3);
+    --sirius-neutral-300: oklch(87.2% 0.007 219.6);
+    --sirius-neutral-400: oklch(72.3% 0.014 214.4);
+    --sirius-neutral-500: oklch(56% 0.021 213.5);
+    --sirius-neutral-600: oklch(45% 0.017 213.2);
+    --sirius-neutral-700: oklch(37.8% 0.015 216);
+    --sirius-neutral-800: oklch(27.5% 0.011 216.9);
+    --sirius-neutral-900: oklch(21.8% 0.008 223.9);
+    --sirius-neutral-950: oklch(14.8% 0.004 228.8);
+  }
+
+  :where([data-sirius-background='slate']) {
+    --sirius-neutral-50: oklch(98.4% 0.003 247.858);
+    --sirius-neutral-100: oklch(96.8% 0.007 247.896);
+    --sirius-neutral-200: oklch(92.9% 0.013 255.508);
+    --sirius-neutral-300: oklch(86.9% 0.022 252.894);
+    --sirius-neutral-400: oklch(70.4% 0.04 256.788);
+    --sirius-neutral-500: oklch(55.4% 0.046 257.417);
+    --sirius-neutral-600: oklch(44.6% 0.043 257.281);
+    --sirius-neutral-700: oklch(37.2% 0.044 257.287);
+    --sirius-neutral-800: oklch(27.9% 0.041 260.031);
+    --sirius-neutral-900: oklch(20.8% 0.042 265.755);
+    --sirius-neutral-950: oklch(12.9% 0.042 264.695);
+  }
+
+  :where([data-sirius-background='stone']) {
+    --sirius-neutral-50: oklch(98.5% 0.001 106.423);
+    --sirius-neutral-100: oklch(97% 0.001 106.424);
+    --sirius-neutral-200: oklch(92.3% 0.003 48.717);
+    --sirius-neutral-300: oklch(86.9% 0.005 56.366);
+    --sirius-neutral-400: oklch(70.9% 0.01 56.259);
+    --sirius-neutral-500: oklch(55.3% 0.013 58.071);
+    --sirius-neutral-600: oklch(44.4% 0.011 73.639);
+    --sirius-neutral-700: oklch(37.4% 0.01 67.558);
+    --sirius-neutral-800: oklch(26.8% 0.007 34.298);
+    --sirius-neutral-900: oklch(21.6% 0.006 56.043);
+    --sirius-neutral-950: oklch(14.7% 0.004 49.25);
+  }
+
   :where(:root, [data-theme='light']) {
     color-scheme: light;
-    --sirius-canvas: var(--sirius-neutral-50);
-    --sirius-surface: #fff;
+    --sirius-canvas: #fff;
+    --sirius-control: #fff;
+    --sirius-control-content: var(--sirius-neutral-950);
+    --sirius-control-line: var(--sirius-neutral-300);
+    --sirius-control-placeholder: var(--sirius-neutral-400);
+    --sirius-control-focus: var(--sirius-brand-500);
+    --sirius-surface: color-mix(in oklab, var(--sirius-neutral-200) 10%, transparent);
     --sirius-surface-muted: var(--sirius-neutral-100);
     --sirius-surface-hover: var(--sirius-neutral-200);
     --sirius-content: var(--sirius-neutral-950);
     --sirius-content-muted: var(--sirius-neutral-600);
     --sirius-content-subtle: var(--sirius-neutral-500);
-    --sirius-line: var(--sirius-neutral-200);
+    --sirius-line: color-mix(in oklab, var(--sirius-neutral-400) 15%, transparent);
     --sirius-line-strong: var(--sirius-neutral-500);
-    --sirius-primary: var(--sirius-brand-700);
-    --sirius-primary-hover: var(--sirius-brand-800);
-    --sirius-primary-active: var(--sirius-brand-900);
-    --sirius-on-primary: #fff;
+    --sirius-primary: var(--sirius-brand-400);
+    --sirius-primary-hover: var(--sirius-brand-300);
+    --sirius-primary-active: var(--sirius-brand-200);
+    --sirius-on-primary: var(--sirius-neutral-950);
     --sirius-primary-soft: var(--sirius-brand-50);
     --sirius-primary-content: var(--sirius-brand-800);
+    --sirius-warning: var(--sirius-warning-400);
+    --sirius-warning-hover: var(--sirius-warning-300);
+    --sirius-warning-active: var(--sirius-warning-200);
+    --sirius-on-warning: #0a0a0a;
+    --sirius-warning-soft: var(--sirius-warning-50);
+    --sirius-warning-content: var(--sirius-warning-800);
+    --sirius-success: var(--sirius-success-400);
+    --sirius-success-hover: var(--sirius-success-300);
+    --sirius-success-active: var(--sirius-success-200);
+    --sirius-on-success: #0a0a0a;
+    --sirius-success-soft: var(--sirius-success-50);
+    --sirius-success-content: var(--sirius-success-800);
+    --sirius-danger: var(--sirius-danger-400);
+    --sirius-danger-hover: var(--sirius-danger-300);
+    --sirius-danger-active: var(--sirius-danger-200);
+    --sirius-on-danger: #0a0a0a;
+    --sirius-danger-soft: var(--sirius-danger-50);
+    --sirius-danger-content: var(--sirius-danger-800);
     --sirius-focus: var(--sirius-brand-700);
-    --sirius-success: #15803d;
-    --sirius-success-soft: #f0fdf4;
-    --sirius-warning: #92400e;
-    --sirius-warning-soft: #fffbeb;
-    --sirius-danger: #b91c1c;
-    --sirius-danger-soft: #fef2f2;
-    --sirius-info: #1d4ed8;
-    --sirius-info-soft: #eff6ff;
   }
 
   :where([data-theme='dark']) {
     color-scheme: dark;
-    --sirius-canvas: var(--sirius-neutral-950);
-    --sirius-surface: var(--sirius-neutral-900);
+    --sirius-canvas: var(--sirius-neutral-700);
+    --sirius-control: color-mix(in oklab, var(--sirius-neutral-600) 80%, transparent);
+    --sirius-control-content: #fff;
+    --sirius-control-line: var(--sirius-neutral-300);
+    --sirius-control-placeholder: var(--sirius-neutral-400);
+    --sirius-control-focus: var(--sirius-brand-400);
+    --sirius-surface: color-mix(in oklab, var(--sirius-neutral-600) 80%, transparent);
     --sirius-surface-muted: var(--sirius-neutral-800);
     --sirius-surface-hover: var(--sirius-neutral-700);
     --sirius-content: var(--sirius-neutral-50);
     --sirius-content-muted: var(--sirius-neutral-300);
-    --sirius-content-subtle: var(--sirius-neutral-400);
-    --sirius-line: var(--sirius-neutral-700);
+    --sirius-content-subtle: var(--sirius-neutral-300);
+    --sirius-line: color-mix(in oklab, var(--sirius-neutral-400) 15%, transparent);
     --sirius-line-strong: var(--sirius-neutral-500);
-    --sirius-primary: var(--sirius-brand-300);
-    --sirius-primary-hover: var(--sirius-brand-200);
-    --sirius-primary-active: var(--sirius-brand-100);
+    --sirius-primary: var(--sirius-brand-400);
+    --sirius-primary-hover: var(--sirius-brand-300);
+    --sirius-primary-active: var(--sirius-brand-200);
     --sirius-on-primary: var(--sirius-neutral-950);
     --sirius-primary-soft: var(--sirius-brand-950);
-    --sirius-primary-content: var(--sirius-brand-200);
+    --sirius-primary-content: var(--sirius-brand-300);
+    --sirius-warning: var(--sirius-warning-400);
+    --sirius-warning-hover: var(--sirius-warning-300);
+    --sirius-warning-active: var(--sirius-warning-200);
+    --sirius-on-warning: #0a0a0a;
+    --sirius-warning-soft: var(--sirius-warning-950);
+    --sirius-warning-content: var(--sirius-warning-300);
+    --sirius-success: var(--sirius-success-400);
+    --sirius-success-hover: var(--sirius-success-300);
+    --sirius-success-active: var(--sirius-success-200);
+    --sirius-on-success: #0a0a0a;
+    --sirius-success-soft: var(--sirius-success-950);
+    --sirius-success-content: var(--sirius-success-300);
+    --sirius-danger: var(--sirius-danger-400);
+    --sirius-danger-hover: var(--sirius-danger-300);
+    --sirius-danger-active: var(--sirius-danger-200);
+    --sirius-on-danger: #0a0a0a;
+    --sirius-danger-soft: var(--sirius-danger-950);
+    --sirius-danger-content: var(--sirius-danger-300);
     --sirius-focus: var(--sirius-brand-300);
-    --sirius-success: #86efac;
-    --sirius-success-soft: #052e16;
-    --sirius-warning: #fcd34d;
-    --sirius-warning-soft: #451a03;
-    --sirius-danger: #fca5a5;
-    --sirius-danger-soft: #450a0a;
-    --sirius-info: #93c5fd;
-    --sirius-info-soft: #172554;
   }
+
 }

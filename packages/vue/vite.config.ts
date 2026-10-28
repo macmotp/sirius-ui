@@ -10,6 +10,7 @@ export default defineConfig({
       entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
       formats: ['es'],
       fileName: 'index',
+      cssFileName: 'style',
     },
     rollupOptions: {
       external: (id) => /^(vue|@sirius-ui\/theme)(\/|$)/.test(id),

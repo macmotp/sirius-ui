@@ -4,19 +4,25 @@
   "license": "MIT",
   "private": true,
   "type": "module",
-  "files": ["dist"],
-  "sideEffects": ["**/*.css"],
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "scripts": {
     "build": "vite build && vue-tsc --project tsconfig.build.json",
     "typecheck": "vue-tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
+    "@lucide/vue": "^1.63.0",
     "@sirius-ui/theme": "0.0.0"
   },
   "peerDependencies": {

@@ -3,4 +3,9 @@
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
 @import '@sirius-ui/theme/tailwind.css';
 
-@source inline('bg-canvas bg-surface text-content text-content-muted bg-primary text-on-primary hover:bg-primary-hover border-line rounded-md p-4 shadow-sm dark:bg-surface-muted');
+@source inline('ring-1 ring-inset ring-line bg-canvas bg-surface text-content text-content-muted bg-primary text-on-primary hover:bg-primary-hover border-line rounded-md p-4 shadow-sm dark:bg-surface-muted');
+@source inline('bg-warning text-on-warning bg-success text-on-success bg-danger text-on-danger text-warning-content text-success-content text-danger-content rounded rounded-2xl rounded-full rounded-control');
+/* Removed roles must not generate utilities, even when explicitly requested. */
+@source inline('bg-secondary bg-info');
+
+@source inline('ring-control-valid ring-control-invalid bg-control text-control-content ring-control-line placeholder:text-control-placeholder focus:ring-control-focus shadow-xs');

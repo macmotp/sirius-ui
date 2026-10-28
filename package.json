@@ -14,8 +14,8 @@
     "preview": "npm run preview --workspace @sirius-ui/playground",
     "build": "npm run build --workspace @sirius-ui/theme && npm run build --workspace @sirius-ui/vue && npm run build --workspace @sirius-ui/playground",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm run build --workspace @sirius-ui/theme && node --test packages/theme/tests/*.test.mjs",
-    "check": "npm run typecheck && npm run build && node --test packages/theme/tests/*.test.mjs"
+    "test": "npm run build --workspace @sirius-ui/theme && npm run build --workspace @sirius-ui/vue && node --test packages/*/tests/*.test.mjs",
+    "check": "npm run typecheck && npm run build && node --test packages/*/tests/*.test.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

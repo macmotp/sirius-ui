@@ -2,19 +2,13 @@
 @import '@sirius-ui/theme/tailwind.css';
 @source '../../../packages/vue/src';
 
-/* Playground branding override, intentionally outside the shared packages. */
-:root[data-brand='indigo'] {
-  --sirius-brand-50: #eef2ff;
-  --sirius-brand-100: #e0e7ff;
-  --sirius-brand-200: #c7d2fe;
-  --sirius-brand-300: #a5b4fc;
-  --sirius-brand-400: #818cf8;
-  --sirius-brand-500: #6366f1;
-  --sirius-brand-600: #4f46e5;
-  --sirius-brand-700: #4338ca;
-  --sirius-brand-800: #3730a3;
-  --sirius-brand-900: #312e81;
-  --sirius-brand-950: #1e1b4b;
+/* Use the supplied SVG's transparency as a mask; bg-primary supplies its color. */
+.sirius-logo {
+  mask: url('../../../sirius_ui.svg') center / contain no-repeat;
+}
+
+.sirius-wordmark-ui {
+  color: light-dark(var(--sirius-neutral-500), var(--sirius-neutral-200));
 }
 
 @layer base {

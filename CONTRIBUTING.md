@@ -43,9 +43,9 @@ For dependency changes, use Yarn from the root and include the resulting `yarn.l
 npm run check
 ```
 
-This runs type checks, builds both packages and the playground, and tests plain CSS exports and Tailwind integration. More targeted commands are listed in [the README](readme.md#getting-started).
+This runs type checks, builds both packages and the playground, and tests CSS exports, Tailwind integration, and built-component behavior. More targeted commands are listed in [the README](readme.md#getting-started).
 
-For visible changes, also check the playground at narrow and wide widths, in light and dark modes, and with both brand presets. Use the keyboard to reach and operate interactive controls. Check long content, disabled states, labels, focus indicators, and relevant status announcements.
+For visible changes, also check the playground at narrow and wide widths, in light and dark modes, and with the accent and background palette options. Verify that status colors remain fixed while changing accents and backgrounds. Use the keyboard to reach and operate interactive controls. Check long content, disabled states, labels, focus indicators, and relevant status announcements.
 
 There is no automated browser test suite yet. Report the actual validation performed and any limitations. Documentation-only changes can be verified by checking links, paths, commands, and formatting.
 

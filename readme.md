@@ -44,8 +44,8 @@ npm run check
 | `npm run dev` | Open the playground development server (normally `http://127.0.0.1:5173`). |
 | `npm run preview` | Serve the built playground locally after running `npm run build`. |
 | `npm run typecheck` | Check Vue components, TypeScript source, and Vite configurations across workspaces. |
-| `npm test` | Build the theme and test its CSS exports and Tailwind integration. |
-| `npm run check` | Run type checking, all workspace builds, and theme integration tests. |
+| `npm test` | Build both libraries and run theme integration and component behavior tests. |
+| `npm run check` | Run type checking, all workspace builds, and theme/component tests. |
 
 Tailwind CSS 4 and its Vite plugin are configured for the Vue library and playground. The theme provides CSS tokens, light/dark modes, and an optional Tailwind mapping.
 
@@ -59,9 +59,13 @@ npm run dev
 
 Open the local URL Vite prints in the terminal, normally [http://127.0.0.1:5173](http://127.0.0.1:5173). Stop the server with Ctrl+C.
 
-The playground includes semantic color swatches, status colors, typography, spacing, radii, shadows, and native interaction examples. Use the controls at the top to switch between teal and indigo branding and light, dark, or system appearance. Preferences are saved in your browser. The interaction form is a local demo; it does not send data anywhere.
+The playground includes semantic color swatches, status colors, typography, spacing, radii, shadows, native field examples, and dedicated button and form showcases. Use the controls at the top to choose an accent (teal, emerald, cyan, indigo, pink, or orange), a background (mist, slate, or stone), and light, dark, or system appearance. Your choices are saved in your browser. The interaction form is a local demo; it does not send data anywhere.
 
-The playground resolves the theme and Vue packages directly from their source files. Edits update live without rebuilding either library. Its indigo override is application-specific and does not change the shared default theme. Shared Vue components will appear here as they are implemented.
+All playground select controls use the shared `SSelect`, including theme preferences and showcase configurators.
+
+The playground resolves the theme and Vue packages directly from their source files. Edits update live without rebuilding either library. Palette definitions belong to the shared theme package; preference controls, persistence, and demo state belong to the playground. The Buttons section includes a live configurator, all color/variant combinations, sizes, icon slots, loading and disabled states, and responsive examples, including native downloads and custom navigation links.
+
+The default logo is [sirius_ui.svg](sirius_ui.svg). The playground displays it as a CSS mask with `bg-primary`, so its color follows the accent selection without modifying the original SVG. The adjacent wordmark provides the accessible link name; the logo itself is decorative.
 
 To inspect a production build:
 
@@ -74,10 +78,11 @@ Open the URL printed by the preview server, normally [http://127.0.0.1:4173](htt
 
 ## Shared theme
 
-The default theme uses teal for brand colors and mist for neutrals. It includes semantic colors, typography, spacing, radii, and shadows. Applications can override the palette and tokens.
+Choose one accent color and one neutral background independently. Accents are teal, emerald, cyan, indigo, pink, and orange; backgrounds are mist, slate, and stone. Primary uses the selected accent at shade 400. Success (green), warning (yellow), and danger (red) remain fixed. The defaults are teal and mist. InterVariable is the default sans font. Light page and navigation backgrounds are white; cards use translucent neutral fills and subtle inset rings. General corners default to 2xl; buttons and inputs use full rounding.
 
 - Import `@sirius-ui/theme` for plain CSS variables.
 - Import `@sirius-ui/theme/tailwind.css` after Tailwind for semantic utilities such as `bg-surface`, `text-content`, and `bg-primary`.
+- Set `data-sirius-color="teal"` to choose an accent and `data-sirius-background="mist"` to choose a neutral background.
 - Set `data-theme="light"` or `data-theme="dark"` on the document element to choose an appearance. Light is the default; applications own persistence and system preference detection.
 
 See [the theme guide](packages/theme/readme.md) for setup, available tokens, and branding examples.
@@ -120,10 +125,10 @@ Dashboard layouts and ecommerce templates can compose these primitives. Project-
 
 ## Development status
 
-The workspace, shared theme, and local playground are implemented. Shared Vue components have not been implemented yet; the playground currently uses native elements to demonstrate the tokens.
+The workspace, shared theme, playground, and Vue components (`SButton`, `SForm`, `SField`, `SInput`, `STextarea`, `SSelect`) are implemented. Buttons in the interaction form use the shared component; form fields remain native theme examples. See [the Vue package guide](packages/vue/readme.md) for imports, styling setup, and component APIs.
 
 Next steps:
 
-1. Build the first component, `SButton`, to validate the theme and component API.
+1. Extend forms with checkbox, radio, and switch controls based on application needs.
 2. Consume the packages in the Nannaò dashboard and validate the APIs against real screens.
 3. Add component documentation, targeted tests, and release tooling as the library matures.

@@ -1,0 +1,6 @@
+/* Compile only library utilities. No Preflight or automatic element styling. */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import '@sirius-ui/theme/tailwind.css';
+@source './components';

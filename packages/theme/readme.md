@@ -1,17 +1,17 @@
 # @sirius-ui/theme
 
-Shared CSS tokens with teal and mist defaults. The package does not add a reset, load fonts, or style native elements. Applications choose where to apply the tokens.
+Shared CSS tokens with independent accent, neutral background, and appearance choices. Teal and mist are the defaults. The package does not add a reset, load fonts, or style native elements automatically.
 
-## With Tailwind CSS 4
+## Setup
 
-Build the theme package first (`npm run build` from the repository root). In an application's main CSS file, processed by the Tailwind Vite plugin:
+Build the theme package first (`npm run build` from the repository root). With Tailwind CSS 4, import these files in the application's CSS entry processed by the Tailwind Vite plugin:
 
 ```css
 @import 'tailwindcss';
 @import '@sirius-ui/theme/tailwind.css';
 ```
 
-The first import includes Tailwind's own Preflight reset. If the application does not want a reset, use these imports instead:
+The first import includes Tailwind Preflight. For an application without a reset, use:
 
 ```css
 @layer theme, base, components, utilities;
@@ -20,48 +20,42 @@ The first import includes Tailwind's own Preflight reset. If the application doe
 @import '@sirius-ui/theme/tailwind.css';
 ```
 
-Use semantic utilities so the same markup works in both modes:
+Without Tailwind, import `@sirius-ui/theme` and use the `--sirius-` CSS variables directly.
+
+## Default font
+
+`--sirius-font-sans` starts with `InterVariable`, followed by system fallbacks. The theme defines the font stack; applications load the font. The playground uses the official hosted stylesheet:
 
 ```html
-<main class="bg-canvas font-sans text-content">
-  <section class="rounded-lg border border-line bg-surface p-6 shadow-sm">
-    <p class="text-sm text-content-muted">Your workspace</p>
-    <button class="rounded-md bg-primary px-4 py-2 text-on-primary hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
-      Continue
-    </button>
-  </section>
-</main>
+<link rel="preconnect" href="https://rsms.me/" />
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 ```
 
-This is a token usage example; component behavior and accessibility will be implemented in `@sirius-ui/vue`.
+Applications can instead self-host InterVariable and declare their own `@font-face`. If the font cannot load, the system fallback remains usable. The monospace stack is unchanged.
 
-## Without Tailwind
+## Accent, background, and appearance
 
-Import `@sirius-ui/theme` in the application's CSS or JavaScript entry and use the CSS custom properties directly:
+Select one accent palette and one neutral background palette independently:
 
-```css
-@import '@sirius-ui/theme';
+| Setting | Choices | Default |
+| --- | --- | --- |
+| Accent | teal, emerald, cyan, indigo, pink, orange | teal |
+| Background | mist, slate, stone | mist |
+| Appearance | light, dark | light |
 
-.panel {
-  background: var(--sirius-surface);
-  color: var(--sirius-content);
-  padding: calc(var(--sirius-spacing) * 6);
-  border: 1px solid var(--sirius-line);
-  border-radius: var(--sirius-radius-lg);
-  font-family: var(--sirius-font-sans);
-  line-height: var(--sirius-leading);
-}
+```html
+<html data-sirius-color="teal" data-sirius-background="mist" data-theme="light">
 ```
-
-## Appearance
-
-Light is the default. Set the document attribute to select a mode:
 
 ```js
+document.documentElement.dataset.siriusColor = 'indigo'
+document.documentElement.dataset.siriusBackground = 'slate'
 document.documentElement.dataset.theme = 'dark' // or 'light'
 ```
 
-Applications own preference persistence and system preference detection. To initialize from the system preference, set the attribute before first paint:
+When attributes are absent, the defaults apply. The accent supplies the primary colors and focus indicator. The background palette supplies dark page backgrounds, neutral surfaces, text, and borders. Light page and navigation backgrounds are white for all selections. Success, warning, and danger palettes stay fixed for every selection.
+
+Applications own preference persistence and system preference detection. The playground remembers all three choices and offers a System appearance option. To initialize appearance from the system before first paint:
 
 ```js
 document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches
@@ -69,71 +63,94 @@ document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark
   : 'light'
 ```
 
-The tokens set `color-scheme` so browser controls follow the selected mode. Semantic colors also support nested regions with `data-theme="light"` or `data-theme="dark"`. Optional Tailwind `dark:` variants follow the document's `data-theme` attribute; use semantic colors for nested regions.
+The tokens set `color-scheme` so native controls follow appearance. Semantic colors also support nested regions with an explicit `data-theme`. When selecting accent or background palettes on a subtree, set `data-theme` there too so semantic aliases resolve in that scope. Optional Tailwind `dark:` variants follow the document's appearance; use semantic tokens for nested regions.
 
-## Token API
+## Color roles
 
-CSS tokens use the `--sirius-` prefix. Tailwind mappings use `@theme inline`, so utilities resolve the active runtime values.
-
-| CSS token suffix | Tailwind examples | Purpose |
+| Role | Palette | Fill in both modes |
 | --- | --- | --- |
-| `canvas` | `bg-canvas` | Page background |
-| `surface`, `surface-muted`, `surface-hover` | `bg-surface`, `hover:bg-surface-hover` | Panels and neutral interactive backgrounds |
+| Primary | Selected accent | Shade 400 |
+| Success | Fixed green | green-400 |
+| Warning | Fixed yellow | yellow-400 |
+| Danger | Fixed red | red-400 |
+| Neutrals | Selected background | Varies by semantic role and appearance |
+
+Every color role exposes the same token family. Replace `primary` below with `success`, `warning`, or `danger`:
+
+| CSS token | Tailwind example | Purpose |
+| --- | --- | --- |
+| `--sirius-primary` | `bg-primary` | Shade 400 filled background |
+| `--sirius-primary-hover` | `hover:bg-primary-hover` | Shade 300 hover background |
+| `--sirius-primary-active` | `active:bg-primary-active` | Shade 200 pressed background |
+| `--sirius-on-primary` | `text-on-primary` | Dark foreground on filled backgrounds |
+| `--sirius-primary-soft` | `bg-primary-soft` | Shade 50 in light mode, shade 950 in dark mode |
+| `--sirius-primary-content` | `text-primary-content` | Readable foreground for soft backgrounds: shade 800 in light mode, shade 300 in dark mode |
+
+Use `text-on-*` on filled backgrounds and `text-*-content` on soft backgrounds. The role fill is intentionally bright; it is not the foreground for an alert on a pale surface. These role foreground/background pairs are contrast-tested in both appearances. Solid buttons separately use the white `--sirius-on-solid` token (`text-on-solid`); white on shade-400 fills has insufficient normal-text contrast. See [the button guide](../vue/readme.md#accessibility-and-loading) for that limitation.
+
+**Migration:** named themes and `data-sirius-theme` have been removed. Use `data-sirius-color` and `data-sirius-background` instead. Secondary and info tokens/utilities have been removed. For soft status backgrounds use `text-success-content`, `text-warning-content`, or `text-danger-content`, rather than the bright fill color as text. The `data-theme` appearance API is unchanged; old theme or brand preferences are not read.
+
+## Surfaces and foundations
+
+| Token suffix | Tailwind examples | Purpose |
+| --- | --- | --- |
+| `canvas` | `bg-canvas` | White in light mode; selected neutral 700 in dark mode |
+| `surface`, `surface-muted`, `surface-hover` | `bg-surface`, `hover:bg-surface-hover` | Cards: selected neutral 200 at 10% in light mode, 600 at 80% in dark mode; additional muted/hover surfaces |
 | `content`, `content-muted`, `content-subtle` | `text-content`, `text-content-muted` | Text hierarchy |
-| `line`, `line-strong` | `border-line`, `border-line-strong` | Dividers and control outlines |
-| `primary`, `primary-hover`, `primary-active`, `on-primary` | `bg-primary`, `text-on-primary` | Brand action and its foreground |
-| `primary-soft`, `primary-content` | `bg-primary-soft`, `text-primary-content` | Subtle brand surfaces and their text |
+| `line`, `line-strong` | `border-line`, `ring-line`, `border-line-strong` | Decorative dividers and identifiable control outlines |
+| `control`, `control-content` | `bg-control`, `text-control-content` | Input fill and foreground; white in light mode, neutral 600/80 with white text in dark mode |
+| `control-line`, `control-placeholder`, `control-focus` | `ring-control-line`, `placeholder:text-control-placeholder`, `focus:ring-control-focus` | Input ring: neutral 300; placeholder: neutral 400; focus: accent 500 in light mode, 400 in dark mode |
+| `control-valid`, `control-invalid` | `ring-control-valid`, `ring-control-invalid` | Fixed green-500 and red-500 validation rings in both appearances, including focus |
 | `focus` | `outline-focus`, `ring-focus` | Keyboard focus color |
-| `success`, `warning`, `danger`, `info` | `text-danger` | Status text and icons |
-| `success-soft`, `warning-soft`, `danger-soft`, `info-soft` | `bg-danger-soft` | Corresponding status backgrounds |
-| `font-sans`, `font-mono` | `font-sans`, `font-mono` | System font stacks |
+| `font-sans`, `font-mono` | `font-sans`, `font-mono` | InterVariable with system fallbacks; system monospace |
 | `text-xs` through `text-2xl` | `text-sm`, `text-xl` | Type sizes |
 | `spacing` | `p-4`, `gap-2` | Base spacing unit, 0.25rem |
-| `radius-sm` through `radius-xl` | `rounded-md` | Corner radii |
 | `shadow-sm`, `shadow-md`, `shadow-lg` | `shadow-sm` | Elevation |
 
-`line` is a subtle decorative divider; use `line-strong` where an outline is necessary to identify a control. Status colors are intended as text on their corresponding soft backgrounds, rather than filled button colors. `leading` is available as a plain CSS token; Tailwind retains its standard line-height utilities.
+Cards use `bg-surface ring-1 ring-inset ring-line`. The surface token is translucent and should normally sit over `bg-canvas`. This matches `bg-slate-200/10 dark:bg-slate-600/80 ring-1 ring-inset ring-slate-400/15` when slate is selected; mist and stone follow the same shade and opacity rules. `line` uses neutral 400 at 15% in both appearances. Navigation uses `bg-canvas` so it matches the page. The theme defines tokens and utilities without styling native elements automatically.
+
+Use `line-strong` for controls that need a border. Inputs instead use `border-0 bg-control text-control-content shadow-xs ring-1 ring-inset ring-control-line placeholder:text-control-placeholder focus:ring-1 focus:ring-inset focus:ring-control-focus focus:outline-none`. The medium input uses `rounded-control py-1.5`; the control rounding token defaults to full. These tokens are shared without automatically styling inputs or selects. `shadow-xs` maps to the runtime `--sirius-shadow-xs` token. `--sirius-leading` is available as a plain CSS token; Tailwind retains its standard line-height utilities.
+
+## Radius defaults
+
+| CSS token | Tailwind utility | Value / use |
+| --- | --- | --- |
+| `--sirius-radius` | `rounded` | Default: aliases 2xl |
+| `--sirius-radius-sm` | `rounded-sm` | 0.25rem |
+| `--sirius-radius-md` | `rounded-md` | 0.5rem |
+| `--sirius-radius-lg` | `rounded-lg` | 0.75rem |
+| `--sirius-radius-xl` | `rounded-xl` | 1rem |
+| `--sirius-radius-2xl` | `rounded-2xl` | 1.5rem, general default |
+| `--sirius-radius-full` | `rounded-full` | 9999px, pill rounding |
+| `--sirius-radius-control` | `rounded-control` | Aliases full; buttons, inputs, and selects |
+
+Components and applications opt into these defaults with the semantic utilities. The theme does not automatically round every native element. `rounded-control` lets applications override the control shape independently of other full-radius elements.
+
+```html
+<section class="rounded bg-surface ring-1 ring-inset ring-line p-6 text-content">
+  <label for="name" class="text-sm">Name</label>
+  <input id="name" class="rounded-control border-0 bg-control px-4 py-1.5 text-control-content shadow-xs ring-1 ring-inset ring-control-line placeholder:text-control-placeholder focus:ring-control-focus focus:outline-none" />
+  <button class="rounded-control bg-primary px-4 py-2 text-on-primary hover:bg-primary-hover active:bg-primary-active">
+    Continue
+  </button>
+  <p class="rounded bg-warning-soft p-4 text-warning-content">Check your details.</p>
+</section>
+```
+
+These native elements demonstrate tokens; shared Vue components are implemented separately.
 
 ## Application overrides
 
-Override tokens after importing the theme. Unlayered application CSS takes precedence over the theme layer.
-
-Override the brand palette once at the document root to update both appearances. The semantic colors use shades 50, 100, 200, 300, 700, 800, 900, and 950; override all eleven shades to keep the palette complete:
+Defaults live in the low-specificity `theme` layer. Import the package first, then override variables in application CSS. For example:
 
 ```css
-/* Example: an indigo brand for another application. */
 :root {
-  --sirius-brand-50: #eef2ff;
-  --sirius-brand-100: #e0e7ff;
-  --sirius-brand-200: #c7d2fe;
-  --sirius-brand-300: #a5b4fc;
-  --sirius-brand-400: #818cf8;
-  --sirius-brand-500: #6366f1;
-  --sirius-brand-600: #4f46e5;
-  --sirius-brand-700: #4338ca;
-  --sirius-brand-800: #3730a3;
-  --sirius-brand-900: #312e81;
-  --sirius-brand-950: #1e1b4b;
-  --sirius-radius-md: 0.375rem;
+  --sirius-radius: var(--sirius-radius-2xl);
+  --sirius-radius-control: var(--sirius-radius-full);
+  --sirius-font-sans: 'My App Font', system-ui, sans-serif;
 }
 ```
 
-For finer control, override a semantic token per mode:
+The selected accent's raw palette uses `--sirius-brand-50` through `--sirius-brand-950`; the background palette uses `--sirius-neutral-*`. Fixed status palettes use `--sirius-success-*`, `--sirius-warning-*`, and `--sirius-danger-*`. All palettes contain the eleven Tailwind shades. Components consume semantic roles rather than hard-coded palette shades.
 
-```css
-:root[data-theme='light'] {
-  --sirius-primary: #4338ca;
-  --sirius-primary-hover: #3730a3;
-  --sirius-primary-active: #312e81;
-  --sirius-on-primary: #fff;
-}
-
-:root[data-theme='dark'] {
-  --sirius-primary: #a5b4fc;
-  --sirius-primary-hover: #c7d2fe;
-  --sirius-primary-active: #e0e7ff;
-  --sirius-on-primary: #1e1b4b;
-}
-```
-
-Keep foreground/background pairs together when customizing colors, and verify contrast for the resulting application. For a scoped palette override, place `data-theme="light"` or `data-theme="dark"` on the same element so semantic aliases are resolved within that scope.
+Override semantic foreground/background pairs together when customizing colors, and check contrast in both appearances. Keep reusable palette definitions in the theme package and application-only overrides in the consuming app. Secondary, info, and named theme presets are not part of the public API.
