@@ -52,3 +52,10 @@ These instructions apply throughout this repository. Read `readme.md`, `CONTRIBU
 - Record architectural decisions in `docs/architecture.md`, theme usage in `packages/theme/readme.md`, and component usage in `packages/vue/readme.md`.
 - Keep these shared instructions and contributor docs in Git. Do not put credentials, personal notes, machine-specific paths, or session transcripts in them.
 - The project is MIT-licensed. Preserve the copyright and license notice, keep library package `LICENSE` copies identical to the root `LICENSE`, and retain `"license": "MIT"` metadata.
+
+## Vue workflow
+
+- For Vue library and playground work, read and apply the installed [vue-best-practices skill](.agents/skills/vue-best-practices/SKILL.md) before implementation, including its four required core references. Load optional references when their topics apply.
+- [Vue development guidelines](docs/vue-guidelines.md) summarize the workflow; the installed skill and references are the complete source.
+- Review responsibility boundaries and state ownership before substantial changes; keep contracts typed, derive state with computed, and keep side effects and cleanup with their owner.
+- Preserve the SiriusUI package boundaries, semantic theme utilities and compiled CSS export conventions documented above when applying general Vue guidance.

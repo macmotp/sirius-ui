@@ -1,41 +1,13 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
-import { createRenderer, defineComponent, h, nextTick, shallowRef } from 'vue'
+import { defineComponent, h, nextTick } from 'vue'
 import { SButton } from '../dist/index.js'
-
-// Exercise the real built component through Vue's renderer without a browser DOM.
-function element(type, text = '') {
-  return { type, text, props: {}, children: [], parent: null }
-}
-
-const renderer = createRenderer({
-  createElement: (type) => element(type),
-  createText: (text) => element('#text', text),
-  createComment: (text) => element('#comment', text),
-  setText: (node, text) => { node.text = text },
-  setElementText: (node, text) => { node.text = text; node.children = [] },
-  parentNode: (node) => node.parent,
-  nextSibling: (node) => node.parent?.children[node.parent.children.indexOf(node) + 1] ?? null,
-  patchProp: (node, key, previous, value) => { node.props[key] = value },
-  insert(node, parent, anchor = null) {
-    if (node.parent) node.parent.children.splice(node.parent.children.indexOf(node), 1)
-    const index = anchor ? parent.children.indexOf(anchor) : parent.children.length
-    parent.children.splice(index, 0, node)
-    node.parent = parent
-  },
-  remove(node) {
-    node.parent?.children.splice(node.parent.children.indexOf(node), 1)
-    node.parent = null
-  },
-})
+import { mountComponent } from './renderer.mjs'
 
 function mount(props = {}, slots = { default: () => 'Save changes' }) {
-  const root = element('root')
-  const state = shallowRef(props)
-  const app = renderer.createApp({ render: () => h(SButton, state.value, slots) })
-  app.mount(root)
-  return { get button() { return root.children[0] }, state, unmount: () => app.unmount() }
+  const view = mountComponent(SButton, props, slots)
+  return { get button() { return view.element }, state: view.state, unmount: view.unmount }
 }
 
 function text(node) {
@@ -122,7 +94,8 @@ test('the built CSS export includes component utilities and tokens without Prefl
   assert.ok(css.includes('.text-danger-content'))
   assert.ok(css.includes('.text-on-solid'))
   assert.doesNotMatch(css, /@(?:import|theme|source|utility)\b/)
-  assert.doesNotMatch(css, /box-sizing:border-box/)
+  // A scoped .box-border utility is allowed; a global Preflight reset is not.
+  assert.doesNotMatch(css, /(?:^|[{}])[^{}]*\*[^{}]*\{[^{}]*box-sizing:border-box/)
 })
 
 test('all solid button colors use the shared white-label token', () => {

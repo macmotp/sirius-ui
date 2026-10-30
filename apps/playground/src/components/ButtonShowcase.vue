@@ -39,8 +39,7 @@ const example = computed(() => `<SButton color="${color.value}" variant="${varia
 <template>
   <section id="buttons" class="border-t border-line py-10" aria-labelledby="buttons-title">
     <div class="mb-3 flex flex-wrap items-center gap-3">
-      <span class="font-mono text-xs text-content-subtle">05</span>
-      <h2 id="buttons-title" class="text-xl font-semibold tracking-tight">Buttons, ready for real work</h2>
+      <h3 id="buttons-title" class="text-xl font-semibold tracking-tight">Buttons, ready for real work</h3>
       <span class="rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-primary-content">SButton</span>
     </div>
     <p class="mb-7 max-w-2xl text-sm leading-relaxed text-content-muted">Every button below is the shared Vue component. Explore the API, compare treatments, and change the accent, background, or appearance above to check them in context.</p>
@@ -70,7 +69,7 @@ const example = computed(() => `<SButton color="${color.value}" variant="${varia
     </div>
 
     <div class="mt-8 rounded bg-surface ring-1 ring-inset ring-line p-5 sm:p-7">
-      <h3 class="text-sm font-semibold">Every color. Every treatment.</h3>
+      <h4 class="text-sm font-semibold">Every color. Every treatment.</h4>
       <p class="mt-2 text-xs text-content-muted">Solid for emphasis, soft for subtle actions, outline for alternatives, ghost for minimal chrome.</p>
       <div class="mt-7 space-y-6">
         <div v-for="buttonColor in colors" :key="buttonColor" role="group" :aria-label="`${buttonColor} button variants`" class="grid items-center gap-3 sm:grid-cols-[5rem_1fr]">
@@ -81,7 +80,7 @@ const example = computed(() => `<SButton color="${color.value}" variant="${varia
     </div>
 
     <div class="mt-5 rounded bg-surface p-5 ring-1 ring-inset ring-line sm:p-7">
-      <h3 class="text-sm font-semibold">Links with button styling</h3>
+      <h4 class="text-sm font-semibold">Links with button styling</h4>
       <p class="mt-2 max-w-2xl text-xs leading-relaxed text-content-muted">Native anchors handle downloads and navigation. Pass your Inertia Link component through the as prop for client-side page visits. Each example renders a single element.</p>
       <div class="mt-5 flex flex-wrap items-center gap-3">
         <SButton href="#colors" variant="outline">Browse colors</SButton>
@@ -96,21 +95,21 @@ const example = computed(() => `<SButton color="${color.value}" variant="${varia
 
     <div class="mt-5 grid gap-5 xl:grid-cols-2">
       <div class="rounded bg-surface ring-1 ring-inset ring-line p-5 sm:p-7">
-        <h3 class="text-sm font-semibold">Three sizes</h3>
+        <h4 class="text-sm font-semibold">Three sizes</h4>
         <div class="mt-6 flex flex-wrap items-center gap-3"><SButton v-for="buttonSize in sizes" :key="buttonSize" :size="buttonSize" @click="clicks++">{{ { sm: 'Small', md: 'Medium', lg: 'Large' }[buttonSize] }}</SButton></div>
-        <h3 class="mt-8 text-sm font-semibold">Leading and trailing icons</h3>
+        <h4 class="mt-8 text-sm font-semibold">Leading and trailing icons</h4>
         <div class="mt-5 flex flex-wrap gap-3">
           <SButton @click="clicks++"><template #leading><Plus focusable="false" /></template>Create project</SButton>
           <SButton variant="outline" @click="clicks++">Next step<template #trailing><ChevronRight focusable="false" /></template></SButton>
         </div>
       </div>
       <div class="rounded bg-surface ring-1 ring-inset ring-line p-5 sm:p-7">
-        <h3 class="text-sm font-semibold">Busy, disabled, and ready</h3>
+        <h4 class="text-sm font-semibold">Busy, disabled, and ready</h4>
         <div class="mt-6 flex flex-wrap gap-3"><SButton loading>Saving changes</SButton><SButton disabled>Unavailable</SButton><SButton variant="outline" disabled>Disabled outline</SButton></div>
         <div class="mt-6 border-t border-line pt-6"><SButton :loading="busy" @click="runAction">{{ busy ? 'Saving demo' : 'Try loading' }}</SButton><p role="status" class="mt-3 text-xs text-content-muted">{{ actionStatus }}</p></div>
       </div>
-      <div class="rounded bg-surface ring-1 ring-inset ring-line p-5 sm:p-7"><h3 class="mb-5 text-sm font-semibold">Full width and long labels</h3><div class="max-w-xs space-y-4"><SButton full-width @click="clicks++">Continue to your workspace</SButton><SButton full-width variant="outline" @click="clicks++">A longer action label that wraps naturally on smaller screens</SButton></div></div>
-      <div class="rounded bg-surface ring-1 ring-inset ring-line p-5 sm:p-7"><h3 class="text-sm font-semibold">Keyboard and motion</h3><p class="mt-3 text-sm leading-relaxed text-content-muted">Tab to a button to see its focus outline. Activate it with Enter or Space. Disabled and loading buttons leave the tab order. The spinner respects reduced-motion preferences.</p><p class="mt-3 text-xs text-content-muted">Icon slots are decorative; keep the action name in the label. Use buttons for actions, not navigation.</p></div>
+      <div class="rounded bg-surface ring-1 ring-inset ring-line p-5 sm:p-7"><h4 class="mb-5 text-sm font-semibold">Full width and long labels</h4><div class="max-w-xs space-y-4"><SButton full-width @click="clicks++">Continue to your workspace</SButton><SButton full-width variant="outline" @click="clicks++">A longer action label that wraps naturally on smaller screens</SButton></div></div>
+      <div class="rounded bg-surface ring-1 ring-inset ring-line p-5 sm:p-7"><h4 class="text-sm font-semibold">Keyboard and motion</h4><p class="mt-3 text-sm leading-relaxed text-content-muted">Tab to a button to see its focus outline. Activate it with Enter or Space. Disabled and loading buttons leave the tab order. The spinner respects reduced-motion preferences.</p><p class="mt-3 text-xs text-content-muted">Icon slots are decorative; keep the action name in the label. Use buttons for actions, not navigation.</p></div>
     </div>
   </section>
 </template>

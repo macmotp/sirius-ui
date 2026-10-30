@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { Check, Mail, Search, User } from '@lucide/vue'
 import { SButton, SField, SForm, SInput, SSelect, STextarea } from '@sirius-ui/vue'
 import MoreFormControls from './MoreFormControls.vue'
+import NativeInputShowcase from './NativeInputShowcase.vue'
 import type { SFormColumns, SInputSize, SInputType } from '@sirius-ui/vue'
 
 const columns = ref<SFormColumns>(2)
@@ -15,7 +16,12 @@ const invalid = ref(false)
 const valid = ref(false)
 const required = ref(false)
 const sizes: SInputSize[] = ['sm', 'md', 'lg']
-const types: SInputType[] = ['text', 'email', 'password', 'search', 'tel', 'url']
+const types: SInputType[] = ['text', 'email', 'password', 'search', 'tel', 'url', 'date', 'time', 'datetime-local', 'month', 'week', 'number', 'color', 'range']
+const nativeDefaults: Partial<Record<SInputType, string>> = {
+  date: '2026-10-28', time: '09:30', 'datetime-local': '2026-10-28T09:30',
+  month: '2026-10', week: '2026-W44', number: '12', color: '#2dd4bf', range: '50',
+}
+watch(type, (next) => { value.value = nativeDefaults[next] ?? '' })
 const demo = reactive({ name: '', email: '', title: '', department: '', note: '' })
 const errors = reactive({ name: '', email: '', department: '' })
 const status = ref('This form is a local demo. No data is sent.')
@@ -42,8 +48,8 @@ function reset() {
 </script>
 
 <template>
-  <section id="forms" class="border-t border-line py-10" aria-labelledby="forms-title">
-    <div class="mb-3 flex flex-wrap items-center gap-3"><span class="font-mono text-xs text-content-subtle">06</span><h2 id="forms-title" class="text-xl font-semibold tracking-tight">Forms that fit your layout</h2><span class="rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-primary-content">SForm · SField · SInput · SSelect · STextarea</span></div>
+  <section id="form-controls" class="border-t border-line py-10" aria-labelledby="forms-title">
+    <div class="mb-3 flex flex-wrap items-center gap-3"><h3 id="forms-title" class="text-xl font-semibold tracking-tight">Forms that fit your layout</h3><span class="rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-primary-content">SForm · SField · SInput · SSelect · STextarea</span></div>
     <p class="mb-7 max-w-2xl text-sm leading-relaxed text-content-muted">Compose labels, hints, errors, and inputs with subtle inset rings. Choose up to four columns; fields stack on small screens. Submission and validation stay in your application.</p>
 
     <div class="relative overflow-hidden rounded bg-surface after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:ring-1 after:ring-inset after:ring-line">
@@ -63,7 +69,7 @@ function reset() {
           </div>
         </fieldset>
         <div class="min-w-0 self-center">
-          <SField v-slot="{ control }" label="Your name" description="The label and hint are linked to this input." :error="invalid ? 'Check this value and try again.' : undefined" :required="required">
+          <SField v-slot="{ control }" label="Input preview" description="The label and hint are linked to this input." :error="invalid ? 'Check this value and try again.' : undefined" :required="required">
             <SInput v-bind="control" v-model="value" :type="type" :size="size" :disabled="disabled" :readonly="readonly" :valid="valid" placeholder="Type something…"><template #leading><User /></template></SInput>
           </SField>
           <p class="mt-4 break-words font-mono text-xs text-content-muted">{{ type === 'password' ? 'Value hidden for password input' : `v-model: ${value || '(empty)'}` }}</p>
@@ -74,7 +80,7 @@ function reset() {
 
     <div class="mt-5 rounded bg-surface p-5 ring-1 ring-inset ring-line sm:p-7">
       <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div><h3 class="text-sm font-semibold">A responsive form, ready to try</h3><p class="mt-2 text-xs text-content-muted">Submit empty values to see validation. Reset clears the demo model and errors.</p></div>
+        <div><h4 class="text-sm font-semibold">A responsive form, ready to try</h4><p class="mt-2 text-xs text-content-muted">Submit empty values to see validation. Reset clears the demo model and errors.</p></div>
         <div class="grid grid-cols-[auto_5rem] items-center gap-3 text-xs text-content-muted"><label for="form-columns">Form columns</label><SSelect id="form-columns" :model-value="String(columns)" :options="[1, 2, 3, 4].map(value => ({ value: String(value), label: String(value) }))" @update:model-value="columns = Number($event) as SFormColumns" /></div>
       </div>
       <SForm :columns="columns" novalidate aria-label="Profile demo" @submit.prevent="submit" @reset.prevent="reset">
@@ -90,12 +96,12 @@ function reset() {
 
     <div class="mt-5 grid gap-5 xl:grid-cols-2">
       <div class="min-w-0 rounded bg-surface p-5 ring-1 ring-inset ring-line sm:p-7">
-        <h3 class="mb-6 text-sm font-semibold">Sizes and icon slots</h3>
+        <h4 class="mb-6 text-sm font-semibold">Sizes and icon slots</h4>
         <div class="space-y-5"><SField v-for="item in sizes" :key="item" v-slot="{ control }" :label="`${item.toUpperCase()} search input`"><SInput v-bind="control" :size="item" type="search" placeholder="Search your workspace"><template #leading><Search /></template><template #trailing><Check /></template></SInput></SField></div>
         <p class="mt-4 text-xs leading-relaxed text-content-muted">Borderless controls use inset rings and a small shadow. The neutral background and focus accent follow your selections.</p>
       </div>
       <div class="min-w-0 rounded bg-surface p-5 ring-1 ring-inset ring-line sm:p-7">
-        <h3 class="mb-6 text-sm font-semibold">Validation and native states</h3>
+        <h4 class="mb-6 text-sm font-semibold">Validation and native states</h4>
         <div class="space-y-5">
           <SField v-slot="{ control }" label="Validated input" description="This value has been checked. Invalid takes priority if both states are set."><SInput v-bind="control" model-value="Looks good" valid><template #trailing><Check class="text-success-content" /></template></SInput></SField>
           <SField v-slot="{ control }" label="Disabled input" description="Skipped by keyboard navigation and form submission."><SInput v-bind="control" model-value="Unavailable" disabled /></SField>
@@ -105,5 +111,6 @@ function reset() {
       </div>
     </div>
     <MoreFormControls />
+    <NativeInputShowcase />
   </section>
 </template>

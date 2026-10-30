@@ -26,7 +26,7 @@ const example = computed(() => `<SField v-slot="{ control }" label="Notes"${inva
 <template>
   <div class="relative mt-5 overflow-hidden rounded bg-surface after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:ring-1 after:ring-inset after:ring-line">
     <div class="p-5 sm:p-7">
-      <h3 class="text-sm font-semibold">Textarea and select, the same treatment</h3>
+      <h4 class="text-sm font-semibold">Textarea and select, the same treatment</h4>
       <p class="mt-2 max-w-2xl text-xs leading-relaxed text-content-muted">The same fills, sizes, shadow, and rings as SInput. Textareas use roomier corners for multiple lines; selects keep the native menu and keyboard behavior.</p>
       <fieldset class="mt-6">
         <legend class="text-sm font-medium">Explore the controls</legend>
@@ -52,7 +52,7 @@ const example = computed(() => `<SField v-slot="{ control }" label="Notes"${inva
   </div>
 
   <div class="mt-5 rounded bg-surface p-5 ring-1 ring-inset ring-line sm:p-7">
-    <h3 class="mb-6 text-sm font-semibold">Sizes side by side</h3>
+    <h4 class="mb-6 text-sm font-semibold">Sizes side by side</h4>
     <div class="grid min-w-0 gap-6 xl:grid-cols-3">
       <div v-for="item in sizes" :key="item" class="min-w-0 space-y-5">
         <SField v-slot="{ control }" :label="`${item.toUpperCase()} textarea`"><STextarea v-bind="control" :size="item" :rows="2" placeholder="Write a few lines…" /></SField>

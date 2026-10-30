@@ -16,6 +16,7 @@
     --sirius-radius-lg: 0.75rem;
     --sirius-radius-xl: 1rem;
     --sirius-radius-2xl: 1.5rem;
+    --sirius-radius-4xl: 2rem;
     --sirius-radius-full: 9999px;
     --sirius-radius: var(--sirius-radius-2xl);
     --sirius-radius-control: var(--sirius-radius-full);
@@ -192,8 +193,14 @@
 
   :where(:root, [data-theme='light']) {
     color-scheme: light;
+    --sirius-skeleton: var(--sirius-neutral-200);
+    --sirius-dialog: #fff;
+    --sirius-dialog-line: var(--sirius-neutral-200);
+    --sirius-overlay: color-mix(in oklab, var(--sirius-neutral-500) 75%, transparent);
     --sirius-canvas: #fff;
     --sirius-control: #fff;
+    --sirius-switch-track: var(--sirius-neutral-300);
+    --sirius-range-track: var(--sirius-neutral-300);
     --sirius-control-content: var(--sirius-neutral-950);
     --sirius-control-line: var(--sirius-neutral-300);
     --sirius-control-placeholder: var(--sirius-neutral-400);
@@ -235,8 +242,14 @@
 
   :where([data-theme='dark']) {
     color-scheme: dark;
+    --sirius-skeleton: color-mix(in oklab, var(--sirius-neutral-400) 35%, transparent);
+    --sirius-dialog: var(--sirius-neutral-950);
+    --sirius-dialog-line: var(--sirius-neutral-800);
+    --sirius-overlay: color-mix(in oklab, var(--sirius-neutral-700) 75%, transparent);
     --sirius-canvas: var(--sirius-neutral-700);
     --sirius-control: color-mix(in oklab, var(--sirius-neutral-600) 80%, transparent);
+    --sirius-switch-track: var(--sirius-control);
+    --sirius-range-track: var(--sirius-neutral-600);
     --sirius-control-content: #fff;
     --sirius-control-line: var(--sirius-neutral-300);
     --sirius-control-placeholder: var(--sirius-neutral-400);

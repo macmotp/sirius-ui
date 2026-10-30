@@ -4,3 +4,138 @@
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
 @import '@sirius-ui/theme/tailwind.css';
 @source './components';
+
+
+@layer components {
+  .sirius-dialog[data-state='open'] {
+    animation: sirius-dialog-in 180ms ease-out both;
+  }
+  .sirius-dialog[data-state='closed'][open] {
+    animation: sirius-dialog-out 140ms ease-in both;
+    pointer-events: none;
+  }
+  .sirius-dialog[data-state='open']::backdrop {
+    animation: sirius-dialog-fade-in 180ms ease-out both;
+  }
+  .sirius-dialog[data-state='closed']::backdrop {
+    animation: sirius-dialog-fade-out 140ms ease-in both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sirius-dialog,
+    .sirius-dialog::backdrop {
+      animation-duration: 1ms !important;
+    }
+  }
+}
+
+@keyframes sirius-dialog-in {
+  from { opacity: 0; transform: translateY(0.5rem) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes sirius-dialog-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(0.5rem) scale(0.98); }
+}
+@keyframes sirius-dialog-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes sirius-dialog-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+
+@layer components {
+  .sirius-range {
+    --sirius-range-direction: to right;
+  }
+  .sirius-range:dir(rtl) { --sirius-range-direction: to left; }
+  .sirius-range::-webkit-slider-runnable-track {
+    height: 0.375rem;
+    border-radius: var(--sirius-radius-full);
+    background: linear-gradient(var(--sirius-range-direction), var(--sirius-primary) var(--sirius-range-progress), var(--sirius-range-track) var(--sirius-range-progress));
+  }
+  .sirius-range::-moz-range-track {
+    height: 0.375rem;
+    border-radius: var(--sirius-radius-full);
+    background: linear-gradient(var(--sirius-range-direction), var(--sirius-primary) var(--sirius-range-progress), var(--sirius-range-track) var(--sirius-range-progress));
+  }
+  .sirius-range::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--sirius-range-thumb);
+    height: var(--sirius-range-thumb);
+    margin-top: calc((0.375rem - var(--sirius-range-thumb)) / 2);
+    border: 1px solid var(--sirius-range-state, var(--sirius-control-line));
+    border-radius: var(--sirius-radius-full);
+    background: #fff;
+    box-shadow: var(--sirius-shadow-sm);
+  }
+  .sirius-range::-moz-range-thumb {
+    width: var(--sirius-range-thumb);
+    height: var(--sirius-range-thumb);
+    box-sizing: content-box;
+    border: 1px solid var(--sirius-range-state, var(--sirius-control-line));
+    border-radius: var(--sirius-radius-full);
+    background: #fff;
+    box-shadow: var(--sirius-shadow-sm);
+  }
+}
+
+@layer components {
+  .sirius-range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px var(--sirius-range-state, var(--sirius-control-focus)), var(--sirius-shadow-sm);
+  }
+  .sirius-range:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 3px var(--sirius-range-state, var(--sirius-control-focus)), var(--sirius-shadow-sm);
+  }
+}
+
+@layer components {
+  .sirius-drawer { --sirius-drawer-offset: 100%; }
+  .sirius-drawer[data-side='left'] { --sirius-drawer-offset: -100%; }
+  .sirius-drawer[data-state='open'] { animation-name: sirius-drawer-in; }
+  .sirius-drawer[data-state='closed'][open] { animation-name: sirius-drawer-out; }
+}
+@keyframes sirius-drawer-in {
+  from { transform: translateX(var(--sirius-drawer-offset)); }
+  to { transform: translateX(0); }
+}
+@keyframes sirius-drawer-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--sirius-drawer-offset)); }
+}
+
+@layer components {
+  .sirius-toast { animation: sirius-toast-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .sirius-toast { animation: none; }
+  }
+}
+@keyframes sirius-toast-in {
+  from { opacity: 0; transform: translateY(1rem) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@layer components {
+  .sirius-progress-indeterminate {
+    width: 40%;
+    animation: sirius-progress-travel 1400ms ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sirius-progress-indeterminate { animation: none; margin-inline: auto; }
+  }
+}
+@keyframes sirius-progress-travel {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
+}
+
+@keyframes sirius-popover-in {
+  from { opacity: 0; transform: translateY(0.25rem) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@layer components {
+  .sirius-popover { animation: sirius-popover-in 160ms ease-out; }
+  @media (prefers-reduced-motion: reduce) { .sirius-popover { animation: none; } }
+}

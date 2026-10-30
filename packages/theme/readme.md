@@ -94,10 +94,15 @@ Use `text-on-*` on filled backgrounds and `text-*-content` on soft backgrounds. 
 
 | Token suffix | Tailwind examples | Purpose |
 | --- | --- | --- |
+| `dialog`, `dialog-line` | `bg-dialog`, `border-dialog-line` | Dialog: white with neutral 200 border in light mode; neutral 950 with neutral 800 border in dark mode |
+| `overlay` | `backdrop:bg-overlay` | Modal backdrop: selected neutral 500/75 in light mode, 700/75 in dark mode |
 | `canvas` | `bg-canvas` | White in light mode; selected neutral 700 in dark mode |
+| `skeleton` | `bg-skeleton` | Loading placeholders: neutral 200 in light mode, neutral 400/35 in dark mode |
 | `surface`, `surface-muted`, `surface-hover` | `bg-surface`, `hover:bg-surface-hover` | Cards: selected neutral 200 at 10% in light mode, 600 at 80% in dark mode; additional muted/hover surfaces |
 | `content`, `content-muted`, `content-subtle` | `text-content`, `text-content-muted` | Text hierarchy |
 | `line`, `line-strong` | `border-line`, `ring-line`, `border-line-strong` | Decorative dividers and identifiable control outlines |
+| `range-track` | `bg-range-track` | Remaining slider track: neutral 300 in light mode, neutral 600 in dark mode |
+| `switch-track` | `bg-switch-track` | Off switch track: neutral 300 in light mode, neutral 600/80 in dark mode |
 | `control`, `control-content` | `bg-control`, `text-control-content` | Input fill and foreground; white in light mode, neutral 600/80 with white text in dark mode |
 | `control-line`, `control-placeholder`, `control-focus` | `ring-control-line`, `placeholder:text-control-placeholder`, `focus:ring-control-focus` | Input ring: neutral 300; placeholder: neutral 400; focus: accent 500 in light mode, 400 in dark mode |
 | `control-valid`, `control-invalid` | `ring-control-valid`, `ring-control-invalid` | Fixed green-500 and red-500 validation rings in both appearances, including focus |
@@ -121,6 +126,7 @@ Use `line-strong` for controls that need a border. Inputs instead use `border-0 
 | `--sirius-radius-lg` | `rounded-lg` | 0.75rem |
 | `--sirius-radius-xl` | `rounded-xl` | 1rem |
 | `--sirius-radius-2xl` | `rounded-2xl` | 1.5rem, general default |
+| `--sirius-radius-4xl` | `rounded-4xl`, corner variants | 2rem, selected bento card corners |
 | `--sirius-radius-full` | `rounded-full` | 9999px, pill rounding |
 | `--sirius-radius-control` | `rounded-control` | Aliases full; buttons, inputs, and selects |
 

@@ -59,7 +59,22 @@ npm run dev
 
 Open the local URL Vite prints in the terminal, normally [http://127.0.0.1:5173](http://127.0.0.1:5173). Stop the server with Ctrl+C.
 
-The playground includes semantic color swatches, status colors, typography, spacing, radii, shadows, native field examples, and dedicated button and form showcases. Use the controls at the top to choose an accent (teal, emerald, cyan, indigo, pink, or orange), a background (mist, slate, or stone), and light, dark, or system appearance. Your choices are saved in your browser. The interaction form is a local demo; it does not send data anywhere.
+The playground groups related examples together. The menu shows only these eight groups:
+
+| Group | Examples |
+| --- | --- |
+| Foundations | Colors, typography, geometry, and native theme interactions |
+| Actions | Buttons, links, and dropdown menus |
+| Forms | Form layouts, fields, native pickers, choices, tags, comboboxes, and file uploads |
+| Layout | Grids, cards, dividers, and accordions |
+| Navigation | Breadcrumbs and tabs |
+| Overlays | Dialogs, drawers, tooltips, and popovers |
+| Data display | Badges, avatars, tables, and server-driven pagination |
+| Feedback | Alerts, toasts, progress, skeletons, and empty states |
+
+Individual examples retain deep links such as `#buttons` and `#file-uploads`. The `#forms` link opens the whole Forms group; its first example is `#form-controls`. Use the controls at the top to choose an accent (teal, emerald, cyan, indigo, pink, or orange), a background (mist, slate, or stone), and light, dark, or system appearance. Your choices are saved in your browser. The interaction form is a local demo; it does not send data anywhere.
+
+The Forms showcase also includes native date/time, number, currency-style amount, color, and range input examples.
 
 All playground select controls use the shared `SSelect`, including theme preferences and showcase configurators.
 
@@ -125,10 +140,12 @@ Dashboard layouts and ecommerce templates can compose these primitives. Project-
 
 ## Development status
 
-The workspace, shared theme, playground, and Vue components (`SButton`, `SForm`, `SField`, `SInput`, `STextarea`, `SSelect`) are implemented. Buttons in the interaction form use the shared component; form fields remain native theme examples. See [the Vue package guide](packages/vue/readme.md) for imports, styling setup, and component APIs.
+The workspace, shared theme, playground, and Vue components (`SButton`, `SForm`, `SField`, `SInput`, `STextarea`, `SSelect`, `SCheckbox`, `SRadio`, `SSwitch`, `SGrid`, `SCard`, `SBadge`, `SAlert`, `SDialog`, `STagsInput`, `SCombobox`, `SDropdown`, `STabs`, `STooltip`, `SAvatar`, `SSkeleton`, `SDivider`, `SEmptyState`, `SDrawer`, `SAccordion`, `SBreadcrumbs`, `STable`, `SPagination`, `SToast`, `SToaster`, `SProgress`) are implemented. Buttons in the interaction form use the shared component; form fields remain native theme examples. See [the Vue package guide](packages/vue/readme.md) for imports, styling setup, and component APIs.
 
 Next steps:
 
-1. Extend forms with checkbox, radio, and switch controls based on application needs.
+1. Add content and feedback primitives, as application needs emerge.
 2. Consume the packages in the Nannaò dashboard and validate the APIs against real screens.
 3. Add component documentation, targeted tests, and release tooling as the library matures.
+
+Under Overlays, the Tooltips section also demonstrates interactive `SPopover` content. Under Forms, the File uploads section demonstrates native file selection, dropping, removal, limits and preparing application-owned multipart data with `SFileUpload`; no upload request is sent.

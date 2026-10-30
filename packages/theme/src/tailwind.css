@@ -3,12 +3,18 @@
 /* Inline mappings keep utilities tied to runtime tokens in themed subtrees. */
 @theme inline {
   --color-control: var(--sirius-control);
+  --color-range-track: var(--sirius-range-track);
+  --color-switch-track: var(--sirius-switch-track);
   --color-control-content: var(--sirius-control-content);
   --color-control-line: var(--sirius-control-line);
   --color-control-placeholder: var(--sirius-control-placeholder);
   --color-control-valid: var(--sirius-control-valid);
   --color-control-invalid: var(--sirius-control-invalid);
   --color-control-focus: var(--sirius-control-focus);
+  --color-skeleton: var(--sirius-skeleton);
+  --color-dialog: var(--sirius-dialog);
+  --color-dialog-line: var(--sirius-dialog-line);
+  --color-overlay: var(--sirius-overlay);
   --color-canvas: var(--sirius-canvas);
   --color-surface: var(--sirius-surface);
   --color-surface-muted: var(--sirius-surface-muted);
@@ -56,6 +62,7 @@
   --radius: var(--sirius-radius);
   --radius-control: var(--sirius-radius-control);
   --radius-2xl: var(--sirius-radius-2xl);
+  --radius-4xl: var(--sirius-radius-4xl);
   --radius-full: var(--sirius-radius-full);
   --radius-sm: var(--sirius-radius-sm);
   --radius-md: var(--sirius-radius-md);
