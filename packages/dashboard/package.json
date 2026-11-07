@@ -1,0 +1,22 @@
+{
+  "name": "@sirius-ui/dashboard",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "files": ["dist"],
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "build": "vite build && vue-tsc --project tsconfig.build.json",
+    "typecheck": "vue-tsc --noEmit --project tsconfig.json"
+  },
+  "dependencies": {
+    "@sirius-ui/theme": "0.0.0",
+    "@sirius-ui/vue": "0.0.0"
+  },
+  "peerDependencies": { "vue": "^3.5.0" }
+}

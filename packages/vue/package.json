@@ -22,7 +22,6 @@
     "typecheck": "vue-tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
-    "@lucide/vue": "^1.63.0",
     "@sirius-ui/theme": "0.0.0"
   },
   "peerDependencies": {

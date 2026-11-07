@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useId, useTemplateRef, watch } from 'vue'
-import { X } from '@lucide/vue'
+import { X } from '../icons/internal'
 import type { SPopoverDismissReason, SPopoverPlacement, SPopoverProps, SPopoverTrigger } from './SPopover.types'
 
-const props = withDefaults(defineProps<SPopoverProps>(), { placement: 'bottom', align: 'start', disabled: false, closeLabel: 'Close popover' })
+const props = withDefaults(defineProps<SPopoverProps>(), { placement: 'bottom', align: 'start', disabled: false, block: false, closeLabel: 'Close popover' })
 defineOptions({ inheritAttrs: false })
 const open = defineModel<boolean>('open', { default: false })
 const emit = defineEmits<{ dismiss: [reason: SPopoverDismissReason] }>()
-defineSlots<{ trigger(props: { trigger: SPopoverTrigger }): unknown; default(props: { close: () => void }): unknown }>()
+defineSlots<{ trigger(props: { trigger: SPopoverTrigger }): unknown; default(props: { close: () => void }): unknown; header?(): unknown }>()
 const id = useId()
 const root = useTemplateRef<HTMLElement>('root')
 const panel = useTemplateRef<HTMLElement>('panel')
@@ -120,11 +120,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="root" class="inline-flex max-w-full align-middle" @keydown="escape">
+  <div ref="root" class="max-w-full align-middle" :class="block ? 'flex w-full' : 'inline-flex'" @keydown="escape">
     <slot name="trigger" :trigger="trigger" />
     <div v-if="open && !disabled" :id="`${id}-popover`" ref="panel" v-bind="$attrs" role="dialog" :aria-labelledby="`${id}-title`" :aria-describedby="description ? `${id}-description` : undefined" :popover="nativePopover ? 'manual' : undefined" tabindex="-1" :data-placement="side" class="sirius-popover fixed inset-auto z-50 m-0 box-border w-80 max-w-[calc(100vw_-_1rem)] max-h-[calc(100dvh_-_1rem)] overflow-y-auto rounded-2xl border border-solid border-dialog-line bg-dialog p-6 text-start font-sans text-sm text-content shadow-lg outline-none" :style="{ left: `${left}px`, top: `${top}px`, visibility: positioned ? 'visible' : 'hidden' }">
       <div class="mb-4 flex items-start justify-between gap-4">
-        <div class="min-w-0"><h3 :id="`${id}-title`" class="m-0 break-words text-sm font-semibold">{{ title }}</h3><p v-if="description" :id="`${id}-description`" class="mt-1 mb-0 text-xs leading-relaxed text-content-muted">{{ description }}</p></div>
+        <div class="min-w-0"><h3 :id="`${id}-title`" :class="$slots.header ? 'sr-only' : 'm-0 break-words text-sm font-semibold'">{{ title }}</h3><slot name="header" /><p v-if="description" :id="`${id}-description`" class="mt-1 mb-0 text-xs leading-relaxed text-content-muted">{{ description }}</p></div>
         <button type="button" :aria-label="closeLabel" class="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-content-muted hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus" @click="close()"><X class="size-4" aria-hidden="true" /></button>
       </div>
       <slot :close="() => close()" />

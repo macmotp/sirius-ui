@@ -86,3 +86,8 @@ export { default as SPopover } from './components/SPopover.vue'
 export type { SPopoverProps, SPopoverPlacement, SPopoverTrigger, SPopoverDismissReason } from './components/SPopover.types'
 export { default as SFileUpload } from './components/SFileUpload.vue'
 export type { SFileUploadProps, SFileUploadRejection, SFileUploadRejectReason } from './components/SFileUpload.types'
+
+export { default as SIcon } from './components/SIcon.vue'
+export { createSiriusIcons, provideSiriusIcons } from './icons/context'
+export type { SIconName, SIconMap } from './icons/context'
+export { createSiriusIcon } from './icons/createSiriusIcon'

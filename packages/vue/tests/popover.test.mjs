@@ -51,3 +51,11 @@ test('disabled popovers cannot be opened, including through a controlled model',
     assert.equal(find(view, node => node.props.role === 'dialog'), undefined)
   } finally { view.unmount() }
 })
+
+test('custom popover headers retain a stable accessible title and associated description', async () => {
+  const html = await renderToString(createSSRApp({ render: () => h(SPopover, { title: 'Account for Alex Morgan', description: 'Workspace owner', open: true }, { ...slots, header: () => h('div', {}, [h('strong', {}, 'Alex Morgan'), h('span', {}, 'alex@acme.example')]) }) }))
+  const titleId = html.match(/role="dialog" aria-labelledby="([^"]+)"/)[1]
+  assert.match(html, new RegExp(`<h3 id="${titleId}" class="sr-only">Account for Alex Morgan</h3>`))
+  assert.match(html, /alex@acme.example/)
+  assert.match(html, /Workspace owner/)
+})

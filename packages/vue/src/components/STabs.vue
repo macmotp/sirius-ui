@@ -76,7 +76,7 @@ function onFocusout(event: FocusEvent) {
         :disabled="item.disabled"
         :tabindex="!item.disabled && tabStop === item.value ? 0 : -1"
         class="inline-flex min-w-0 shrink-0 cursor-pointer items-center border-solid text-start font-sans font-medium leading-6 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none"
-        :class="[sizes[size], variant === 'pills' ? ['rounded-control border-0', selected === item.value ? 'bg-primary-soft text-primary-content' : 'bg-transparent text-content-muted enabled:hover:bg-surface-hover'] : ['bg-transparent', orientation === 'vertical' ? 'border-0 border-e-2' : 'border-0 border-b-2', selected === item.value ? 'border-primary text-primary-content' : 'border-transparent text-content-muted enabled:hover:bg-surface-hover']]"
+        :class="[sizes[size], variant === 'pills' ? ['rounded-control border-0', selected === item.value ? 'bg-primary-soft text-primary-content' : 'bg-transparent text-content-muted enabled:hover:bg-surface-hover'] : ['rounded-t-2xl bg-transparent enabled:hover:bg-surface-muted', orientation === 'vertical' ? 'border-0 border-e-2' : 'border-0 border-b-2', selected === item.value ? 'border-primary text-primary-content' : 'border-transparent text-content-muted']]"
         @click="select(index)"
         @focus="focused = item.value"
         @keydown="onKeydown(index, $event)"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import { Bell } from '@lucide/vue'
+import { Bell } from '../../../shared/icons'
 import { SAlert, SBadge, SButton, SCard, SCheckbox, SGrid, SInput, SSelect } from '@sirius-ui/vue'
 import type { SAlertColor, SAlertVariant } from '@sirius-ui/vue'
 

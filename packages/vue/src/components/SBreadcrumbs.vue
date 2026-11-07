@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends SBreadcrumbsItem">
-import { ChevronRight } from '@lucide/vue'
+import { ChevronRight } from '../icons/internal'
 import type { SBreadcrumbsItem, SBreadcrumbsProps } from './SBreadcrumbs.types'
 
 const { items = [], label = 'Breadcrumb', linkAs = 'a' } = defineProps<SBreadcrumbsProps<T>>()

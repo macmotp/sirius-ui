@@ -1,151 +1,187 @@
-# SiriusUI
+# @sirius-ui/dashboard
 
-A shared design system and Vue component library for building consistent interfaces across projects.
+Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, and `SDashboardPageHeader`. This private workspace is not published yet. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
 
-SiriusUI brings together reusable styles, design tokens, and UI components so that applications such as Nannaò’s dashboard and, eventually, Tobbone can share a common foundation. Each application keeps its own branding, layouts, and business logic.
+## Start here
 
-## Repository structure
+1. Import SDashboardLayout from this package, and import both compiled stylesheets once in the application entry.
+2. Supply `brand`, `navigation`, and default page slots. Use header slots for project-specific controls.
+3. Keep routes, permissions, menu data, preferences and requests in the application.
+4. Use the navigation slot's `close()` after activation, or supply `navigationKey` from the current route.
+5. Mount one shell per page. It provides the main landmark; page content should provide its h1 and avoid a nested main landmark.
 
-One repository, with two packages:
-
-```text
-sirius-ui/
-├── apps/
-│   └── playground/ # Local Vue app for exploring the theme and components
-├── packages/
-│   ├── theme/     # Design tokens, CSS variables, and shared Tailwind theme
-│   └── vue/       # Reusable Vue 3 components and composables
-├── package.json  # npm workspaces and shared development commands
-├── tsconfig.json # Shared TypeScript configuration
-└── readme.md
+```ts
+import '@sirius-ui/vue/style.css'
+import '@sirius-ui/dashboard/style.css'
 ```
 
-| Package | Purpose |
-| --- | --- |
-| `@sirius-ui/theme` | Shared colors, typography, spacing, radii, shadows, and light/dark theme definitions. |
-| `@sirius-ui/vue` | Vue 3 components built with Tailwind CSS and the shared theme, with explicit props, events, and slots. |
+Compiled styles include semantic tokens and utilities without Preflight. The consuming app does not need Tailwind to use the shell. Applications own resets, font loading and appearance selection (`data-theme`, `data-sirius-color`, `data-sirius-background`). Navigation/page slots own their styling; utility classes in your custom slot content need the application's Tailwind build or your own CSS.
 
-Both packages are local npm workspaces and are private until publishing is deliberately configured. Builds produce ES modules and TypeScript declarations for the Vue package, and a CSS entry for the theme package. Vue is a peer dependency and is excluded from the library bundle.
+```vue
+<script setup lang="ts">
+import { SDashboardLayout } from '@sirius-ui/dashboard'
 
-## Getting started
+const links = [
+  { label: 'Overview', href: '/dashboard' },
+  { label: 'Orders', href: '/orders' },
+]
+</script>
 
-Use Node.js 22.12 or newer in the Node 22 line, or Node.js 24 or newer, with npm 10 or newer and Yarn Classic 1.x. The `.nvmrc` file selects Node 22 for nvm users. Yarn manages installation using the existing `yarn.lock`; npm runs the workspace scripts.
+<template>
+  <SDashboardLayout navigation-label="Store navigation">
+    <template #brand="{ close }">
+      <a href="/dashboard" @click="close">My store</a>
+    </template>
+    <template #navigation="{ close }">
+      <ul>
+        <li v-for="item in links" :key="item.href">
+          <a :href="item.href" @click="close">{{ item.label }}</a>
+        </li>
+      </ul>
+    </template>
+    <template #header>Store workspace</template>
+    <template #headerActions><!-- Account, search, or appearance controls --></template>
+    <h1>Orders</h1>
+    <!-- Your page, RouterView, or Inertia page content -->
+  </SDashboardLayout>
+</template>
+```
 
-Run these commands from the repository root:
+For Vue Router, render RouterLink in your navigation and RouterView in the default slot; pass `:navigation-key="route.fullPath"` to close mobile navigation after successful route changes. For Inertia, render its Link in the navigation and the page's content in the default slot; pass the current page URL as navigationKey. Neither integration requires an adapter inside the package. If you call close() immediately, it closes on activation; if you want to keep the drawer open until navigation succeeds, use navigationKey instead. The library does not intercept anchor clicks or infer which application actions should close it.
+
+## Contract
+
+| API | Default | Meaning |
+| --- | --- | --- |
+| `navigationLabel` | `Main navigation` | Names the desktop/mobile nav and the mobile dialog |
+| `openNavigationLabel` | `Open navigation` | Accessible menu-trigger label |
+| `closeNavigationLabel` | `Close navigation` | Accessible drawer-close label |
+| `skipLinkLabel` | `Skip to content` | Visible-on-focus skip link |
+| `navigationKey` | Unset | Route identifier; a change closes open mobile navigation |
+| `#brand` | Required | Project branding; `{ mobile, close }` |
+| `#navigation` | Required | Project links and groups; `{ mobile, close }` |
+| `#sidebarFooter` | Optional | Account/workspace information; `{ mobile, close }` |
+| `#header` | Optional | Header context such as breadcrumbs |
+| `#headerActions` | Optional | Search, appearance or account controls |
+| Default slot | Required | Application page content |
+
+There is no model or global store. The shell owns only mobile menu visibility. `close()` is a no-op when mobile navigation is closed. Slots can contain native links, Vue Router links or Inertia links. Applications own active states (`aria-current="page"`), permission filtering and user actions. Fallthrough attributes, including class/style, apply to the root.
+
+Brand, navigation and sidebarFooter slots render in a desktop region and, while open/animating, the mobile drawer. The desktop region is hidden from layout and accessibility on mobile. Use the scoped `mobile` value to distinguish explicit HTML IDs, or let child components generate unique IDs with useId. Do not keep independent business state inside each navigation copy; keep shared state in the application.
+
+## Focus, breakpoints and dimensions
+
+- Below 64rem, the labelled menu button opens SDrawer on the left. It inherits the dialog's overlay, animation, focus containment, Escape and backdrop dismissal.
+- Escape and ordinary close-button dismissal retain the drawer's native opener focus restoration.
+- Slot close(), route-key changes and crossing into desktop close the drawer, then focus the main content after its exit animation. This avoids restoring focus to a mobile trigger hidden at desktop widths.
+- At desktop widths, the sidebar is sticky and its navigation region scrolls independently when links are long. Page content uses document scrolling; the header stays sticky.
+- The skip-link target is unique per instance. The main region is programmatically focusable.
+- Default sidebar width is 17rem. Override `--sirius-dashboard-sidebar-width` on the layout root. Content has a maximum width of 80rem.
+- The 64rem breakpoint is part of the current layout contract. Keep Tailwind's lg breakpoint unchanged when building this source; an alternative breakpoint requires updating both CSS and the media query.
+- The first version does not include desktop collapse, alternate shell variants, routing, authorization, persistence or dashboard widgets. Navigation groups can be supplied through SDashboardNav.
+
+## Demo and validation
 
 ```sh
-yarn install --frozen-lockfile
+npm run dev:dashboard
 npm run check
 ```
 
-| Command | Purpose |
-| --- | --- |
-| `npm run build` | Build the theme, the Vue library with declarations, and the playground. |
-| `npm run dev` | Open the playground development server (normally `http://127.0.0.1:5173`). |
-| `npm run preview` | Serve the built playground locally after running `npm run build`. |
-| `npm run typecheck` | Check Vue components, TypeScript source, and Vite configurations across workspaces. |
-| `npm test` | Build both libraries and run theme integration and component behavior tests. |
-| `npm run check` | Run type checking, all workspace builds, and theme/component tests. |
+The demo is a separate app under `apps/dashboard`, normally http://127.0.0.1:5180. It displays one fictional business, Acme, using the Sirius logo, with local hash navigation and a temporary Settings page for neutral-palette selection and dark appearance. Appearance models live in the app and survive page navigation. This demonstrates composition; none of its sample pages, names, data or preferences belong to the shared package. The primitive playground remains separate.
 
-Tailwind CSS 4 and its Vite plugin are configured for the Vue library and playground. The theme provides CSS tokens, light/dark modes, and an optional Tailwind mapping.
+Package builds emit ESM, declarations and compiled CSS. Vue and Sirius primitives stay external. The root check builds libraries before consumer type checks, then builds both apps and runs package tests. Browser checks cover desktop/mobile layouts and native drawer focus behavior; renderer tests do not replace browser checks.
 
-## Preview the playground
 
-From the repository root:
+## SDashboardNav
 
-```sh
-npm run dev
+Use this inside SDashboardLayout's navigation slot. It renders grouped lists of ordinary links; the layout already supplies the named nav landmark. When used standalone, wrap it in a labelled `<nav>`. It does not implement an ARIA menu or custom arrow-key navigation: native links retain Tab/Enter, context menus, and modified-click behavior.
+
+```vue
+<script setup lang="ts">
+import { SDashboardNav } from '@sirius-ui/dashboard'
+import type { SDashboardNavGroup } from '@sirius-ui/dashboard'
+
+const groups: SDashboardNavGroup[] = [
+  { id: 'workspace', label: 'Workspace', items: [
+    { id: 'overview', label: 'Overview', href: '/dashboard' },
+    { id: 'orders', label: 'Orders', href: '/orders', badge: 3, badgeLabel: '3 pending orders' },
+  ] },
+]
+</script>
+
+<template>
+  <SDashboardNav :groups="groups" current="orders" />
+</template>
 ```
 
-Open the local URL Vite prints in the terminal, normally [http://127.0.0.1:5173](http://127.0.0.1:5173). Stop the server with Ctrl+C.
-
-The playground groups related examples together. The menu shows only these eight groups:
-
-| Group | Examples |
+| Contract | Behavior |
 | --- | --- |
-| Foundations | Colors, typography, geometry, and native theme interactions |
-| Actions | Buttons, links, and dropdown menus |
-| Forms | Form layouts, fields, native pickers, choices, tags, comboboxes, and file uploads |
-| Layout | Grids, cards, dividers, and accordions |
-| Navigation | Breadcrumbs and tabs |
-| Overlays | Dialogs, drawers, tooltips, and popovers |
-| Data display | Badges, avatars, tables, and server-driven pagination |
-| Feedback | Alerts, toasts, progress, skeletons, and empty states |
+| `groups` | Required readonly array of `{ id, label?, items }`; empty groups are omitted |
+| Item | `{ id, label, href, icon?, badge?, badgeLabel?, disabled?, target?, rel?, linkProps? }` |
+| `current` | App-supplied item ID; enabled matching link gets aria-current=page |
+| `linkAs` | Native `a` by default; accepts a Vue link component or adapter |
+| `select(item, event)` | Enabled-link click notification with the original MouseEvent; no default navigation cancellation |
+| `#badge="{ item, active }"` | Optional replacement for each trailing badge |
 
-Individual examples retain deep links such as `#buttons` and `#file-uploads`. The `#forms` link opens the whole Forms group; its first example is `#form-controls`. Use the controls at the top to choose an accent (teal, emerald, cyan, indigo, pink, or orange), a background (mist, slate, or stone), and light, dark, or system appearance. Your choices are saved in your browser. The interaction form is a local demo; it does not send data anywhere.
+Group IDs must be unique within the component; item IDs must be unique across its groups. Current selection does not update internally, and URLs are not matched or guessed. Filter links for permissions before passing them in; this component does not enforce authorization. Labels are plain escaped text. Icons are decorative. Use badgeLabel for context, such as `3 unread updates`; zero badges are retained. Keep custom badge slots noninteractive, since they render inside the link.
 
-The Forms showcase also includes native date/time, number, currency-style amount, color, and range input examples.
+Disabled entries render inert spans with link/disabled semantics. They receive no href, target, rel or linkProps, do not mount custom link components, and never emit select. An item that is both current and disabled is shown as disabled without aria-current.
 
-All playground select controls use the shared `SSelect`, including theme preferences and showcase configurators.
+For Inertia, supply its Link as linkAs. For Vue Router, supply RouterLink and put its `to` value in each item's linkProps, or use an application adapter that maps href to to. Custom link components must forward presentation/ARIA attributes and expose click events on the actual anchor. Reserved link attributes (href, target, rel and current state) are supplied by the item contract; use linkProps for additional adapter props and attributes.
 
-The playground resolves the theme and Vue packages directly from their source files. Edits update live without rebuilding either library. Palette definitions belong to the shared theme package; preference controls, persistence, and demo state belong to the playground. The Buttons section includes a live configurator, all color/variant combinations, sizes, icon slots, loading and disabled states, and responsive examples, including native downloads and custom navigation links.
+The app owns activation policy. Prefer SDashboardLayout's navigationKey to close the mobile drawer after a successful router transition. If closing on select instead, inspect the original event: do not close/intercept modified clicks or target=_blank navigation. The Acme demo uses a small local hash-navigation handler that preserves those browser behaviors. Custom adapters may preventDefault themselves, so route-key synchronization is preferable to assuming every prevented event means navigation was cancelled.
 
-The default logo is [sirius_ui.svg](sirius_ui.svg). The playground displays it as a CSS mask with `bg-primary`, so its color follows the accent selection without modifying the original SVG. The adjacent wordmark provides the accessible link name; the logo itself is decorative.
+Group labels get unique IDs per component instance, including simultaneous desktop/mobile copies. This component owns no global listeners, network requests or preference storage. Class/style and other fallthrough attributes apply to the outer div.
 
-To inspect a production build:
+## SDashboardPageHeader
 
-```sh
-npm run build
-npm run preview
+Use once at the beginning of a page's main content. This renders the page h1; do not add a second h1 for the same page. External spacing is application-owned, for example class="mb-8".
+
+```vue
+<SDashboardPageHeader
+  title="Orders"
+  description="Review customer orders and prepare dispatches."
+  :breadcrumbs="[
+    { value: 'home', label: 'Acme', href: '/dashboard' },
+    { value: 'orders', label: 'Orders' },
+  ]"
+>
+  <template #actions><SButton>Create order</SButton></template>
+</SDashboardPageHeader>
 ```
 
-Open the URL printed by the preview server, normally [http://127.0.0.1:4173](http://127.0.0.1:4173).
+| Contract | Behavior |
+| --- | --- |
+| `title` | Required nonempty page title; default text inside the h1 |
+| `description` | Optional supporting text |
+| `eyebrow` | Optional short label above the title |
+| `breadcrumbs` | Optional readonly SBreadcrumbsItem array; same links, icons and linkProps as SBreadcrumbs |
+| `breadcrumbLabel` | Accessible breadcrumb nav label, defaults to Breadcrumb |
+| `breadcrumbLinkAs` | Native a or consuming-app link adapter |
+| `#title` | Inline content inside the existing h1; supply meaningful title text |
+| `#description` | Custom supporting content, including links |
+| `#breadcrumbs` | Replace the default SBreadcrumbs rendering |
+| `#actions` | Application controls or status badges in a wrapping action area |
 
-## Shared theme
+Unused description, action and breadcrumb wrappers are omitted. Long titles and actions wrap at narrow widths. Actions use ordinary controls; this is not an ARIA toolbar. All routing, loading, permissions and action handlers remain application-owned. Class/style and other fallthrough attributes apply to the outer header. Do not put an additional heading or interactive control inside the title slot.
 
-Choose one accent color and one neutral background independently. Accents are teal, emerald, cyan, indigo, pink, and orange; backgrounds are mist, slate, and stone. Primary uses the selected accent at shade 400. Success (green), warning (yellow), and danger (red) remain fixed. The defaults are teal and mist. InterVariable is the default sans font. Light page and navigation backgrounds are white; cards use translucent neutral fills and subtle inset rings. General corners default to 2xl; buttons and inputs use full rounding.
+## Next sample pages
 
-- Import `@sirius-ui/theme` for plain CSS variables.
-- Import `@sirius-ui/theme/tailwind.css` after Tailwind for semantic utilities such as `bg-surface`, `text-content`, and `bg-primary`.
-- Set `data-sirius-color="teal"` to choose an accent and `data-sirius-background="mist"` to choose a neutral background.
-- Set `data-theme="light"` or `data-theme="dark"` on the document element to choose an appearance. Light is the default; applications own persistence and system preference detection.
+The Acme roadmap is: a complete settings form, a server-driven table with filters, then chat, timeline and chart examples. These are planned, not implemented by the navigation/header components. Build examples from existing primitives first, then extract shared groups when their responsibilities and data contracts are clear. The existing Activity and Settings views remain small composition demonstrations. Keep sample business data in apps/dashboard, and keep request/data ownership explicit in future examples.
 
-See [the theme guide](packages/theme/readme.md) for setup, available tokens, and branding examples.
 
-Dependencies are managed from the repository root with Yarn Classic. Keep the root `yarn.lock` tracked and use `yarn install --frozen-lockfile` for reproducible installs. Do not add separate package lockfiles or a second root lockfile.
+## Acme account and header examples
 
-## Contributing and documentation
+The demo sidebar footer uses DemoAccountMenu, composing SPopover's header slot with the shared fictional user record (avatar, name, email, role and job title). View profile navigates to a simple profile view; Account settings opens Settings; Sign out only shows example feedback. On mobile, account navigation also closes the surrounding navigation drawer through the shell's scoped close callback.
 
-- [Contributor guide](CONTRIBUTING.md): setup, workflow, verification, and pull requests.
-- [Architecture](docs/architecture.md): package boundaries, styling decisions, and current status.
-- [Theme guide](packages/theme/readme.md): tokens, appearance, and application overrides.
-- [Vue package guide](packages/vue/readme.md): component conventions and implementation status.
-- [Agent guidelines](AGENTS.md): repository instructions for coding assistants.
+The top-right controls are Search, Quick actions and Notifications. DemoSearch owns its dialog and query, filters a local catalog immediately through a computed value, announces result counts/no-match states and navigates selected results to their demo destinations. Results are ordinary links reached with Tab/Enter; this is not a combobox or a backend search implementation. DemoActions composes an interactive popover with example actions whose feedback is displayed by an app-scoped SToaster. No export, invitation, or business mutation is sent. DemoNotifications owns the right-side SDrawer and immutable read/unread updates; its trigger and status reflect the current unread count. Notification links navigate to Activity.
 
-These documents are shared project files and belong in Git. Generated artifacts, dependencies, local environment files, and test reports are ignored.
+DemoAppearance is a controlled settings view. App.vue owns the palette/dark models and updates the document theme; mounting/unmounting Settings must not reset them. Preferences reset on a full demo reload. These examples intentionally remain app-local until consuming-project requirements justify public grouped-component contracts. No router, auth, search endpoint, or notification service has been introduced into packages/dashboard.
 
-## License
+## Configurable icons
 
-SiriusUI is licensed under the [MIT License](LICENSE), copyright 2026 Marco Gava. Commercial use, modification, and redistribution are permitted. Copies or substantial portions of the software must retain the copyright and license notice. Visible credit in an application's interface is not required.
+The shared packages have no icon-library dependency. Use `createSiriusIcons` for app-wide mappings or `provideSiriusIcons` for reactive subtree overrides, with dependency-free control glyphs as fallbacks. Both playgrounds demonstrate Lucide and Heroicons; choose Icon set in the primitive header or dashboard Settings. See [icon configuration](docs/icons.md) for the complete semantic map, adapter examples, accessibility contract and installer guidance.
 
-## Design principles
+## Optional charts
 
-- **Build from real use cases.** Start with components needed by the first dashboard and extend them as other projects adopt the library.
-- **Keep components reusable.** Application routes, API requests, authentication, and domain logic belong in consuming applications.
-- **Make styling explicit.** Shared components provide their own styling without automatically restyling every native HTML element.
-- **Support branding through tokens.** Applications can customize the theme while keeping a consistent component API.
-- **Include accessibility from the start.** Components should provide semantic markup, keyboard interaction, visible focus states, and appropriate labels.
-- **Support light and dark modes.** Theme values should cover both appearances.
-
-## Initial scope
-
-The first components will focus on common dashboard needs:
-
-- Buttons, links, badges, and alerts.
-- Inputs, selects, checkboxes, and form field wrappers.
-- Cards, dialogs, dropdowns, and tabs.
-- Tables, pagination, and empty states.
-
-Dashboard layouts and ecommerce templates can compose these primitives. Project-specific page templates will remain in their respective applications initially.
-
-## Development status
-
-The workspace, shared theme, playground, and Vue components (`SButton`, `SForm`, `SField`, `SInput`, `STextarea`, `SSelect`, `SCheckbox`, `SRadio`, `SSwitch`, `SGrid`, `SCard`, `SBadge`, `SAlert`, `SDialog`, `STagsInput`, `SCombobox`, `SDropdown`, `STabs`, `STooltip`, `SAvatar`, `SSkeleton`, `SDivider`, `SEmptyState`, `SDrawer`, `SAccordion`, `SBreadcrumbs`, `STable`, `SPagination`, `SToast`, `SToaster`, `SProgress`) are implemented. Buttons in the interaction form use the shared component; form fields remain native theme examples. See [the Vue package guide](packages/vue/readme.md) for imports, styling setup, and component APIs.
-
-Next steps:
-
-1. Add content and feedback primitives, as application needs emerge.
-2. Consume the packages in the Nannaò dashboard and validate the APIs against real screens.
-3. Add component documentation, targeted tests, and release tooling as the library matures.
-
-Under Overlays, the Tooltips section also demonstrates interactive `SPopover` content. Under Forms, the File uploads section demonstrates native file selection, dropping, removal, limits and preparing application-owned multipart data with `SFileUpload`; no upload request is sent.
+The private @sirius-ui/charts workspace provides lightweight SVG SLineChart, SBarChart and SDonutChart components with categorical labels, numeric values, missing-value handling, keyboard/pointer inspection and a native data-table alternative. Bar charts support horizontal/vertical layouts, grouped series and per-series colors; donut charts show nonnegative composition with slice shares and an optional center total. It depends only on the Sirius theme and Vue. Applications opt in separately; the core primitives and dashboard shell do not pull charts into their bundles. See [the charts agent guide](packages/charts/readme.md) for imports, props, data semantics, states and accessibility responsibilities. The dashboard demo exposes Charts and includes a chart card on Overview.

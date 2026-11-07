@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { House } from '@lucide/vue'
+import { House } from '../../../shared/icons'
 import { SBreadcrumbs, SBadge, SCard } from '@sirius-ui/vue'
 import DemoLink from './DemoLink.vue'
 

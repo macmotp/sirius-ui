@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Building2 } from '@lucide/vue'
+import { Building2 } from '../../../shared/icons'
 import { SAvatar, SBadge, SButton, SCard, SGrid } from '@sirius-ui/vue'
 
 // A local vector illustration keeps this demo self-contained.

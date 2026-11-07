@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, reactive, ref, watch } from 'vue'
-import { Check, Mail, Search, User } from '@lucide/vue'
+import { Check, Mail, Search, User } from '../../../shared/icons'
 import { SButton, SField, SForm, SInput, SSelect, STextarea } from '@sirius-ui/vue'
 import MoreFormControls from './MoreFormControls.vue'
 import NativeInputShowcase from './NativeInputShowcase.vue'

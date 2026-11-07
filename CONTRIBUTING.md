@@ -22,7 +22,10 @@ Open the URL printed by Vite, normally `http://127.0.0.1:5173`. Package source c
 | `packages/theme/src/index.css` | Plain CSS palettes, runtime tokens, and light/dark values |
 | `packages/theme/src/tailwind.css` | Tailwind utility mappings and the document dark variant |
 | `packages/vue/src` | Shared Vue components and composables |
-| `apps/playground/src` | Interactive demonstrations and app-specific overrides |
+| `apps/playground/src` | Interactive primitive demonstrations and app-specific overrides |
+| `packages/charts/src` | Optional SVG chart components, layout math and isolated CSS |
+| `packages/dashboard/src` | Composed application shells built on the primitives |
+| `apps/dashboard/src` | Dashboard demonstrations with app-owned navigation and data |
 | `docs/architecture.md` | Package boundaries and architectural decisions |
 
 Read [AGENTS.md](AGENTS.md) for implementation conventions and [the theme guide](packages/theme/readme.md) for the token API.
@@ -31,7 +34,7 @@ Read [AGENTS.md](AGENTS.md) for implementation conventions and [the theme guide]
 
 1. Describe the concrete interface or behavior the change supports. Discuss broad API or architecture changes in an issue before investing in a large implementation.
 2. Implement the smallest reusable API that supports the use case. Keep application business logic outside the packages.
-3. Update the playground to demonstrate visible behavior, variants, and relevant states.
+3. Update the primitive playground or separate dashboard demo to demonstrate visible behavior, variants, and relevant states.
 4. Update the relevant package documentation and add focused tests where they protect behavior or integration.
 5. Run `npm run check` and review the diff for generated or unrelated files.
 
@@ -43,7 +46,7 @@ For dependency changes, use Yarn from the root and include the resulting `yarn.l
 npm run check
 ```
 
-This runs type checks, builds both packages and the playground, and tests CSS exports, Tailwind integration, and built-component behavior. More targeted commands are listed in [the README](readme.md#getting-started).
+This runs type checks, builds all four libraries and both demo apps, and tests CSS exports, Tailwind integration, and built-component behavior. More targeted commands are listed in [the README](readme.md#getting-started).
 
 For visible changes, also check the playground at narrow and wide widths, in light and dark modes, and with the accent and background palette options. Verify that status colors remain fixed while changing accents and backgrounds. Use the keyboard to reach and operate interactive controls. Check long content, disabled states, labels, focus indicators, and relevant status announcements.
 

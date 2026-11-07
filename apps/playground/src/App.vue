@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import DemoIconSelect from '../../shared/DemoIconSelect.vue'
+import { provideDemoIcons } from '../../shared/iconSets'
 import { onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import { SSelect } from '@sirius-ui/vue'
 import { showcaseGroups } from './showcaseGroups'
+
+provideDemoIcons()
 
 type Appearance = 'light' | 'dark' | 'system'
 const accentColors = ['teal', 'emerald', 'cyan', 'indigo', 'pink', 'orange'] as const
@@ -59,6 +63,7 @@ watchEffect(() => {
         <div class="flex flex-wrap items-center justify-between gap-6">
           <p class="text-xs font-semibold tracking-[0.16em] text-primary-content uppercase">Sirius UI / Playground</p>
           <div class="flex flex-wrap gap-3">
+            <DemoIconSelect class="min-w-36" />
             <div class="grid grid-cols-[auto_8rem] items-center gap-2 text-xs text-content-muted">
               <label for="playground-accent">Accent</label>
               <SSelect id="playground-accent" :model-value="accent" :options="accentColors.map(value => ({ value, label: value }))" class="capitalize" @update:model-value="accent = $event as typeof accent" />

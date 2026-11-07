@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAttrs } from 'vue'
-import { ChevronDown } from '@lucide/vue'
+import { ChevronDown } from '../icons/internal'
 import { controlAriaInvalid, controlBase, controlPadding, controlStateClasses, controlTextSizes, nativeControlAttrs } from './controlStyles'
 import type { SSelectProps } from './SSelect.types'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends SComboboxOption">
 import { computed, nextTick, shallowRef, useAttrs, useId, watch, watchEffect, useTemplateRef } from 'vue'
-import { Check, ChevronDown, X } from '@lucide/vue'
+import { Check, ChevronDown, X } from '../icons/internal'
 import { controlAriaInvalid, controlBase, controlPadding, controlStateClasses, controlTextSizes, nativeControlAttrs } from './controlStyles'
 import type { SComboboxOption, SComboboxProps } from './SCombobox.types'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import { Folder, Plus, Search } from '@lucide/vue'
+import { Folder, Plus, Search } from '../../../shared/icons'
 import { SBadge, SButton, SCard, SEmptyState, SGrid } from '@sirius-ui/vue'
 
 const projects = shallowRef<string[]>([])

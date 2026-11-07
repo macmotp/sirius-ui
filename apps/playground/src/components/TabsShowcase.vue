@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Bell, ChartColumn, FileText, Settings } from '@lucide/vue'
+import { Bell, ChartColumn, FileText, Settings } from '../../../shared/icons'
 import { SBadge, SButton, SCard, SCheckbox, SField, SInput, SSelect, STabs } from '@sirius-ui/vue'
 
 const selected = ref('overview')

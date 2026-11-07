@@ -3,7 +3,33 @@ import { createRenderer, h, markRaw, shallowRef } from 'vue'
 // Exercise the real built component through Vue's renderer without a browser DOM.
 function element(type, text = '') {
   // Native DOM nodes are not reactive proxies; give mock nodes the same identity.
-  return markRaw({ type, text, props: {}, style: {}, children: [], parent: null })
+  const node = markRaw({ type, text, props: {}, style: {}, children: [], parent: null })
+  if (type === 'input') node.setCustomValidity = message => { node.validationMessage = message }
+  // Vue's native select v-model directive uses these DOM APIs. Keep them local
+  // to select/option nodes so composition tests can exercise the actual directive.
+  if (type === 'option') Object.defineProperties(node, {
+    value: { get: () => node.props.value ?? node.text },
+    selected: { get: () => Boolean(node.props.selected), set: value => { node.props.selected = value } },
+  })
+  if (type === 'select' || type === 'textarea') {
+    node.listeners = {}
+    node.addEventListener = (event, handler) => { node.listeners[event] = handler }
+  }
+  if (type === 'select') {
+    Object.defineProperties(node, {
+      options: { get: () => node.children.filter(child => child.type === 'option') },
+      multiple: { get: () => Boolean(node.props.multiple) },
+      selectedIndex: {
+        get: () => node.options.findIndex(option => option.selected),
+        set: index => node.options.forEach((option, position) => { option.selected = index === position }),
+      },
+      value: {
+        get: () => node.options[node.selectedIndex]?.value ?? '',
+        set: value => { node.selectedIndex = node.options.findIndex(option => option.value === value) },
+      },
+    })
+  }
+  return node
 }
 
 const renderer = createRenderer({

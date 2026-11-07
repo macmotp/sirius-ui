@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ArrowUpRight, Check } from '@lucide/vue'
+import { ArrowUpRight, Check } from '../../../shared/icons'
 import { SBadge, SButton, SCard, SCheckbox, SGrid, SSelect } from '@sirius-ui/vue'
 import type { SCardCorner, SGridColumns } from '@sirius-ui/vue'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue'
-import { Check, Minus } from '@lucide/vue'
+import { Check, Minus } from '../icons/internal'
 import { controlAriaInvalid, nativeControlAttrs } from './controlStyles'
 import type { SChoiceProps } from './choice.types'
 

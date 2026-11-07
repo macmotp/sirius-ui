@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useId, watch, useTemplateRef } from 'vue'
-import { ChevronDown } from '@lucide/vue'
+import { ChevronDown } from '../icons/internal'
 import SButton from './SButton.vue'
 import type { SDropdownItem, SDropdownProps } from './SDropdown.types'
 

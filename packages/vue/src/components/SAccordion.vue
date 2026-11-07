@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends SAccordionItem">
 import { computed, useId, useTemplateRef } from 'vue'
-import { ChevronDown } from '@lucide/vue'
+import { ChevronDown } from '../icons/internal'
 import type { SAccordionItem, SAccordionProps } from './SAccordion.types'
 const props = withDefaults(defineProps<SAccordionProps<T>>(), { items: () => [], multiple: false, headingLevel: 3, keepAlive: false })
 const model = defineModel<string[]>({ default: () => [] })

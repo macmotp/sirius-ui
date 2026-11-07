@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { LoaderCircle } from '@lucide/vue'
+import { LoaderCircle } from '../icons/internal'
 import type { SButtonColor, SButtonProps, SButtonVariant } from './SButton.types'
 
 defineOptions({ inheritAttrs: false })

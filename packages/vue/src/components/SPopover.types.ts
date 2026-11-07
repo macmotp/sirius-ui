@@ -5,6 +5,8 @@ export interface SPopoverProps {
   description?: string
   placement?: SPopoverPlacement
   align?: 'start' | 'center' | 'end'
+  /** Stretch the trigger wrapper to its container width. Panel sizing stays independent. */
+  block?: boolean
   disabled?: boolean
   closeLabel?: string
 }

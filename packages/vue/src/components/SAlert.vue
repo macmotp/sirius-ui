@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from '@lucide/vue'
+import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from '../icons/internal'
 import type { SAlertColor, SAlertProps, SAlertVariant } from './SAlert.types'
 
 withDefaults(defineProps<SAlertProps>(), {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from 'vue'
-import { ChevronRight, Download, Plus } from '@lucide/vue'
+import { ChevronRight, Download, Plus } from '../../../shared/icons'
 import { SButton, SSelect } from '@sirius-ui/vue'
 import DemoLink from './DemoLink.vue'
 import type { SButtonColor, SButtonSize, SButtonVariant } from '@sirius-ui/vue'

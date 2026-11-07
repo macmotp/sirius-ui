@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
-import { UserRound } from '@lucide/vue'
+import { UserRound } from '../icons/internal'
 import type { SAvatarProps } from './SAvatar.types'
 
 const props = withDefaults(defineProps<SAvatarProps>(), { size: 'md', shape: 'circle' })

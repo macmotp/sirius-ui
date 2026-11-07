@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import { Settings2 } from '@lucide/vue'
+import { Settings2 } from '../../../shared/icons'
 import { SButton, SCard, SPopover, SSwitch } from '@sirius-ui/vue'
 
 const open = shallowRef(false)

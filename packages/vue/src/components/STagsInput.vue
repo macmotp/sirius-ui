@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, shallowRef, useAttrs, useId, watchEffect, useTemplateRef } from 'vue'
-import { X } from '@lucide/vue'
+import { X } from '../icons/internal'
 import { controlAriaInvalid, controlBase, controlPadding, controlStateClasses, controlTextSizes, nativeControlAttrs } from './controlStyles'
 import type { STagsInputProps } from './STagsInput.types'
 

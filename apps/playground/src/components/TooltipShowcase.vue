@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PopoverShowcase from './PopoverShowcase.vue'
 import { ref } from 'vue'
-import { Copy, Info } from '@lucide/vue'
+import { Copy, Info } from '../../../shared/icons'
 import { SBadge, SButton, SCard, SCheckbox, SGrid, SSelect, STooltip } from '@sirius-ui/vue'
 import type { STooltipPlacement } from '@sirius-ui/vue'
 

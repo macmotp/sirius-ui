@@ -8,9 +8,11 @@ SiriusUI provides a shared foundation for multiple applications while allowing e
 | --- | --- | --- |
 | `@sirius-ui/theme` | CSS palettes, semantic tokens, appearance definitions, optional Tailwind mapping | No runtime framework |
 | `@sirius-ui/vue` | Reusable components, composables, and typed public exports | Theme and Lucide; Vue as a peer dependency |
+| `@sirius-ui/dashboard` | Composed dashboard shells and mobile navigation frame | Vue primitives and theme; Vue as a peer dependency |
+| `@sirius-ui/dashboard-demo` | Example application navigation, pages, branding and preferences | Dashboard shell and primitives |
 | `@sirius-ui/playground` | Demonstrations, branding examples, appearance controls, local demo state | Theme and Vue workspaces |
 
-The theme never imports Vue. Shared components do not own routing, authentication, API clients, or application state. Dashboard and ecommerce templates remain in consuming applications until real reuse justifies a shared abstraction.
+The theme never imports Vue. Shared components do not own routing, authentication, API clients, or application state. Application-specific dashboard pages and ecommerce templates remain in consuming applications. Shared dashboard framing lives in the dashboard package; business data and routing remain app-owned.
 
 ## Styling decisions
 
@@ -110,3 +112,70 @@ SFileUpload owns native file selection/drop/removal and accessible selection fee
 ### Playground organization
 
 The playground's `showcaseGroups.ts` is the single ordered catalog for group navigation and page composition. App.vue owns appearance preferences and renders the eight named clusters: Foundations, Actions, Forms, Layout, Navigation, Overlays, Data display, and Feedback. Each showcase continues to own its example state. Foundations, badges, dividers, skeletons, and empty states have separate showcase owners so unrelated examples can be grouped without coupling their state. File uploads belong to Forms; tables and server pagination stay together in Data display; tooltips and popovers stay together in Overlays. Group headings use h2, showcase headings h3, and examples follow below. Legacy numeric section labels are removed; individual component anchors are retained, with #forms now naming the cluster and #form-controls naming its first example.
+
+
+### Composed dashboard shells
+
+SDashboardLayout lives in packages/dashboard, which depends on primitives without being re-exported by them. It owns desktop framing, a sticky header, named navigation, a skip link and mobile SDrawer visibility. The existing drawer owns native modality, animation and Escape/backdrop handling; the layout adds content focus after navigation or a desktop breakpoint change. A single media-query listener is removed on unmount. It does not import a router, store, request client or purchased template.
+
+The brand/navigation/footer slots provide an explicit mobile context and close callback. Apps own links, active/permission state and slot content. Navigation may render in both desktop and mobile contexts during a drawer lifecycle; explicit IDs must be unique and business state remains app-owned. The separate apps/dashboard demo displays one fictional Acme business with the Sirius logo and local fixtures through that API. It contains no real-project branding or business switcher. New shell variants should arise from consuming-project requirements rather than adding every possible layout option to the first component.
+
+The root check builds packages in dependency order (theme, vue, dashboard) before consumer type checks, then builds both apps and runs package tests. This lets new workspaces resolve generated declaration exports on a clean checkout. Dashboard ESM keeps Vue and @sirius-ui/vue external, and exports compiled CSS without Preflight. All package publication flags remain private.
+
+
+SDashboardNav owns grouped link presentation, unique group labels, disabled adapter unmounting, current-link semantics and badge rendering. It renders inside the shell's existing nav landmark, owns no route state, and emits the original click event without preventing navigation. The Acme demo retains its own navigation data and hash-routing policy. SDashboardPageHeader composes a single page h1, optional metadata, SBreadcrumbs and wrapping actions; consuming pages own spacing and action effects. Both live in packages/dashboard and are used by the separate Acme demo. Planned settings, filtered-table, chat, timeline and chart pages will use these contracts; they are not bundled as speculative library components.
+
+
+The Acme account/header workflows are separate demo owners: DemoAccountMenu (identity popover and account actions), DemoSearch (dialog, query and local result catalog), DemoActions (example actions), and DemoNotifications (drawer and unread state). App.vue owns demo navigation, appearance models and toast feedback. DemoAppearance is controlled so Settings can unmount without resetting global appearance. Account/profile links and notification/search results navigate through app events; overlay visibility stays with its owning component. SPopover adds a custom header slot while retaining an internal accessible title, description association and close control. Demo integration tests compile actual client SFCs into a temporary directory and exercise them through the shared Vue renderer; they do not substitute for browser layout/focus checks.
+
+## Icon ownership
+
+The Vue package owns SIcon, typed semantic control names, dependency-free fallback paths and app-scoped configuration through createSiriusIcons/provideSiriusIcons. Internal icon components resolve their names through the nearest provider, including controls composed by the dashboard package. Partial maps inherit outer entries before using fallback paths. No mutable global registry, storage, dynamic package import, or icon-library dependency belongs in either shared package.
+
+Apps choose/install icon libraries and own mappings, application icon names, selection and persistence. apps/shared holds the two demo adapters and reactive selector; only the demos install both Lucide and Heroicons. Heroicons render functions are adapted to forward full SVG attributes. Component-valued custom icons and existing slots retain their contracts. See icons.md for the public API and full internal map. Focused tests cover configuration isolation, reactive internal/application icon replacement, nested overrides, accessibility and dashboard selection surviving navigation.
+
+## Representative Settings page
+
+The Acme demo's first representative page is Settings. DemoSettings owns tab composition and DOM focus restoration; Profile, Workspace and Notifications panels own their respective UI, and DemoAppearance owns immediate appearance controls and preview. App.vue creates useDemoSettings so drafts, the saved snapshot and active tab outlive route-mounted panels. The profile, workspace and notification groups participate in one local save/discard transaction. Appearance remains immediate, with its state owned separately by App and the icon provider.
+
+Validation covers the entire draft, selects the first invalid tab and uses SField's existing error associations. Successful saves normalize text, copy independent snapshots and update the account identity/workspace context. The sticky pending-changes bar submits SForm through a generated form ID; after saving/discarding, focus moves to a persistent status. All sample data/state stays in apps/dashboard, with no new library exports or backend behavior. Real integrations must replace the local save action with their request lifecycle and server validation. See packages/dashboard/readme.md for ownership and integration details.
+
+Dashboard page context belongs in the shell header; the Acme sample pages supply only a compact h1 through SDashboardPageHeader. Optional metadata remains available in the shared component, while the demo avoids duplicating shell breadcrumbs or stacking marketing-style labels above titles. STabs line hover uses surface-muted so it remains distinct from the neutral-700 dark canvas, with rounded top corners on both selected and unselected enabled tabs.
+
+## Representative Orders page
+
+The Acme Orders page keeps STable and SPagination controlled by API results. App.vue owns a mock OrdersApi instance; mockOrdersApi.ts stands in for the server and alone filters, sorts, aggregates, slices pages and mutates fixture records. useDemoOrders owns requests, abort/sequence protection, issued query and result/mutation error states. useOrderSelection independently owns selection of the current response. DemoOrders coordinates those capabilities with filters, table presentation, CSV exports, row popovers, a details drawer and a fulfillment confirmation dialog.
+
+Laravel-style paginator metadata and URLs drive navigation; query changes request page one. Custom summary fields describe the whole matching result. Amounts remain integer SGD cents. Fulfillment operates through the adapter, validates a batch before mutation, and refreshes rather than editing table rows optimistically. The app's backend replacement must retain server-side filtering/paging and own authorization/validation. CSV exports include only available page/selected records; full-query exports require a backend endpoint. The primitive package gains no routing, data-fetching or business logic. See packages/dashboard/readme.md for contracts, lifecycle, states and integration guidance.
+
+The Orders mobile check exposed absolutely positioned table content escaping the horizontal scroll boundary when its containing block lived outside the overflow region. STable's scroll region now establishes a relative containing block, retaining accessible hidden labels and positioned descendants within that boundary while top-layer SPopover panels can still escape clipping.
+
+## Compact example shell and table controls
+
+The Acme shell now owns one visible h1 in its sticky header, rather than repeating the page name above the main content. SDashboardLayout.mainLabelledby associates main with that generated heading ID. SDashboardPageHeader remains available for consumers that place titles in content. The example navigation is flat and grouped under Page examples; Tables uses #tables with #orders retained as an alias. Planned Cards and Timeline entries are explicitly disabled.
+
+DemoOrders uses a compact toolbar, a transactional filter draft in SDrawer and an Actions dropdown. Requests still go through useDemoOrders; only a successful filter submission closes its drawer, and failed requests remain visible there. Draft values reset from the issued query when reopening. Result summaries and active-filter badges retain context without occupying card rows. Overview composes an API-paginated five-row DemoOrdersPreview inside SCard, sharing the app's adapter but owning an independent request scope. The mock backend supports five-row requests and emits compact link windows so pagination is also usable inside cards.
+
+SPopover.block is a real sizing requirement from the account menu: it stretches the trigger wrapper while leaving popup styling/focus behavior unchanged. The account button fills that wrapper and pins its chevrons to the trailing edge.
+
+SDashboardLayout uses shared contentGutters and contentFrame class constants for header and main. Their responsive side padding and centered maximum width must stay identical; otherwise desktop gutters or wide-screen centering can drift. Header context font sizing belongs to the consuming app: Acme uses text-xs throughout, emphasizing only the current page through font weight.
+
+## Optional SVG charts package
+
+packages/charts is a fourth, optional library alongside theme, vue and dashboard. It owns SLineChart, SBarChart and SDonutChart and depends only on the framework-independent theme plus external Vue. Core primitives and dashboard shells must not import it. Build libraries before app type checks so its declaration export exists on clean installs. It emits scoped plain CSS/tokens without Tailwind/Preflight; consumers import @sirius-ui/charts/style.css once. No chart engine or icon dependency is introduced.
+
+SLineChart owns single/multiple-series SVG presentation and inspection. Pure chartData aligns series by categorical label and collects the shared numeric domain; no sorting or aggregation occurs. Pure lineLayout computes finite linear scales, gap-preserving segments, rounded ticks and width-dependent labels; useChartWidth owns observation/fallback listener lifetimes as the plot ref mounts/replaces. Component state contains only focus/inspection. Ordered categorical data, aggregation, periods, units, fetching and business summaries stay with the app. The floating inspection tooltip, hidden live status, one keyboard stop and native full-data disclosure complement the named SVG.
+
+The separate Charts example and Overview card use app-local fixed sales fixtures and period controls. Request-state examples are explicit demo controls. SVG chart colors use existing semantic tokens, especially primary-content for the line, so theme changes need no JavaScript palette registry. The optional series prop replaces single data/seriesLabel, retaining the original API. Multiple series share a scale/tooltip/table and differ by themed strokes and line patterns. smooth enables a small monotone cubic path generator that preserves gaps and does not overshoot observations. xLabels=all preserves category labels through horizontal scrolling, while auto samples based on estimated label width. No chart-engine selection, continuous time scale, zooming, export or unrelated chart types are scaffolded. The package guide is the agent-facing API/behavior contract.
+
+
+Each SLineChartSeries optionally specifies a CSS color and a typed solid/dashed/dotted pattern. chartData resolves defaults independently, and the SVG and legend share the result. The chart never owns palette selection UI. DemoChartComparison owns its editable series styles and uses an application CSS palette with inherited light/dark color-scheme; its controls do not change data values. The charts package guide lists every prop, data field, slot, default and exported type.
+
+
+SBarChart extends the optional charts package with vertical/horizontal grouped comparisons. It shares categorical alignment, responsive measurement, token CSS and the finite numeric-domain helper with SLineChart. Its pure barLayout always includes zero, preserves missing slots within groups, draws signed rectangles from the zero baseline, and expands the SVG rather than dropping labels or bars. The measured plot viewport scrolls horizontally for wide vertical groups or vertically for many horizontal groups; keyboard inspection reveals the active category. The component owns only inspection/focus; application fixtures, series-count and color controls live in DemoBarCharts. Bar-specific fields and all shared props are documented in packages/charts/bar-chart.md. No chart engine, stacking or area chart is introduced.
+
+
+Chart inspection values render through the internal ChartTooltip in a relative viewport beside the scrollable SVG, outside document flow. Chart legends remain static during hover/focus. ChartTooltip owns its measured positioning, bounds clamping, scroll/resize observations, Escape listener and cleanup; it has no public API or dependency on core overlays. Charts own active category/keyboard state and a hidden live status; the visual panel is hidden from assistive technology to avoid duplicate announcements. The panel preserves theme/custom series colors, wraps long content and scrolls internally when many series exceed the viewport. Data tables remain the complete accessible alternative.
+
+
+SDonutChart completes the small SVG chart set for part-to-whole composition. Its independent pure donutLayout normalizes nonnegative finite amounts before computing proportions, draws closed annular paths (including complete single-slice rings), and preserves all input rows in the table when a nonempty chart is present. Zero/invalid entries do not create wedges; all-zero totals use the empty state. An overflowing raw total is shown as an em dash without discarding valid slice proportions or passing Infinity to formatters. The component reuses measured width, the floating ChartTooltip and hidden live status, owns only slice inspection/focus, and keeps its center total/legend fixed during hover. Applications own slice colors, financial units and data controls. DemoDonutCharts demonstrates these boundaries; packages/charts/donut-chart.md is its complete agent-facing contract. Area charts and complex chart types remain out of scope.

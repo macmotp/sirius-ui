@@ -683,6 +683,8 @@ Horizontal lists scroll when labels exceed available width. Vertical lists remai
 The Tabs playground demonstrates both styles/orientations, manual/automatic activation, icons, badge labels, disabled tabs, model changes, and a draft field with optional persistence. Public types: `STabsProps<T>`, `STabsItem`, `STabsSize`.
 
 
+Line-style STabs use a neutral muted hover surface in both appearances, including the selected tab, with rounded top corners. Pill tabs retain full rounding and their selected fill. Hover never applies to disabled tabs.
+
 ## STooltip
 
 Short contextual descriptions for one focusable trigger. The scoped default slot supplies `trigger` bindings: apply them to the actual button/link/control so the description and keyboard/focus handlers reach the element, rather than making an extra focus stop.
@@ -949,6 +951,8 @@ The playground includes a 100-page server-fixture example and a separate selecta
 
 Selection belongs to the consuming app: explicitly decide whether it covers the displayed page, persists selected IDs across responses, or represents all matching server records. This example selects only its displayed rows; it never implies selection across every page. For API tables, reset or reconcile selected IDs when replacing the page, and send the selected IDs to your bulk-action endpoint. Confirm destructive operations, handle permissions/errors/loading, and update rows only after successful server responses in your app.
 
+STable establishes a containing block inside its keyboard-scrollable region so positioned cell content and visually hidden labels cannot widen the document on narrow screens. Use top-layer SPopover for row actions that must escape clipping.
+
 ## SToast, SToaster and useToasts
 
 ```vue
@@ -1027,15 +1031,19 @@ An interactive, nonmodal panel anchored to a native button. Use STooltip for sho
 | `placement` | `top`, `bottom` (default), `left`, or `right`; flips and shifts at viewport edges |
 | `align` | `start` (default), `center`, or `end` along the other axis |
 | `disabled` | Prevents opening and closes an existing panel |
+| `block` | False by default; makes the trigger wrapper full width, without changing panel sizing; use a full-width button inside it |
 | `closeLabel` | Accessible close-button label; defaults to `Close popover` |
 | `v-model:open` | Optional controlled visibility; otherwise state stays local |
 | `#trigger="{ trigger }"` | Bind **all** trigger attributes and handlers to one real native button or SButton |
+| `#header` | Optional identity/custom header; the required title remains as a visually hidden accessible heading |
 | Default slot `{ close }` | Interactive content; call `close()` after an action |
 | `dismiss` | Reason: `escape`, `outside`, or `close`; external model changes do not emit dismissal |
 
 Opening focuses the first available control (the close button by default). Escape and explicit dismissal restore focus to the trigger. Tab follows normal document order; focus moving outside or pointer interaction outside dismisses without stealing focus. This is not a modal and does not trap focus. Escape is contained so a surrounding dialog stays open. Keep triggers mounted and avoid nested interactive trigger elements. An initially/programmatically open panel locates the button carrying the trigger bindings.
 
 The manual native Popover API supplies top-layer stacking while retaining local theme inheritance, including within SDialog/SDrawer. Older browsers fall back to an in-place fixed panel; transformed or clipping ancestors can constrain that fallback. Resize, content-size changes, and scrolling reposition the panel. Content scrolls within narrow/short viewports. Entry animation respects reduced motion. Attributes/classes/styles apply to the panel. No menu, router, or overlay dependency is required.
+
+The header slot can compose an avatar, name, email and role. The component retains its title ID and close button; callers do not need to recreate ARIA naming. A supplied description remains associated and visible below the custom header. Keep header content noninteractive and put links/actions in the default slot.
 
 ## SFileUpload
 
@@ -1080,3 +1088,7 @@ Files are deduplicated using name, size, MIME type, and last-modified time. Inva
 SField's scoped `control` attributes reach the actual file input. Other native attributes such as `id`, `name`, `form`, and ARIA descriptions also reach it; class/style apply to the outer wrapper. A modern browser's DataTransfer API synchronizes dropped/removed/model files back to the native input for multipart form submission. For older browsers without DataTransfer, submit the `File[]` explicitly using FormData (as above). Do not bind `value` or `type`; selection is controlled through `v-model`. Native form resets need an application reset handler that clears the model (`@reset="files = []"`). Existing server media should be displayed and managed separately from newly selected Files.
 
 This frontend control can be used with a Laravel upload endpoint. Replacing a media-library frontend does not replace its backend storage, temporary-upload protocol, validation, conversions, collection rules, or media lifecycle; the consuming app owns any adapter and request/progress/error workflow. No Spatie dependency or protocol is built into SiriusUI.
+
+## Configurable icons
+
+The shared packages have no icon-library dependency. Use `createSiriusIcons` for app-wide mappings or `provideSiriusIcons` for reactive subtree overrides, with dependency-free control glyphs as fallbacks. Both playgrounds demonstrate Lucide and Heroicons; choose Icon set in the primitive header or dashboard Settings. See [icon configuration](../../docs/icons.md) for the complete semantic map, adapter examples, accessibility contract and installer guidance.

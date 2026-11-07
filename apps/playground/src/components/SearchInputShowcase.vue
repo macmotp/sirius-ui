@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Bell, Calendar, Camera, Cloud, Folder, Heart, Star } from '@lucide/vue'
+import { Bell, Calendar, Camera, Cloud, Folder, Heart, Star } from '../../../shared/icons'
 import { SBadge, SButton, SCard, SCheckbox, SCombobox, SField, SForm, SGrid, SInput, STagsInput } from '@sirius-ui/vue'
 
 const tags = ref(['Design', 'Vue'])

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, shallowRef, useId, useTemplateRef, watch } from 'vue'
-import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from '@lucide/vue'
+import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from '../icons/internal'
 import { useToastTimer } from '../composables/useToastTimer'
 import type { SToastDismissReason, SToastProps } from './SToast.types'
 

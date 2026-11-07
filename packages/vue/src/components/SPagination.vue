@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ChevronLeft, ChevronRight } from '@lucide/vue'
+import { ChevronLeft, ChevronRight } from '../icons/internal'
 import SButton from './SButton.vue'
 import { paginationLabel, paginationState } from './pagination'
 import type { SPaginationProps } from './SPagination.types'

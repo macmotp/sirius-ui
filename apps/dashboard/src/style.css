@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+@import '@sirius-ui/theme/tailwind.css';
+@source '../../../packages/vue/src';
+@source '../../../packages/dashboard/src';
+
+/* Match the Sirius mark used in the primitive playground. */
+.sirius-logo {
+  mask: url('../../../sirius_ui.svg') center / contain no-repeat;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--sirius-canvas);
+    color: var(--sirius-content);
+    font-family: var(--sirius-font-sans);
+  }
+  :focus-visible { outline: 2px solid var(--sirius-focus); outline-offset: 4px; }
+}
+
+@layer components {
+  .acme-icon-button {
+    @apply inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 text-content-muted transition-colors hover:bg-surface-hover hover:text-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus motion-reduce:transition-none;
+  }
+  .acme-menu-item {
+    @apply flex w-full min-w-0 cursor-pointer items-center gap-3 rounded-xl border-0 bg-transparent px-3 py-2.5 text-start text-sm text-content no-underline hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus;
+  }
+}
+
+@layer components {
+  .acme-settings-step {
+    @apply text-[10px] font-semibold tracking-[0.16em] text-content-subtle;
+  }
+  .acme-settings-heading h2 {
+    @apply text-lg font-semibold tracking-tight;
+  }
+  .acme-settings-heading > p {
+    @apply mt-2 max-w-lg text-sm leading-relaxed text-content-muted;
+  }
+  .acme-settings-savebar {
+    animation: acme-savebar-in 160ms ease-out;
+  }
+}
+@keyframes acme-savebar-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .acme-settings-savebar { animation: none; }
+}
+
+/* Application-owned chart palette; contrast shifts with the inherited color scheme. */
+.acme-chart-comparison {
+  --acme-chart-indigo: light-dark(var(--color-indigo-700), var(--color-indigo-300));
+  --acme-chart-pink: light-dark(var(--color-pink-700), var(--color-pink-300));
+  --acme-chart-orange: light-dark(var(--color-orange-700), var(--color-orange-300));
+  --acme-chart-cyan: light-dark(var(--color-cyan-700), var(--color-cyan-300));
+  --acme-chart-emerald: light-dark(var(--color-emerald-700), var(--color-emerald-300));
+}

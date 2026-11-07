@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAttrs, useId, useTemplateRef } from 'vue'
 import { useModalDialog } from '../composables/useModalDialog'
-import { X } from '@lucide/vue'
+import { X } from '../icons/internal'
 import type { SDialogDismissReason, SDialogProps } from './SDialog.types'
 
 defineOptions({ inheritAttrs: false })

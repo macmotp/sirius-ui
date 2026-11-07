@@ -6,6 +6,9 @@ These instructions apply throughout this repository. Read `readme.md`, `CONTRIBU
 
 - `packages/theme` owns framework-independent CSS tokens and the optional Tailwind CSS 4 mapping.
 - `packages/vue` owns reusable Vue 3 components and composables. It depends on the theme; the theme must not depend on Vue.
+- `packages/charts` owns optional SVG chart components. It depends only on the theme and Vue, and must not be imported by core primitives. Export chart APIs from `packages/charts/src/index.ts`.
+- `packages/dashboard` owns composed application shells built on `packages/vue`, with usage contracts in its own readme. Export its public APIs from `packages/dashboard/src/index.ts`.
+- `apps/dashboard` demonstrates dashboard shells with application-owned navigation, content and preferences. Keep composed layouts out of the primitive playground.
 - `apps/playground` demonstrates the packages. Application branding, appearance persistence, and demo state belong here, rather than in the library.
 - Keep routes, authentication, API calls, store-specific state, and other business logic in consuming applications.
 - The packages are private scaffolds for an open-source project. Do not change publication flags or introduce release automation as an incidental change.
@@ -32,7 +35,7 @@ These instructions apply throughout this repository. Read `readme.md`, `CONTRIBU
 
 - Use native HTML semantics first. Provide accessible names, appropriate keyboard behavior, visible focus, and correct disabled behavior.
 - Verify relevant foreground/background pairs in both appearances. Use `line-strong` when a border is needed to identify a control.
-- Include relevant variants and states in the playground when implementing a component. Clearly distinguish native theme demonstrations from shared Vue components.
+- Include relevant variants and states in the playground when implementing a primitive component; demonstrate dashboard shells in the separate dashboard app. Clearly distinguish native theme demonstrations from shared Vue components.
 - Check narrow layouts, long labels, keyboard navigation, and light/dark modes when changing visible UI.
 - Keep shared component behavior independent of browser storage and application preferences.
 

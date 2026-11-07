@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Inbox } from '@lucide/vue'
+import { Inbox } from '../icons/internal'
 import type { SEmptyStateProps } from './SEmptyState.types'
 
 const props = withDefaults(defineProps<SEmptyStateProps>(), { title: 'Nothing here yet', headingLevel: 3, icon: undefined })

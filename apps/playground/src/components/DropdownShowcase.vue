@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Archive, Copy, Download, ExternalLink, Pencil, Settings, Trash2 } from '@lucide/vue'
+import { Archive, Copy, Download, ExternalLink, Pencil, Settings, Trash2 } from '../../../shared/icons'
 import { SBadge, SCard, SCheckbox, SDropdown, SGrid, SSelect } from '@sirius-ui/vue'
 import type { SDropdownItem } from '@sirius-ui/vue'
 

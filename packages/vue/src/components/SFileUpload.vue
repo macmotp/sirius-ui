@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, shallowRef, useAttrs, useId, useTemplateRef, watchEffect } from 'vue'
-import { File as FileIcon, Upload, X } from '@lucide/vue'
+import { File as FileIcon, Upload, X } from '../icons/internal'
 import type { SFileUploadProps, SFileUploadRejection } from './SFileUpload.types'
 import { fileKey, fileSize, selectFiles } from './fileSelection'
 import { controlAriaInvalid, nativeControlAttrs } from './controlStyles'

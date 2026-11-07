@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Check, CircleAlert, Clock, Sparkles } from '@lucide/vue'
+import { Check, CircleAlert, Clock, Sparkles } from '../../../shared/icons'
 import { SBadge, SCard, SGrid } from '@sirius-ui/vue'
 import type { SBadgeColor, SBadgeVariant } from '@sirius-ui/vue'
 

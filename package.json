@@ -4,7 +4,10 @@
   "license": "MIT",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "engines": {
     "node": "^22.12.0 || >=24.0.0",
     "npm": ">=10"
@@ -12,10 +15,14 @@
   "scripts": {
     "dev": "npm run dev --workspace @sirius-ui/playground",
     "preview": "npm run preview --workspace @sirius-ui/playground",
-    "build": "npm run build --workspace @sirius-ui/theme && npm run build --workspace @sirius-ui/vue && npm run build --workspace @sirius-ui/playground",
+    "build": "npm run build:packages && npm run build:apps",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm run build --workspace @sirius-ui/theme && npm run build --workspace @sirius-ui/vue && node --test packages/*/tests/*.test.mjs",
-    "check": "npm run typecheck && npm run build && node --test packages/*/tests/*.test.mjs"
+    "test": "npm run build:packages && node --test packages/*/tests/*.test.mjs",
+    "check": "npm run build:packages && npm run typecheck && npm run build:apps && node --test packages/*/tests/*.test.mjs",
+    "dev:dashboard": "npm run dev --workspace @sirius-ui/dashboard-demo",
+    "preview:dashboard": "npm run preview --workspace @sirius-ui/dashboard-demo",
+    "build:packages": "npm run build --workspace @sirius-ui/theme && npm run build --workspace @sirius-ui/vue && npm run build --workspace @sirius-ui/charts && npm run build --workspace @sirius-ui/dashboard",
+    "build:apps": "npm run build --workspace @sirius-ui/playground && npm run build --workspace @sirius-ui/dashboard-demo"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

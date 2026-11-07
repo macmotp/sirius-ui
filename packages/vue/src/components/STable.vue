@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends object">
 import { computed } from 'vue'
-import { ArrowDown, ArrowUp, ArrowUpDown, LoaderCircle } from '@lucide/vue'
+import { ArrowDown, ArrowUp, ArrowUpDown, LoaderCircle } from '../icons/internal'
 import type { STableCell, STableColumn, STableProps, STableSort } from './STable.types'
 
 const { rows = [], columns, rowKey, caption, loading = false, sort = null, emptyText = 'No results found.', loadingText = 'Loading results…' } = defineProps<STableProps<T>>()
@@ -31,7 +31,7 @@ function requestSort(column: STableColumn<T>) {
 
 <template>
   <div :aria-busy="loading" class="relative min-w-0 rounded-2xl bg-surface font-sans text-content after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:ring-1 after:ring-inset after:ring-line">
-    <div role="region" :aria-label="caption" tabindex="0" class="overflow-x-auto rounded-[inherit] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus">
+    <div role="region" :aria-label="caption" tabindex="0" class="relative overflow-x-auto rounded-[inherit] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus">
       <table class="w-full border-collapse text-sm leading-6">
         <caption class="sr-only">{{ caption }}</caption>
         <thead>
