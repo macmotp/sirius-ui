@@ -15,6 +15,8 @@ These instructions apply throughout this repository. Read `readme.md`, `CONTRIBU
 
 ## Implementation conventions
 
+- For component selection or page composition, start with the [component catalog](docs/component-catalog.md). Read the contracts and examples for the components involved.
+- Reuse existing public exports and compose project-specific behavior in the app. Preserve existing defaults, props, models, slots, events, and keyboard and focus behavior unless the task calls for a change.
 - Use TypeScript, Vue single-file components with `<script setup lang="ts">`, and explicit props, events, and slots.
 - Name public Vue components with the `S` prefix and PascalCase filenames, for example `SButton.vue`. Export public APIs from `packages/vue/src/index.ts`.
 - Follow existing formatting: two spaces, single quotes in JavaScript/TypeScript, and no semicolons.

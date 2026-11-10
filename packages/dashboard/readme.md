@@ -59,6 +59,7 @@ For Vue Router, render RouterLink in your navigation and RouterView in the defau
 | `closeNavigationLabel` | `Close navigation` | Accessible drawer-close label |
 | `skipLinkLabel` | `Skip to content` | Visible-on-focus skip link |
 | `navigationKey` | Unset | Route identifier; a change closes open mobile navigation |
+| `mainLabelledby` | Unset | ID of the page heading that names the main landmark |
 | `#brand` | Required | Project branding; `{ mobile, close }` |
 | `#navigation` | Required | Project links and groups; `{ mobile, close }` |
 | `#sidebarFooter` | Optional | Account/workspace information; `{ mobile, close }` |
@@ -289,9 +290,9 @@ Use STimeline for ordered activity such as fulfillment milestones or team feedba
 
 Public types are `STimelineItem` and `STimelineProps`. The timeline presents records in order and renders machine-readable timestamps. Apps own statuses, timestamps and comment submission. Acme shows an order history and a feedback timeline with a local composer on Cards. New demo comments live until the Cards page is left.
 
-## Next sample pages
+## Acme page examples
 
-The Settings example is implemented in apps/dashboard. The Orders table page is also implemented. Charts and Cards are also implemented. Cards includes the people directory and recent activity. Calendar includes day, week and month views. These planned pages are not implemented by the navigation/header components. Build examples from existing primitives first, then extract shared groups when their responsibilities and data contracts are clear. Activity on Cards shows order statuses and team feedback as separate timelines. Keep sample business data in apps/dashboard, and keep request/data ownership explicit in future examples.
+See [dashboard patterns](../../docs/dashboard-patterns.md) for the Acme page compositions and [the component catalog](../../docs/component-catalog.md) for public imports and examples.
 
 
 ## Acme account and header examples

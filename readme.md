@@ -1,5 +1,7 @@
 # @sirius-ui/dashboard
 
+**Building with SiriusUI?** Start with the [component catalog](docs/component-catalog.md) for public imports, contracts, and working examples, or use the [dashboard patterns](docs/dashboard-patterns.md) to compose a page.
+
 Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, `SDashboardPageHeader`, and `SMetricCard`. This private workspace is not published yet. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
 
 ## Start here
@@ -165,9 +167,9 @@ Use once at the beginning of a page's main content. This renders the page h1; do
 
 Unused description, action and breadcrumb wrappers are omitted. Long titles and actions wrap at narrow widths. Actions use ordinary controls; this is not an ARIA toolbar. All routing, loading, permissions and action handlers remain application-owned. Class/style and other fallthrough attributes apply to the outer header. Do not put an additional heading or interactive control inside the title slot.
 
-## Next sample pages
+## Acme page examples
 
-The Acme roadmap is: a complete settings form, a server-driven table with filters, then chat, timeline and chart examples. These are planned, not implemented by the navigation/header components. Build examples from existing primitives first, then extract shared groups when their responsibilities and data contracts are clear. The existing Activity and Settings views remain small composition demonstrations. Keep sample business data in apps/dashboard, and keep request/data ownership explicit in future examples.
+Acme includes Overview, Cards, Tables, Calendar, Charts, and Settings. See [dashboard patterns](docs/dashboard-patterns.md) for how each page combines components and where the app owns the data.
 
 
 ## Acme account and header examples
