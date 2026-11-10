@@ -3,14 +3,17 @@ import { computed, shallowRef, useId, watch } from 'vue'
 import { ArrowUpRight, Search } from '../../../shared/icons'
 import { SDialog, SInput } from '@sirius-ui/vue'
 import { isPlainLinkClick } from '../data/demo'
-import type { DemoPage } from '../data/demo'
-const emit = defineEmits<{ navigate: [page: DemoPage] }>()
+import type { DemoDestination } from '../data/demo'
+const emit = defineEmits<{ navigate: [page: DemoDestination] }>()
 const open = shallowRef(false)
 const query = shallowRef('')
 const id = useId()
-const entries: { id: string; title: string; description: string; page: DemoPage; keywords: string }[] = [
+const entries: { id: string; title: string; description: string; page: DemoDestination; keywords: string }[] = [
   { id: 'overview', title: 'Workspace overview', description: 'Business metrics and daily tasks', page: 'overview', keywords: 'home dashboard business' },
+  { id: 'cards', title: 'Cards', description: 'Metric card comparisons and loading states', page: 'cards', keywords: 'kpi summary metric' },
+  { id: 'calendar', title: 'Calendar', description: 'Day, week and month schedules', page: 'calendar', keywords: 'agenda events dates planning' },
   { id: 'charts', title: 'Charts', description: 'Simple line charts, daily trends and chart states', page: 'charts', keywords: 'line graph chart sales trends' },
+  { id: 'lists', title: 'People list', description: 'People, roles and availability on Cards', page: 'lists', keywords: 'team directory contact online' },
   { id: 'activity', title: 'Recent activity', description: 'Orders, products, and customer updates', page: 'activity', keywords: 'history updates' },
   { id: 'order', title: 'Tables', description: 'Search, filter and browse the orders table', page: 'orders', keywords: 'table tables order dispatch delivery package' },
   { id: 'example-order', title: 'Order #1048', description: 'Processing · View orders', page: 'orders', keywords: '1048' },
@@ -22,7 +25,7 @@ const entries: { id: string; title: string; description: string; page: DemoPage;
 const term = computed(() => query.value.trim().toLowerCase())
 const results = computed(() => term.value ? entries.filter(entry => `${entry.title} ${entry.description} ${entry.keywords}`.toLowerCase().includes(term.value)) : [])
 watch(open, value => { if (value) query.value = '' })
-function choose(page: DemoPage, event: MouseEvent) {
+function choose(page: DemoDestination, event: MouseEvent) {
   if (!isPlainLinkClick(event)) return
   event.preventDefault()
   open.value = false

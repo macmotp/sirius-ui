@@ -3,8 +3,8 @@ import { computed, shallowRef, useId } from 'vue'
 import { Bell } from '../../../shared/icons'
 import { SBadge, SButton, SDrawer } from '@sirius-ui/vue'
 import { isPlainLinkClick } from '../data/demo'
-import type { DemoPage } from '../data/demo'
-const emit = defineEmits<{ navigate: [page: DemoPage] }>()
+import type { DemoDestination } from '../data/demo'
+const emit = defineEmits<{ navigate: [page: DemoDestination] }>()
 const open = shallowRef(false)
 const id = useId()
 const notifications = shallowRef([

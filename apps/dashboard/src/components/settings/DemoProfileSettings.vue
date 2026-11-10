@@ -24,7 +24,7 @@ const previewName = computed(() => profile.value.name.trim() || 'Your name')
       <SCard bento="top-right">
         <p class="acme-settings-step">HOW YOU’LL APPEAR</p>
         <div class="mt-6 flex items-center gap-3"><SAvatar :name="previewName" size="lg" aria-hidden="true" /><div class="min-w-0"><p class="break-words font-semibold">{{ previewName }}</p><p class="mt-1 break-words text-xs text-content-muted">{{ profile.jobTitle || 'Your job title' }}</p></div></div>
-        <p class="mt-5 break-all text-sm text-content-muted">{{ profile.email || 'you@company.example' }}</p>
+        <p class="mt-5 break-all text-sm text-content-muted">{{ profile.email || 'Email address not set' }}</p>
         <SBadge class="mt-4" size="sm">Workspace owner</SBadge>
         <p v-if="profile.bio" class="mt-5 border-t border-line pt-5 text-sm leading-relaxed text-content-muted">{{ profile.bio }}</p>
       </SCard>

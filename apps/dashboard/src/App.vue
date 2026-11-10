@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { provideDemoIcons } from '../../shared/iconSets'
-import { computed, onBeforeUnmount, onMounted, shallowRef, useId, watchEffect } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useId, watchEffect } from 'vue'
 import { SDashboardLayout } from '@sirius-ui/dashboard'
 import { SAvatar, SBadge, SCard, SToaster, useToasts } from '@sirius-ui/vue'
 import DemoNavigation from './components/DemoNavigation.vue'
 import DemoSettings from './components/DemoSettings.vue'
 import { useDemoSettings } from './composables/useDemoSettings'
+import DemoCards from './components/DemoCards.vue'
+import DemoCalendar from './components/DemoCalendar.vue'
 import DemoCharts from './components/DemoCharts.vue'
 import DemoOrders from './components/DemoOrders.vue'
 import { createDemoOrdersApi } from './data/mockOrdersApi'
@@ -14,11 +16,14 @@ import DemoAccountMenu from './components/DemoAccountMenu.vue'
 import DemoSearch from './components/DemoSearch.vue'
 import DemoActions from './components/DemoActions.vue'
 import DemoNotifications from './components/DemoNotifications.vue'
-import type { DemoPage } from './data/demo'
+import { calendarEvents } from './data/calendar'
+import type { CalendarEventDraft } from './data/calendar'
+import type { DemoDestination, DemoPage } from './data/demo'
 
 provideDemoIcons()
 
 const ordersApi = createDemoOrdersApi()
+const events = shallowRef(calendarEvents)
 const pageHeadingId = useId()
 const page = shallowRef<DemoPage>('overview')
 const settingsTab = shallowRef('profile')
@@ -28,14 +33,17 @@ const dark = shallowRef(false)
 const background = shallowRef('slate')
 const primary = shallowRef('teal')
 const { items: toasts, notify, dismiss } = useToasts()
+function addCalendarEvent(event: CalendarEventDraft) {
+  events.value = [...events.value, { ...event, id: `demo-event-${events.value.length}`, color: 'primary' }]
+  notify({ title: 'Event added', color: 'success' })
+}
 function saveSettings() {
   const invalidSection = save()
   if (invalidSection) settingsTab.value = invalidSection
   else notify({ title: 'Preferences saved', description: 'Your changes are saved for this demo session.', color: 'success' })
 }
-const pageLabels = { overview: 'Overview', orders: 'Tables', charts: 'Charts', activity: 'Activity', settings: 'Settings', profile: 'Profile' }
+const pageLabels = { overview: 'Overview', orders: 'Tables', cards: 'Cards', calendar: 'Calendar', charts: 'Charts', settings: 'Settings', profile: 'Profile' }
 const pageTitle = computed(() => pageLabels[page.value])
-const activity = ['Order #1048 is ready to dispatch', 'Spring collection saved as draft', 'Customer enquiry received']
 watchEffect(() => {
   if (typeof document === 'undefined') return
   document.title = `${pageTitle.value} · Sirius Dashboard`
@@ -43,13 +51,25 @@ watchEffect(() => {
   document.documentElement.dataset.siriusBackground = background.value
   document.documentElement.dataset.siriusColor = primary.value
 })
-function readLocation() {
-  const value = window.location.hash.slice(1)
-  page.value = value === 'tables' ? 'orders' : value === 'charts' || value === 'activity' || value === 'settings' || value === 'profile' || value === 'orders' ? value : 'overview'
+function showDestination(destination: string) {
+  if (destination === 'activity' || destination === 'lists') {
+    page.value = 'cards'
+    void nextTick(() => {
+      if (typeof document !== 'undefined' && window.location.hash.replace(/^#/, '') === destination) {
+        document.getElementById(destination)?.scrollIntoView()
+      }
+    })
+  } else {
+    const target = destination === 'tables' ? 'orders' : destination
+    page.value = Object.hasOwn(pageLabels, target) ? target as DemoPage : 'overview'
+  }
 }
-function navigate(value: DemoPage, close?: () => void) {
-  page.value = value
+function readLocation() {
+  showDestination(window.location.hash.replace(/^#/, ''))
+}
+function navigate(value: DemoDestination, close?: () => void) {
   window.location.hash = value === 'orders' ? 'tables' : value
+  showDestination(value)
   close?.()
 }
 function showNotice(description: string, close?: () => void) {
@@ -69,8 +89,9 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', readLocation))
     <template #headerActions><DemoSearch @navigate="navigate($event)" /><DemoActions @notice="showNotice($event)" /><DemoNotifications @navigate="navigate($event)" /></template>
     <DemoOverview v-if="page === 'overview'" :api="ordersApi" @tables="navigate('orders')" @charts="navigate('charts')" @activity="navigate('activity')" />
     <DemoOrders v-else-if="page === 'orders'" :api="ordersApi" @simulate-error="ordersApi.failNextList" @notice="(title, description) => notify({ title, description })" />
+    <DemoCards v-else-if="page === 'cards'" :account="savedUser" />
+    <DemoCalendar v-else-if="page === 'calendar'" :events="events" @create="addCalendarEvent" />
     <DemoCharts v-else-if="page === 'charts'" />
-    <SCard v-else-if="page === 'activity'"><ol class="space-y-5"><li v-for="(event, index) in activity" :key="event" class="flex items-start gap-3 text-sm"><span aria-hidden="true" class="mt-1.5 size-2 shrink-0 rounded-full bg-primary"></span><div><p>{{ event }}</p><p class="mt-1 text-xs text-content-subtle">Demo event {{ index + 1 }}</p></div></li></ol></SCard>
     <SCard v-else-if="page === 'profile'">
       <div class="flex flex-wrap items-center gap-4"><SAvatar :name="savedUser.name" size="xl" aria-hidden="true" /><div><h2 class="text-lg font-semibold">{{ savedUser.name }}</h2><p class="mt-1 text-sm text-content-muted">{{ savedUser.jobTitle }}</p><SBadge class="mt-2">{{ savedUser.role }}</SBadge></div></div>
       <dl class="mt-6 grid gap-5 border-t border-line pt-6 sm:grid-cols-2"><div><dt class="text-xs text-content-subtle">Email address</dt><dd class="mt-1 break-all text-sm">{{ savedUser.email }}</dd></div><div><dt class="text-xs text-content-subtle">Business</dt><dd class="mt-1 text-sm">{{ saved.workspace.name }}</dd></div></dl>

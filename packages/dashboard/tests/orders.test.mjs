@@ -50,10 +50,10 @@ test('adapter filters inclusively by date, searches records, sorts totals and pr
     const filtered = await f.api.list({ ...f.query, q: ' sam ', status: 'processing', from: '2026-11-01', to: '2026-11-06' }, f.signal())
     assert.equal(filtered.total, 2)
     assert.ok(filtered.data.every(row => row.customer === 'Sam Chen' && row.status === 'processing'))
-    const byTotal = await f.api.list({ ...f.query, q: 'customer', status: 'fulfilled', sort: 'total', direction: 'asc', per_page: 25, from: '2026-10-01', to: '2026-11-06' }, f.signal())
+    const byTotal = await f.api.list({ ...f.query, q: '@acme.example', status: 'fulfilled', sort: 'total', direction: 'asc', per_page: 25, from: '2026-10-01', to: '2026-11-06' }, f.signal())
     assert.ok(byTotal.data.every((row, index) => !index || row.total >= byTotal.data[index - 1].total))
     const next = f.types.ordersQueryFromUrl(byTotal.next_page_url)
-    assert.equal(next.q, 'customer')
+    assert.equal(next.q, '@acme.example')
     assert.equal(next.status, 'fulfilled')
     assert.equal(next.from, '2026-10-01')
     assert.equal(next.to, '2026-11-06')
@@ -238,4 +238,42 @@ test('overview table card requests five-row API pages and browses without slicin
     find(view, node => node.type === 'button' && text(node) === 'Open Tables').props.onClick({})
     assert.deepEqual(browsed, [true])
   } finally { view?.unmount(); await f.demo.close() }
+})
+
+test('order date presets update only the draft and apply submits the complete filter range', async () => {
+  const demo = await loadDemo()
+  try {
+    const Filters = await demo.component('components/orders/DemoOrderFilters.vue')
+    const applied = []
+    const initial = { q: 'Sam', status: 'processing', from: '', to: '' }
+    const view = mountComponent(Filters, {
+      modelValue: initial,
+      loading: false,
+      disabled: false,
+      'onUpdate:modelValue': range => { view.state.value = { ...view.state.value, modelValue: range } },
+      onApply: range => applied.push(range),
+    })
+    try {
+      const button = label => find(view, node => node.type === 'button' && text(node) === label)
+      const submit = () => find(view, node => node.type === 'form').props.onSubmit({ preventDefault() {} })
+      button('Last 7 days').props.onClick({})
+      await nextTick()
+      assert.deepEqual(initial, { q: 'Sam', status: 'processing', from: '', to: '' })
+      assert.equal(applied.length, 0)
+      assert.equal(button('Last 7 days').props['aria-pressed'], true)
+      submit()
+      assert.deepEqual(applied[0], { q: 'Sam', status: 'processing', from: '2026-10-31', to: '2026-11-06' })
+      const dates = nodes(view.element, node => node.type === 'input' && node.props.type === 'date')
+      dates[1].props.onInput({ target: { value: '2026-10-30' } })
+      await nextTick()
+      assert.equal(dates[0].props['aria-invalid'], true)
+      assert.equal(dates[1].props['aria-describedby'], dates[0].props['aria-describedby'])
+      submit()
+      assert.equal(applied.length, 1)
+      button('Clear dates').props.onClick({})
+      await nextTick()
+      submit()
+      assert.deepEqual(applied[1], initial)
+    } finally { view.unmount() }
+  } finally { await demo.close() }
 })

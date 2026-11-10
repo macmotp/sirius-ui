@@ -10,6 +10,10 @@ export type { SFieldControl, SFieldProps } from './components/SField.types'
 export { default as SInput } from './components/SInput.vue'
 export type { SInputSize, SInputType, SInputProps } from './components/SInput.types'
 
+export { default as SDateRange } from './components/SDateRange.vue'
+export type { SDateRangeValue, SDateRangePreset, SDateRangeConstraints, SDateRangeProps } from './components/SDateRange.types'
+export { getDateRangeError } from './components/dateRange'
+
 export { default as STextarea } from './components/STextarea.vue'
 export type { STextareaProps, STextareaSize, STextareaResize } from './components/STextarea.types'
 export { default as SSelect } from './components/SSelect.vue'

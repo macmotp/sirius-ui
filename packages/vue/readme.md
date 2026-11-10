@@ -307,6 +307,44 @@ const options = [
 
 Both controls consume SField's `control` attributes; bind them to preserve label and hint/error associations. Invalid styling (including SField's `aria-invalid`) takes priority over valid styling. They share the fixed green-500 and red-500 rings, including on focus. Neither component initiates requests or validates values itself. Import `@sirius-ui/vue/style.css` once as described above.
 
+### SDateRange
+
+Use this core form control for date-only filters, reporting periods, or a pair of calendar dates. It renders a labelled fieldset with two native date inputs and optional preset buttons. Fields sit side by side when space permits and stack in narrow containers.
+
+```vue
+<script setup lang="ts">
+import { shallowRef } from 'vue'
+import { SDateRange } from '@sirius-ui/vue'
+import type { SDateRangePreset, SDateRangeValue } from '@sirius-ui/vue'
+
+const range = shallowRef<SDateRangeValue>({ from: '', to: '' })
+const presets: SDateRangePreset[] = [
+  { id: 'november', label: 'November', range: { from: '2026-11-01', to: '2026-11-30' } },
+]
+</script>
+
+<template>
+  <SDateRange v-model="range" label="Order dates" :presets="presets" from-name="from" to-name="to" />
+</template>
+```
+
+| API | Default | Behavior |
+| --- | --- | --- |
+| `v-model` | Required | `{ from: string, to: string }`. Use calendar dates in `YYYY-MM-DD` format and an empty string for an open bound. Updates replace the object. |
+| `label`, `fromLabel`, `toLabel` | Date range, From date, To date | Visible group and input labels |
+| `fromName`, `toName` | Unset | Optional native form field names |
+| `min`, `max` | Unset | Inclusive calendar date limits for both inputs |
+| `required` | False | Requires both dates |
+| `size` | `md` | Input size, using `sm`, `md`, or `lg` |
+| `disabled` | False | Disables both inputs and all date actions |
+| `presets` | Empty array | App-supplied `{ id, label, range }` records with unique IDs. Clicking applies both dates together. Invalid presets are disabled. |
+| `clearable`, `clearLabel` | True, Clear dates | Shows an action that sets both dates to empty strings |
+| `error` | Unset | Application message that takes precedence over range validation |
+
+Both input labels and the shared validation message are accessible. Native picker display follows the browser. Use `getDateRangeError(range, { min, max, required })` to validate before applying filters or submitting a programmatically populated range. It returns an empty string when valid. Same-day and open-ended ranges are valid unless an open bound is required. Consumers own relative preset calculations, timezone interpretation, requests, and server validation.
+
+Public types are `SDateRangeProps`, `SDateRangeValue`, `SDateRangePreset`, and `SDateRangeConstraints`. Native attributes apply to the fieldset. No slots or events beyond the model update are required.
+
 ### Forms showcase and verification
 
 The **Forms** section demonstrates the form components together, a live input configurator, column selection, a full-width field and actions, error/hint associations, long labels, three sizes, icons, and native disabled/readonly/password behavior. Textarea and select examples include live sizes and states, textarea rows and resizing, native option placeholders, disabled options, and multiline model values. The profile demo composes all three control types. Its custom validation and reset handlers belong to the playground. The earlier Interaction section intentionally retains native fields as a theme-only comparison.

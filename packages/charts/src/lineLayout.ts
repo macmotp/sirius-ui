@@ -41,7 +41,7 @@ export function categorySpacing(data: readonly SLineChartPoint[]) {
   return Math.max(28, ...data.map(point => Math.min(18, Array.from(point.label).length) * 7 + 14))
 }
 
-function linePath(points: readonly { x: number; y: number }[], smooth: boolean) {
+export function linePath(points: readonly { x: number; y: number }[], smooth: boolean) {
   const first = points[0]!
   const coordinate = (x: number, y: number) => `${x.toFixed(2)},${y.toFixed(2)}`
   let path = `M${coordinate(first.x, first.y)}`

@@ -1,7 +1,20 @@
 import { filterError, ordersUrl } from './orders'
 import type { Order, OrdersApi, OrdersPage, OrdersQuery, OrderStatus } from './orders'
 
-const people = ['Sam Chen', 'Jordan Lee', 'Taylor Brooks', 'Casey Tan', 'Riley James', 'Jamie Lim', 'Morgan Ellis', 'Avery Ng', 'Robin Shaw', 'Drew Wong', 'Quinn Park', 'Alex Carter']
+const people = [
+  { name: 'Sam Chen', email: 'sam@acme.example' },
+  { name: 'Jordan Lee', email: 'jordan@acme.example' },
+  { name: 'Taylor Brooks', email: 'taylor@acme.example' },
+  { name: 'Casey Tan', email: 'casey@acme.example' },
+  { name: 'Riley James', email: 'riley@acme.example' },
+  { name: 'Jamie Lim', email: 'jamie@acme.example' },
+  { name: 'Morgan Ellis', email: 'morgan@acme.example' },
+  { name: 'Avery Ng', email: 'avery@acme.example' },
+  { name: 'Robin Shaw', email: 'robin@acme.example' },
+  { name: 'Drew Wong', email: 'drew@acme.example' },
+  { name: 'Quinn Park', email: 'quinn@acme.example' },
+  { name: 'Alex Carter', email: 'alex.carter@acme.example' },
+]
 const products = [{ name: 'Everyday tote', price: 2800 }, { name: 'Stoneware mug', price: 2400 }, { name: 'Desk notebook', price: 1800 }, { name: 'Linen cushion', price: 4200 }, { name: 'Glass carafe', price: 3600 }, { name: 'Cotton throw', price: 6800 }]
 function fixtures(): Order[] {
   return Array.from({ length: 96 }, (_, index) => {
@@ -10,7 +23,8 @@ function fixtures(): Order[] {
     const items = [{ ...first, quantity: index % 3 + 1 }, { ...second, quantity: 1 }]
     const created = new Date(Date.UTC(2026, 10, 6, 10) - index * 8 * 60 * 60 * 1000)
     const statuses: OrderStatus[] = ['processing', 'fulfilled', 'fulfilled', 'processing', 'fulfilled', 'cancelled']
-    return { id: 1048 - index, customer: people[index % people.length]!, email: `customer${index + 1}@example.test`, created_at: created.toISOString(), status: statuses[index % statuses.length]!, items, total: items.reduce((sum, line) => sum + line.price * line.quantity, 0) }
+    const customer = people[index % people.length]!
+    return { id: 1048 - index, customer: customer.name, email: customer.email, created_at: created.toISOString(), status: statuses[index % statuses.length]!, items, total: items.reduce((sum, line) => sum + line.price * line.quantity, 0) }
   })
 }
 function validate(query: OrdersQuery) {

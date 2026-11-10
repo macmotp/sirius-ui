@@ -142,6 +142,10 @@ Validation covers the entire draft, selects the first invalid tab and uses SFiel
 
 Dashboard page context belongs in the shell header; the Acme sample pages supply only a compact h1 through SDashboardPageHeader. Optional metadata remains available in the shared component, while the demo avoids duplicating shell breadcrumbs or stacking marketing-style labels above titles. STabs line hover uses surface-muted so it remains distinct from the neutral-700 dark canvas, with rounded top corners on both selected and unselected enabled tabs.
 
+## Core date range control
+
+SDateRange lives in the Vue primitives and composes SField, SInput and SButton. Its controlled date-only model supports open bounds, optional required dates and inclusive min/max limits. It shares calendar and range validation with the app through getDateRangeError. Applications supply preset dates and own the decision to apply them to an API query. Acme supplies presets relative to its fictional dataset and applies changes through the existing Orders filter draft.
+
 ## Representative Orders page
 
 The Acme Orders page keeps STable and SPagination controlled by API results. App.vue owns a mock OrdersApi instance; mockOrdersApi.ts stands in for the server and alone filters, sorts, aggregates, slices pages and mutates fixture records. useDemoOrders owns requests, abort/sequence protection, issued query and result/mutation error states. useOrderSelection independently owns selection of the current response. DemoOrders coordinates those capabilities with filters, table presentation, CSV exports, row popovers, a details drawer and a fulfillment confirmation dialog.
@@ -152,7 +156,7 @@ The Orders mobile check exposed absolutely positioned table content escaping the
 
 ## Compact example shell and table controls
 
-The Acme shell now owns one visible h1 in its sticky header, rather than repeating the page name above the main content. SDashboardLayout.mainLabelledby associates main with that generated heading ID. SDashboardPageHeader remains available for consumers that place titles in content. The example navigation is flat and grouped under Page examples; Tables uses #tables with #orders retained as an alias. Planned Cards and Timeline entries are explicitly disabled.
+The Acme shell now owns one visible h1 in its sticky header, rather than repeating the page name above the main content. SDashboardLayout.mainLabelledby associates main with that generated heading ID. SDashboardPageHeader remains available for consumers that place titles in content. The example navigation is flat and grouped under Page examples; Tables uses #tables with #orders retained as an alias. Cards contains the people directory and Activity. The former #lists and #activity hashes open their corresponding cards. Calendar is a separate demo page with day, week and month views.
 
 DemoOrders uses a compact toolbar, a transactional filter draft in SDrawer and an Actions dropdown. Requests still go through useDemoOrders; only a successful filter submission closes its drawer, and failed requests remain visible there. Draft values reset from the issued query when reopening. Result summaries and active-filter badges retain context without occupying card rows. Overview composes an API-paginated five-row DemoOrdersPreview inside SCard, sharing the app's adapter but owning an independent request scope. The mock backend supports five-row requests and emits compact link windows so pagination is also usable inside cards.
 
@@ -179,3 +183,17 @@ Chart inspection values render through the internal ChartTooltip in a relative v
 
 
 SDonutChart completes the small SVG chart set for part-to-whole composition. Its independent pure donutLayout normalizes nonnegative finite amounts before computing proportions, draws closed annular paths (including complete single-slice rings), and preserves all input rows in the table when a nonempty chart is present. Zero/invalid entries do not create wedges; all-zero totals use the empty state. An overflowing raw total is shown as an em dash without discarding valid slice proportions or passing Infinity to formatters. The component reuses measured width, the floating ChartTooltip and hidden live status, owns only slice inspection/focus, and keeps its center total/legend fixed during hover. Applications own slice colors, financial units and data controls. DemoDonutCharts demonstrates these boundaries; packages/charts/donut-chart.md is its complete agent-facing contract. Area charts and complex chart types remain out of scope.
+
+
+## Dashboard metric cards
+
+SMetricCard composes SCard, SBadge and SSkeleton in the dashboard package. It presents app-formatted values and optional comparison context, with a decorative icon slot. Applications own calculations, comparison meaning and loading state. Acme uses it in the Overview summary and the Cards example page. Its chart slot accepts caller-supplied graphics, including SSparkline from the optional charts package. SUserCard composes SCard and SAvatar and lets the app supply statuses and actions. SUtilityCard adds a compact record summary with an identity header and labelled values. The demo owns the invoice data, status styles and actions. The Cards demo also assembles quota and task cards directly from core primitives.
+
+
+## Dashboard lists
+
+SPeopleList presents app-owned directory records with initials fallbacks, optional native profile and email links, roles and explicit presence. The profile link can cover the row while the email remains independently actionable. DemoPeopleCard uses the saved Acme account for the linked profile and fictional records for the remaining people.
+
+STimeline owns the ordered list, connecting rail and timestamp rendering. Its marker and detail slots let applications distinguish statuses, comments, assignments and tags. DemoActivityCards owns the two card compositions and the local comment draft and entries.
+
+DemoCalendar owns the selected date and view. It uses UTC date-only values for arithmetic, with Today resolved in Singapore. Day and Week share a scrollable schedule table that groups timed events by hour and shows all-day events separately. The Day picker browses months independently and updates the selected date when a day is chosen. The calendar renders app-owned events using native tables and buttons.

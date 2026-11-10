@@ -105,7 +105,7 @@ test('appearance controls live on Settings and their models survive page navigat
     await chooseColor('Pink')
     find(view, node => node.type === 'input' && node.props.role === 'switch').props.onChange({ target: { checked: true } })
     await nextTick()
-    await go('#activity')
+    await go('#cards')
     assert.equal(palette('Background color'), undefined)
     await go('#settings')
     assert.equal(iconSelect().value, 'heroicons')
@@ -147,11 +147,11 @@ test('the account popover presents identity details, routes profile links and ke
   } finally { view.unmount(); await demo.close() }
 })
 
-async function mountSettingsApp() {
+async function mountSettingsApp(initialHash = '#settings') {
   const demo = await loadDemo()
   const App = await demo.component('App.vue')
   const previousWindow = globalThis.window
-  globalThis.window = { location: { hash: '#settings' }, addEventListener() {}, removeEventListener() {} }
+  globalThis.window = { location: { hash: initialHash }, addEventListener() {}, removeEventListener() {} }
   const view = mountComponent(App)
   await nextTick()
   // DOM focus behavior is verified in the browser. The lightweight renderer
@@ -188,7 +188,7 @@ test('profile drafts survive page navigation; save updates the account and disca
     await edit(view, 'name', 'Alex Rivers')
     assert.ok(find(view, node => node.type === 'button' && text(node) === 'Save changes'))
     assert.ok(find(view, node => node.props['aria-label'] === 'Open account menu for Alex Morgan'))
-    find(view, node => node.type === 'a' && node.props.href === '#activity').props.onClick(click())
+    find(view, node => node.type === 'a' && node.props.href === '#cards').props.onClick(click())
     await nextTick()
     find(view, node => node.type === 'a' && node.props.href === '#settings').props.onClick(click())
     await nextTick()
@@ -241,7 +241,7 @@ test('notification preferences save together and remain selected after remountin
     digest().props.onChange({ target: { checked: true } })
     await nextTick()
     await submitSettings(view)
-    find(view, node => node.type === 'a' && node.props.href === '#activity').props.onClick(click())
+    find(view, node => node.type === 'a' && node.props.href === '#cards').props.onClick(click())
     await nextTick()
     find(view, node => node.type === 'a' && node.props.href === '#settings').props.onClick(click())
     await nextTick()
@@ -278,10 +278,21 @@ test('settings validation normalizes valid drafts and retains independent saved 
   } finally { await demo.close() }
 })
 
-test('dashboard uses one shell title and groups examples under Tables with upcoming pages clearly disabled', async () => {
-  const fixture = await mountSettingsApp()
+test('dashboard uses one shell title and navigates to the page examples', async () => {
+  const fixture = await mountSettingsApp('#lists')
   const { view } = fixture
   try {
+    assert.equal(text(find(view, node => node.type === 'h1')), 'Cards')
+    assert.ok(find(view, node => node.props.id === 'lists'))
+    const nav = find(view, node => node.type === 'nav')
+    const entries = nodes(nav, node => node.type === 'a' || node.props.role === 'link')
+    assert.deepEqual(entries.map(node => node.props.href), [
+      '#overview', '#cards', '#tables', '#calendar', '#charts', '#settings',
+    ])
+    entries[3].props.onClick(click())
+    await nextTick()
+    assert.equal(text(find(view, node => node.type === 'h1')), 'Calendar')
+    assert.ok(find(view, node => node.props['aria-label'] === 'Month calendar'))
     find(view, node => node.type === 'a' && node.props.href === '#tables').props.onClick(click())
     await nextTick()
     const headings = nodes(view.element.parent ?? view.element, node => node.type === 'h1')
@@ -294,11 +305,57 @@ test('dashboard uses one shell title and groups examples under Tables with upcom
     await nextTick()
     assert.equal(text(find(view, node => node.type === 'h1')), 'Charts')
     assert.ok(find(view, node => node.type === 'title' && text(node) === 'Daily sales'))
-    for (const name of ['Cards', 'Timeline']) assert.ok(find(view, node => node.props.role === 'link' && node.props['aria-disabled'] && text(node).includes(name)))
+    find(view, node => node.type === 'a' && node.props.href === '#cards').props.onClick(click())
+    await nextTick()
+    assert.equal(text(find(view, node => node.type === 'h1')), 'Cards')
+    assert.equal(find(view, node => node.type === 'a' && node.props.href === '#cards').props['aria-current'], 'page')
+    assert.match(text(find(view, node => node.props.id === 'activity')), /Order #1048 is ready to dispatch/)
+    const people = find(view, node => node.type === 'ul' && node.props['aria-label'] === 'Acme teammates')
+    assert.equal(nodes(people, node => node.type === 'li').length, 4)
+    assert.equal(nodes(people, node => node.type === 'a' && node.props.href === '#profile').length, 1)
+    assert.equal(nodes(people, node => node.type === 'a' && node.props.href === 'mailto:jamie@acme.example').length, 1)
+    assert.equal(nodes(people, node => node.type === 'time')[0].props.datetime, '2026-11-06T15:20:00+08:00')
+    assert.match(text(people), /Online/)
+    assert.ok(find(view, node => node.type === 'dd' && text(node).startsWith('0')))
+    const cards = find(view, node => node.props['aria-labelledby'] === 'metric-card-examples')
+    assert.equal(nodes(cards, node => node.type === 'svg' && node.props.class === 'sirius-sparkline').length, 3)
+    assert.ok(find(view, node => node.type === 'p' && text(node) === 'Jamie Lim'))
+    const team = find(view, node => node.props['aria-labelledby'] === 'user-card-examples')
+    assert.equal(nodes(team, node => node.type === 'li').length, 3)
+    assert.equal(nodes(team, node => node.type === 'img').length, 0)
+    assert.equal(nodes(team, node => node.type === 'a' && node.props['aria-label'] === 'Email Jamie Lim')[0].props.href, 'mailto:jamie@acme.example')
+    assert.equal(nodes(team, node => node.type === 'a' && node.props['aria-label'] === 'Call Jamie Lim')[0].props.href, 'tel:+12025550114')
+    assert.ok(find(view, node => node.props.role === 'progressbar' && node.props['aria-valuetext'] === '7.2 GB of 10 GB'))
+    const option = label => {
+      const id = nodes(cards, node => node.type === 'label' && text(node) === label)[0].props.for
+      return nodes(cards, node => node.props.role === 'switch' && node.props.id === id)[0]
+    }
+    assert.equal(option('Tinted backgrounds').props.checked, false)
+    assert.equal(option('Rounded lines').props.checked, true)
+    assert.equal(find(view, node => node.type === 'p' && text(node) === 'After refunds and discounts'), undefined)
+    assert.equal(nodes(cards, node => node.props.style?.backgroundColor).length, 0)
+    option('Tinted backgrounds').props.onChange({ target: { checked: true } })
+    option('Show subtitles').props.onChange({ target: { checked: true } })
+    await nextTick()
+    assert.ok(find(view, node => node.type === 'p' && text(node) === 'After refunds and discounts'))
+    assert.equal(nodes(cards, node => node.props.style?.backgroundColor === 'var(--sirius-success-soft)').length, 1)
+    const toggle = option('Show loading state')
+    toggle.props.onChange({ target: { checked: true } })
+    await nextTick()
+    assert.equal(nodes(view.element.parent ?? view.element, node => node.props['aria-busy'] === true).length, 3)
+    assert.equal(find(view, node => node.type === 'dd' && text(node).includes('+8.4%')), undefined)
+    assert.equal(nodes(cards, node => node.type === 'svg' && node.props.class === 'sirius-sparkline').length, 0)
+    toggle.props.onChange({ target: { checked: false } })
+    await nextTick()
+    assert.ok(find(view, node => node.type === 'dd' && text(node).includes('+8.4%')))
     find(view, node => node.type === 'a' && node.props.href === '#overview').props.onClick(click())
     await nextTick()
     assert.equal(text(find(view, node => node.type === 'h1')), 'Overview')
     assert.ok(find(view, node => node.type === 'h2' && text(node) === 'Recent orders'))
+    find(view, node => node.type === 'button' && text(node) === 'View activity').props.onClick(click())
+    await nextTick()
+    assert.equal(text(find(view, node => node.type === 'h1')), 'Cards')
+    assert.equal(window.location.hash.replace(/^#/, ''), 'activity')
   } finally { await fixture.close() }
 })
 
@@ -384,4 +441,186 @@ test('Charts is an enabled example, period changes update the line chart, and re
     await nextTick()
     assert.ok(nodes(chartFigures()[3], node => node.props.role === 'alert').length)
   } finally { view?.unmount(); await demo.close() }
+})
+
+test('utility card options open the invoice for the selected client', async () => {
+  const demo = await loadDemo()
+  try {
+    const UtilityCards = await demo.component('components/DemoUtilityCards.vue')
+    const view = mountComponent(UtilityCards)
+    try {
+      const dialog = prepareDialog(view)
+      const options = find(view, node => node.props['aria-label'] === 'Options for Harbor Goods')
+      options.props.onClick({ currentTarget: {} })
+      await nextTick()
+      await find(view, node => node.type === 'button' && text(node) === 'View invoice').props.onClick()
+      await nextTick()
+      assert.equal(options.props['aria-expanded'], false)
+      assert.match(text(dialog), /INV-1019/)
+      assert.match(text(dialog), /Harbor Goods/)
+      assert.match(text(dialog), /Overdue/)
+      assert.equal(nodes(dialog, node => node.type === 'time')[0].props.datetime, '2026-10-21')
+    } finally { view.unmount() }
+  } finally { await demo.close() }
+})
+
+test('feedback comments append to the feedback timeline and clear the draft', async () => {
+  const demo = await loadDemo()
+  const previousDocument = globalThis.Document
+  globalThis.Document ??= class {}
+  try {
+    const ActivityCards = await demo.component('components/DemoActivityCards.vue')
+    const view = mountComponent(ActivityCards, {
+      account: { name: 'Alex Morgan', email: 'alex@acme.example', role: 'Workspace owner', jobTitle: 'Operations manager' },
+    })
+    try {
+      const feedback = find(view, node => node.props['aria-label'] === 'Team feedback timeline')
+      const orders = find(view, node => node.props['aria-label'] === 'Order #1048 status history')
+      const textarea = find(view, node => node.type === 'textarea')
+      textarea.getRootNode = () => new Document()
+      const submit = () => find(view, node => node.type === 'form').props.onSubmit(click())
+
+      submit()
+      await nextTick()
+      assert.equal(nodes(feedback, node => node.type === 'li').length, 3)
+      textarea.value = '  Confirm the new delivery copy.  '
+      textarea.listeners.input({ target: textarea })
+      await nextTick()
+      submit()
+      await nextTick()
+      assert.match(text(feedback), /Alex Morgan left feedback.*Confirm the new delivery copy\./)
+      assert.equal(nodes(feedback, node => node.type === 'li').length, 4)
+      assert.equal(nodes(orders, node => node.type === 'li').length, 4)
+      assert.equal(textarea.value, '')
+    } finally { view.unmount() }
+  } finally {
+    if (previousDocument === undefined) delete globalThis.Document
+    else globalThis.Document = previousDocument
+    await demo.close()
+  }
+})
+
+test('calendar switches between month, week and day and opens the selected date', async () => {
+  const demo = await loadDemo()
+  try {
+    const Calendar = await demo.component('components/DemoCalendar.vue')
+    const { calendarEvents } = await demo.module('data/calendar.ts')
+    const view = mountComponent(Calendar, { events: calendarEvents })
+    try {
+      const button = label => find(view, node => node.type === 'button' && (node.props['aria-label'] === label || text(node) === label))
+      const month = () => find(view, node => node.props['aria-label'] === 'Month calendar')
+      const week = () => find(view, node => node.props['aria-label'] === 'Weekly schedule')
+      const day = () => find(view, node => node.props['aria-label'] === 'Daily schedule')
+      const picker = () => find(view, node => node.props['aria-label'] === 'Date picker calendar')
+      const rows = schedule => nodes(schedule, node => node.type === 'tbody')[0].children.filter(node => node.type === 'tr')
+      assert.equal(nodes(month(), node => node.type === 'td').length, 42)
+      button('Week').props.onClick(click())
+      await nextTick()
+      assert.equal(month(), undefined)
+      assert.equal(nodes(week(), node => node.type === 'button').length, 7)
+      const weekRows = rows(week())
+      assert.equal(weekRows.length, 24)
+      assert.ok(weekRows.every(row => row.children.filter(node => node.type === 'td').length === 7))
+      assert.match(text(weekRows[0]), /^00:00/)
+      assert.match(text(weekRows[23]), /^23:00/)
+      assert.match(text(weekRows[9].children.filter(node => node.type === 'td')[1]), /09:30Courier pickup/)
+      button('Tuesday, 10 November 2026').props.onClick(click())
+      await nextTick()
+      assert.equal(button('Day').props['aria-pressed'], true)
+      button('Month').props.onClick(click())
+      await nextTick()
+      find(view, node => node.type === 'button' && /10 November 2026, 2 events/.test(node.props['aria-label'] ?? '')).props.onClick(click())
+      await nextTick()
+      const dayRows = rows(day())
+      assert.equal(dayRows.length, 24)
+      assert.match(text(dayRows[9]), /Courier pickup.*Acme dispatch desk/)
+      assert.match(text(dayRows[14]), /Stock check/)
+      assert.equal(button('Day').props['aria-pressed'], true)
+      assert.equal(button('Tuesday, 10 November 2026').props['aria-pressed'], true)
+      button('Next day').props.onClick(click())
+      await nextTick()
+      assert.equal(button('Wednesday, 11 November 2026').props['aria-pressed'], true)
+      assert.doesNotMatch(text(day()), /Courier pickup|Stock check/)
+      button('Next month in date picker').props.onClick(click())
+      await nextTick()
+      assert.equal(text(find(view, node => node.props.id === 'calendar-period')), 'Wednesday, 11 November 2026')
+      nodes(picker(), node => node.props['aria-label'] === 'Tuesday, 1 December 2026')[0].props.onClick(click())
+      await nextTick()
+      assert.equal(text(find(view, node => node.props.id === 'calendar-period')), 'Tuesday, 1 December 2026')
+      assert.equal(button('Tuesday, 1 December 2026').props['aria-pressed'], true)
+    } finally { view.unmount() }
+  } finally { await demo.close() }
+})
+
+test('calendar creates an all-day event on a different date and discards cancelled drafts', async () => {
+  const fixture = await mountSettingsApp('#calendar')
+  const { view } = fixture
+  try {
+    const button = (root, label) => nodes(root, node => node.type === 'button' && text(node).trim() === label)[0]
+    const calendar = () => find(view, node => node.props['aria-labelledby'] === 'calendar-period')
+    const dialog = nodes(calendar(), node => node.type === 'dialog')[0]
+    dialog.open = false
+    dialog.showModal = () => { dialog.open = true }
+    dialog.close = () => { dialog.open = false }
+    const open = async () => {
+      button(calendar(), 'Add event').props.onClick(click())
+      await nextTick()
+      assert.equal(dialog.open, true)
+    }
+    const input = name => nodes(dialog, node => node.props.name === name)[0]
+    const finishClose = async () => {
+      dialog.props.onAnimationend({ target: dialog, animationName: 'sirius-dialog-out' })
+      await nextTick()
+    }
+    const navigate = async hash => {
+      find(view, node => node.type === 'a' && node.props.href === hash).props.onClick(click())
+      await nextTick()
+    }
+    const submit = async () => {
+      nodes(dialog, node => node.type === 'form')[0].props.onSubmit(click())
+      await nextTick()
+    }
+
+    await open()
+    assert.equal(input('date').props.value, '2026-11-10')
+    await edit(view, 'title', '   ')
+    await submit()
+    assert.equal(input('title').props['aria-invalid'], true)
+    await edit(view, 'title', 'Discarded draft')
+    button(dialog, 'Cancel').props.onClick(click())
+    await nextTick()
+    await finishClose()
+    assert.doesNotMatch(text(calendar()), /Discarded draft/)
+
+    await open()
+    assert.equal(input('title').props.value, '')
+    await edit(view, 'title', '  Stocktake  ')
+    await edit(view, 'date', '2026-12-01')
+    await submit()
+    await finishClose()
+    assert.match(text(calendar()), /December 2026.*Stocktake/)
+    assert.ok(find(view, node => node.type === 'div' && text(node) === 'Event added'))
+    button(calendar(), 'Day').props.onClick(click())
+    await nextTick()
+    const schedule = find(view, node => node.props['aria-label'] === 'Daily schedule')
+    assert.match(text(nodes(schedule, node => node.type === 'thead')[0]), /All dayStocktake/)
+
+    await navigate('#cards')
+    await navigate('#calendar')
+    find(view, node => node.type === 'button' && node.props['aria-label'] === 'Next month').props.onClick(click())
+    await nextTick()
+    assert.match(text(calendar()), /Stocktake/)
+  } finally { await fixture.close() }
+})
+
+test('calendar dates handle month end, year boundaries and Singapore midnight', async () => {
+  const demo = await loadDemo()
+  try {
+    const { dateKey, moveDate, weekStart, todayInSingapore } = await demo.module('data/calendar.ts')
+    assert.equal(dateKey(moveDate(new Date('2028-01-31'), 'month', 1)), '2028-02-29')
+    assert.equal(dateKey(moveDate(new Date('2026-12-31'), 'day', 1)), '2027-01-01')
+    assert.equal(dateKey(moveDate(new Date('0099-12-31'), 'day', 1)), '0100-01-01')
+    assert.equal(dateKey(weekStart(new Date('2026-11-01'))), '2026-10-26')
+    assert.equal(dateKey(todayInSingapore(new Date('2026-11-09T16:00:00Z'))), '2026-11-10')
+  } finally { await demo.close() }
 })

@@ -3,13 +3,13 @@ import type { SPaginationLink, STableSort } from '@sirius-ui/vue'
 export interface DemoMember { id: number; name: string; email: string; team: string; status: string }
 // Only this demo service owns the complete dataset. Replace it with fetch in an app.
 const members: DemoMember[] = [
-  { id: 1, name: 'Alex Morgan', email: 'alex@example.test', team: 'Design', status: 'Active' },
-  { id: 2, name: 'Sam Chen', email: 'sam@example.test', team: 'Engineering', status: 'Active' },
-  { id: 3, name: 'Jordan Lee', email: 'jordan@example.test', team: 'Operations', status: 'Invited' },
-  { id: 4, name: 'Taylor Park', email: 'taylor@example.test', team: 'Design', status: 'Active' },
-  { id: 5, name: 'Casey Patel', email: 'casey@example.test', team: 'Engineering', status: 'Invited' },
-  { id: 6, name: 'Riley Wong', email: 'riley@example.test', team: 'Operations', status: 'Active' },
-  { id: 7, name: 'Jamie Tan', email: 'jamie@example.test', team: 'Engineering', status: 'Active' },
+  { id: 1, name: 'Alex Morgan', email: 'alex@acme.example', team: 'Design', status: 'Active' },
+  { id: 2, name: 'Sam Chen', email: 'sam@acme.example', team: 'Engineering', status: 'Active' },
+  { id: 3, name: 'Jordan Lee', email: 'jordan@acme.example', team: 'Operations', status: 'Invited' },
+  { id: 4, name: 'Taylor Park', email: 'taylor@acme.example', team: 'Design', status: 'Active' },
+  { id: 5, name: 'Casey Patel', email: 'casey@acme.example', team: 'Engineering', status: 'Invited' },
+  { id: 6, name: 'Riley Wong', email: 'riley@acme.example', team: 'Operations', status: 'Active' },
+  { id: 7, name: 'Jamie Tan', email: 'jamie@acme.example', team: 'Engineering', status: 'Active' },
 ]
 export function memberUrl(page: number, sort: STableSort | null, empty = false) {
   const query = new URLSearchParams({ page: String(page), team: 'all' })

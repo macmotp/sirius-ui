@@ -1,6 +1,6 @@
 # @sirius-ui/dashboard
 
-Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, and `SDashboardPageHeader`. This private workspace is not published yet. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
+Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, `SDashboardPageHeader`, and `SMetricCard`. This private workspace is not published yet. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
 
 ## Start here
 
@@ -185,3 +185,5 @@ The shared packages have no icon-library dependency. Use `createSiriusIcons` for
 ## Optional charts
 
 The private @sirius-ui/charts workspace provides lightweight SVG SLineChart, SBarChart and SDonutChart components with categorical labels, numeric values, missing-value handling, keyboard/pointer inspection and a native data-table alternative. Bar charts support horizontal/vertical layouts, grouped series and per-series colors; donut charts show nonnegative composition with slice shares and an optional center total. It depends only on the Sirius theme and Vue. Applications opt in separately; the core primitives and dashboard shell do not pull charts into their bundles. See [the charts agent guide](packages/charts/readme.md) for imports, props, data semantics, states and accessibility responsibilities. The dashboard demo exposes Charts and includes a chart card on Overview.
+
+See [the metric card contract](packages/dashboard/readme.md#smetriccard) for summary values, comparisons and loading states.

@@ -1,6 +1,6 @@
 # @sirius-ui/dashboard
 
-Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, and `SDashboardPageHeader`. This private workspace is not published yet. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
+Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, `SDashboardPageHeader`, `SMetricCard`, and `SUserCard`. This private workspace is not published yet. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
 
 ## Start here
 
@@ -166,16 +166,139 @@ Use once at the beginning of a page's main content. This renders the page h1; do
 
 Unused description, action and breadcrumb wrappers are omitted. Long titles and actions wrap at narrow widths. Actions use ordinary controls; this is not an ARIA toolbar. All routing, loading, permissions and action handlers remain application-owned. Class/style and other fallthrough attributes apply to the outer header. Do not put an additional heading or interactive control inside the title slot.
 
+## SMetricCard
+
+Use a metric card for one summary value and its context. It composes the core SCard, SBadge and SSkeleton. Place several cards in SGrid for responsive layout.
+
+```vue
+<script setup lang="ts">
+import { SMetricCard } from '@sirius-ui/dashboard'
+</script>
+
+<template>
+  <SMetricCard
+    label="Net sales"
+    value="S$12,480.50"
+    detail="After refunds and discounts"
+    :comparison="{ value: '+8.4%', label: 'vs. previous week', color: 'success' }"
+  />
+</template>
+```
+
+| API | Default | Behavior |
+| --- | --- | --- |
+| `label` | Required | Metric name paired with its value in a definition list |
+| `value` | Unset | String or number to display. An omitted value displays an em dash and zero displays as zero. |
+| `detail` | Unset | Optional explanation below the metric |
+| `color` | Unset | Optional soft card tint and matching chart accent. Use `primary`, `success`, `warning`, or `danger`. |
+| `comparison` | Unset | Optional `{ value: string, label?: string, color?: SBadgeColor }`. The badge defaults to primary. Choose color according to business meaning, and include direction and period in visible text where relevant. |
+| `loading` | False | Marks the card busy and replaces the value, comparison and optional chart with skeletons. The label and detail stay visible. |
+| `loadingLabel` | Loading metric | Accessible loading text |
+| `#icon` | Unset | Optional decorative icon, hidden from assistive technology |
+| `#chart` | Unset | Optional trend graphic. For example, use SSparkline from the charts package. |
+
+The app owns formatting, comparisons, loading and data. Native attributes fall through to the card root. The card has no model or component events. Public types are `SMetricCardProps` and `SMetricCardComparison`.
+
+Overview uses the component for its summary row. The Cards page starts with neutral surfaces, rounded sparklines and hidden subtitles. Its sparklines show daily values on hover and keyboard focus. Its switches preview tinted backgrounds, straight lines, subtitles and loading. The demo also composes information cards using SCard, SProgress and SButton for storage usage and orders requiring attention.
+
+## SUserCard
+
+Use a user card in a directory, assignment picker or team summary. It uses SCard and SAvatar. Omit the image URL to show initials as a placeholder.
+
+```vue
+<SUserCard name="Alex Morgan" role="Operations manager" layout="stacked">
+  <template #badge><SBadge color="success">Active</SBadge></template>
+  <template #actions><SButton href="/team/alex">View profile</SButton></template>
+</SUserCard>
+```
+
+| API | Default | Behavior |
+| --- | --- | --- |
+| `name` | Required | Visible name and source of avatar initials |
+| `role`, `detail` | Unset | Optional secondary text |
+| `avatarSrc` | Unset | Optional image URL. Initials cover missing, loading or failed images. |
+| `layout` | `inline` | Use `stacked` for a larger centered avatar and text. |
+| `#badge` | Unset | Optional status or role badge |
+| `#actions` | Unset | App-owned buttons and links. Stacked cards give each direct child an equal share of a divided footer. |
+
+The public type is `SUserCardProps`. The name labels the profile visually and the avatar is decorative. Native attributes apply to the card root. The Cards demo pairs the stacked layout with an access badge and labelled Email and Call links.
+
+## SUtilityCard
+
+Use this card for a short record summary, such as a client and their latest invoice. It provides a tinted identity header and labelled rows. Supply the icon or avatar, actions and status rendering from the application.
+
+```vue
+<SUtilityCard title="Northstar Studio" :rows="[{ id: 'amount', label: 'Amount', value: 'S$2,480.00' }]">
+  <template #identity><SAvatar name="Northstar Studio" shape="rounded" alt="" /></template>
+  <template #value="{ row }">{{ row.value }} <SBadge color="success">Paid</SBadge></template>
+</SUtilityCard>
+```
+
+| API | Behavior |
+| --- | --- |
+| `title` | Required visible record name |
+| `rows` | Required array of `{ id, label, value }` records. Use a unique string ID and a string or number value. |
+| `#identity` | Optional avatar or icon in the header |
+| `#actions` | Optional app-owned controls at the trailing edge of the header |
+| `#value` | Optional scoped slot receiving `{ row }`. The default displays the row value. |
+
+Public types are `SUtilityCardProps` and `SUtilityCardRow`. The Cards demo shows three fictional invoice states and detail actions that open a dialog.
+
+## SPeopleList
+
+Use this list for a team directory or a short list of contacts. It composes Sirius avatars with optional profile and email links. Role and availability move below the identity on narrow screens.
+
+```vue
+<SPeopleList
+  label="Team members"
+  :people="[
+    { id: 'alex', name: 'Alex Morgan', email: 'alex@acme.example', role: 'Operations manager', href: '/team/alex', presence: { kind: 'online' } },
+    { id: 'jamie', name: 'Jamie Lim', role: 'Customer support', presence: { kind: 'last-seen', label: '6 Nov, 3:20 pm', datetime: '2026-11-06T15:20:00+08:00' } },
+  ]"
+/>
+```
+
+| API | Default | Behavior |
+| --- | --- | --- |
+| `people` | Required | Array of records with unique `id` and visible `name`. Optional fields are `email`, `role`, `avatarSrc`, `href` and `presence`. |
+| `label` | People | Accessible list name |
+| `onlineLabel` | Online | Text for `{ kind: 'online' }` |
+| `lastSeenLabel` | Last seen | Prefix for `{ kind: 'last-seen', label, datetime }`. Pass display text and a machine-readable datetime. |
+| `emptyText` | No people to display. | Empty list message |
+
+A row with an href has a native profile link and a larger click target. Its mail link is independently focusable and clickable. Avatars fall back to initials. Applications own profile URLs, presence updates and date formatting. Public types are `SPeopleListProps` and `SPeopleListItem`.
+
+## STimeline
+
+Use STimeline for ordered activity such as fulfillment milestones or team feedback. Pass records in display order. Each item has a stable string `id`, visible `title`, optional `detail` and optional `time: { label, datetime }`.
+
+```vue
+<STimeline
+  label="Order status history"
+  :items="[{ id: 'paid', title: 'Payment confirmed', time: { label: '6:02 pm', datetime: '2026-11-06T18:02:00+08:00' } }]"
+/>
+```
+
+| API | Behavior |
+| --- | --- |
+| `items` | Required readonly array of `STimelineItem` records or a subtype |
+| `label` | Accessible list name. Defaults to Timeline. |
+| `emptyText` | Empty message. Defaults to No activity yet. |
+| `#marker` | Scoped slot receiving `{ item }`. Defaults to a dot. Keep marker content decorative. |
+| `#detail` | Scoped slot receiving `{ item }`. Defaults to the item detail. |
+
+Public types are `STimelineItem` and `STimelineProps`. The timeline presents records in order and renders machine-readable timestamps. Apps own statuses, timestamps and comment submission. Acme shows an order history and a feedback timeline with a local composer on Cards. New demo comments live until the Cards page is left.
+
 ## Next sample pages
 
-The Settings example is implemented in apps/dashboard. The Orders table page is also implemented. Charts now has a simple line-chart example; chat and timeline remain planned. These planned pages are not implemented by the navigation/header components. Build examples from existing primitives first, then extract shared groups when their responsibilities and data contracts are clear. Activity remains a small composition demonstration. Keep sample business data in apps/dashboard, and keep request/data ownership explicit in future examples.
+The Settings example is implemented in apps/dashboard. The Orders table page is also implemented. Charts and Cards are also implemented. Cards includes the people directory and recent activity. Calendar includes day, week and month views. These planned pages are not implemented by the navigation/header components. Build examples from existing primitives first, then extract shared groups when their responsibilities and data contracts are clear. Activity on Cards shows order statuses and team feedback as separate timelines. Keep sample business data in apps/dashboard, and keep request/data ownership explicit in future examples.
 
 
 ## Acme account and header examples
 
 The demo sidebar footer uses DemoAccountMenu, composing SPopover's header slot with the shared fictional user record (avatar, name, email, role and job title). View profile navigates to a simple profile view; Account settings opens Settings; Sign out only shows example feedback. On mobile, account navigation also closes the surrounding navigation drawer through the shell's scoped close callback.
 
-The top-right controls are Search, Quick actions and Notifications. DemoSearch owns its dialog and query, filters a local catalog immediately through a computed value, announces result counts/no-match states and navigates selected results to their demo destinations. Results are ordinary links reached with Tab/Enter; this is not a combobox or a backend search implementation. DemoActions composes an interactive popover with example actions whose feedback is displayed by an app-scoped SToaster. No export, invitation, or business mutation is sent. DemoNotifications owns the right-side SDrawer and immutable read/unread updates; its trigger and status reflect the current unread count. Notification links navigate to Activity.
+The top-right controls are Search, Quick actions and Notifications. DemoSearch owns its dialog and query, filters a local catalog immediately through a computed value, announces result counts/no-match states and navigates selected results to their demo destinations. Results are ordinary links reached with Tab/Enter; this is not a combobox or a backend search implementation. DemoActions composes an interactive popover with example actions whose feedback is displayed by an app-scoped SToaster. No export, invitation, or business mutation is sent. DemoNotifications owns the right-side SDrawer and immutable read/unread updates; its trigger and status reflect the current unread count. Notification links navigate to the Activity card.
 
 DemoAppearance is a controlled settings view. Its primary and background pickers use SCombobox with theme-colored dots in the options and selected value. App.vue owns the primary/background/dark models and updates the document theme; mounting/unmounting Settings must not reset them. Preferences reset on a full demo reload. These examples intentionally remain app-local until consuming-project requirements justify public grouped-component contracts. No router, auth, search endpoint, or notification service has been introduced into packages/dashboard.
 
@@ -215,7 +338,7 @@ Open the Acme demo at `#orders`. DemoOrders composes the existing STable/SPagina
 
 ### Interaction and failure states
 
-DemoOrderFilters owns date-range feedback and replaces its controlled filter model. Filters opens SDrawer, initializes a draft from the issued query, and submits search/status/dates with Apply filters or Enter. A successful request closes the drawer; failure keeps its error and values visible for correction/retry. Closing without applying leaves the issued query unchanged. Active filters remain visible as compact badges. Actions opens a dropdown for page/selection CSV exports or refresh. Native date inputs use UTC calendar days, with inclusive bounds enforced again by the adapter. An `all` select value maps to an empty API status filter so the native placeholder cannot hide the All statuses option.
+DemoOrderFilters uses the core SDateRange for date feedback and presets based on the demo dataset. It replaces its controlled filter model. Filters opens SDrawer, initializes a draft from the issued query, and submits search/status/dates with Apply filters or Enter. A successful request closes the drawer; failure keeps its error and values visible for correction/retry. Closing without applying leaves the issued query unchanged. Active filters remain visible as compact badges. Actions opens a dropdown for page/selection CSV exports or refresh. Native date inputs use UTC calendar days, with inclusive bounds enforced again by the adapter. An `all` select value maps to an empty API status filter so the native placeholder cannot hide the All statuses option.
 
 `useOrderSelection` owns page-scoped IDs and derives selected/fulfillable rows from the current response. Header selection affects only displayed rows and exposes indeterminate state. Unknown IDs and changes during requests are ignored. Replacing the response clears selection. Bulk actions export the selected visible rows or confirm fulfillment of the eligible processing subset; fulfilled/cancelled selections remain eligible for export only. Fulfillment validates the whole batch before changing any record. Mutation failures stay in the confirmation dialog; successful mutations refresh the current query and only then close, with a success toast. A successful mutation followed by a failed list refresh still reports the mutation success and exposes the separate refresh error for retry.
 
@@ -227,7 +350,7 @@ The page and request controller unmount when leaving Orders; filters, selection 
 
 ## Example navigation and overview table card
 
-The demo navigation has Overview and a Page examples group: Tables, Settings, Activity, and clearly disabled Cards/Timeline entries marked Soon. The Tables example still uses fictional Orders data and app-local DemoOrders components; its canonical hash is #tables. #orders remains a backwards-compatible alias. Search discovers Tables and sample orders, and document.title follows the active page. No incomplete page is presented as implemented.
+The demo navigation is ordered Overview, Cards, Tables, Calendar, Charts and Settings. Calendar opens at #calendar. The former #lists and #activity destinations open Cards and scroll to the corresponding card. The Tables example still uses fictional Orders data and app-local DemoOrders components; its canonical hash is #tables. #orders remains a backwards-compatible alias. Search discovers Tables and sample orders, and document.title follows the active page. No incomplete page is presented as implemented.
 
 DemoOrdersPreview composes SCard, STable and SPagination on Overview. It requests five rows through the same OrdersApi instance used by the full Tables page. Pagination and sortable totals issue API queries; no response slicing happens in the card. The mock backend supplies compact page links with null-URL ellipses. Clicking an order opens the existing detail drawer; Open Tables navigates to the full example. Both instances have independent request lifetimes and abort on unmount. The preview reports loading/error states and can retry.
 
@@ -238,3 +361,10 @@ The shell header and main content share horizontal gutters (20px below 640px, 32
 ## Optional charts
 
 The dashboard app explicitly imports @sirius-ui/charts; this dashboard package has no charts dependency. Charts is enabled in Page examples and search, with #charts as its route. DemoLineChartCard owns fixed 7/14-day illustrative sales datasets, period selection and total calculation, and composes SLineChart inside SCard. Overview reuses that application-local card with Open Charts navigation. DemoCharts adds gaps/negative/zero data and a request-state selector. DemoChartComparison owns line-series color/pattern settings; DemoBarCharts shows horizontal/vertical grouped bars with single/two/three-series selection and independent series colors. These use an application-owned light/dark palette from chartExamples and app CSS. DemoDonutCharts adds configurable sales-share slices/ring thickness and an order-status mix with single-slice, all-zero, loading and error examples. Chart drawing, keyboard/pointer inspection, scaling and data-table fallback belong to packages/charts; data fetching and aggregation remain app-owned. See ../charts/readme.md for the chart contract.
+
+
+## Calendar page
+
+The Acme demo starts in the month view for its sample November 2026 schedule. Month shows a Monday-first grid with event previews. Week has seven date columns and 24 scrollable hour rows. On narrow screens the week scrolls horizontally with the time labels pinned. Day uses the same hourly schedule for a single date, with event notes and a compact month picker to the right on wide screens. Both schedules keep date headers and any all-day events visible while scrolling. Select a date in Month or a column header in Week to open its Day view. Previous and Next move by the current view’s period. Today uses the current date in Singapore. The view and selected date are local to the page.
+
+Add event opens an SDialog with the selected date prefilled. Title and date are required. Time is optional and uses Singapore time. Leave it blank for an all-day event. Saving selects the new event’s date, keeps the current view, and shows a toast. Events remain available across page navigation until the demo is reloaded.

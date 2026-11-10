@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CircleHelp, House, Settings2, Activity, FileText, Package, ChartColumn, Clock } from '../../../shared/icons'
+import { CircleHelp, House, Settings2, Calendar, FileText, Package, ChartColumn } from '../../../shared/icons'
 import { SDashboardNav } from '@sirius-ui/dashboard'
 import type { SDashboardNavGroup, SDashboardNavItem } from '@sirius-ui/dashboard'
 
@@ -11,19 +11,18 @@ const groups: SDashboardNavGroup[] = [
   { id: 'home', items: [{ id: 'overview', label: 'Overview', href: '#overview', icon: House }] },
   {
     id: 'examples', label: 'Page examples', items: [
+      { id: 'cards', label: 'Cards', href: '#cards', icon: Package },
       { id: 'orders', label: 'Tables', href: '#tables', icon: FileText },
-      { id: 'settings', label: 'Settings', href: '#settings', icon: Settings2 },
-      { id: 'activity', label: 'Activity', href: '#activity', icon: Activity },
-      { id: 'cards', label: 'Cards', href: '#cards', icon: Package, disabled: true, badge: 'Soon' },
+      { id: 'calendar', label: 'Calendar', href: '#calendar', icon: Calendar },
       { id: 'charts', label: 'Charts', href: '#charts', icon: ChartColumn },
-      { id: 'timeline', label: 'Timeline', href: '#timeline', icon: Clock, disabled: true, badge: 'Soon' },
+      { id: 'settings', label: 'Settings', href: '#settings', icon: Settings2 },
     ],
   },
 ]
 function select(item: SDashboardNavItem, event: MouseEvent) {
   // Preserve browser behavior for modified clicks and links to other browsing contexts.
   if (!isPlainLinkClick(event) || (item.target && item.target !== '_self')) return
-  if (item.id !== 'overview' && item.id !== 'activity' && item.id !== 'settings' && item.id !== 'orders' && item.id !== 'charts') return
+  if (item.id !== 'overview' && item.id !== 'settings' && item.id !== 'orders' && item.id !== 'charts' && item.id !== 'cards' && item.id !== 'calendar') return
   event.preventDefault()
   emit('navigate', item.id)
 }

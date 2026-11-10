@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ArrowUpRight, Check, Package, Users } from '../../../shared/icons'
+import { SMetricCard } from '@sirius-ui/dashboard'
 import { SBadge, SButton, SCard, SGrid } from '@sirius-ui/vue'
 import DemoLineChartCard from './DemoLineChartCard.vue'
 import DemoOrdersPreview from './orders/DemoOrdersPreview.vue'
@@ -20,11 +21,9 @@ const tasks = [
 
 <template>
   <SGrid :columns="3">
-    <SCard v-for="metric in metrics" :key="metric.label">
-      <div class="flex items-center justify-between gap-4"><p class="text-sm text-content-muted">{{ metric.label }}</p><component :is="metric.icon" aria-hidden="true" class="size-5 shrink-0 text-content-subtle" /></div>
-      <p class="mt-5 text-4xl font-semibold tracking-tight">{{ metric.value }}</p>
-      <p class="mt-3 text-xs text-content-muted">{{ metric.detail }}</p>
-    </SCard>
+    <SMetricCard v-for="metric in metrics" :key="metric.label" :label="metric.label" :value="metric.value" :detail="metric.detail">
+      <template #icon><component :is="metric.icon" /></template>
+    </SMetricCard>
   </SGrid>
   <DemoLineChartCard class="mt-6" preview @browse="emit('charts')" />
   <DemoOrdersPreview :api="api" @browse="emit('tables')" />

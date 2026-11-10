@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
-import { SField, SForm, SInput } from '@sirius-ui/vue'
+import { computed, reactive, shallowRef } from 'vue'
+import { SDateRange, SField, SForm, SInput } from '@sirius-ui/vue'
 
+import type { SDateRangePreset } from '@sirius-ui/vue'
+
+const dates = shallowRef({ from: '', to: '' })
+const presets: readonly SDateRangePreset[] = [
+  { id: 'week', label: 'First week of November', range: { from: '2026-11-01', to: '2026-11-07' } },
+  { id: 'month', label: 'November', range: { from: '2026-11-01', to: '2026-11-30' } },
+]
 const values = reactive({
   date: '2026-10-28', time: '09:30', datetime: '2026-10-28T09:30',
   month: '2026-10', week: '2026-W44', quantity: '1', amount: '1250.50', color: '#2dd4bf', range: '50',
@@ -13,7 +20,8 @@ const example = `<SInput v-model="date" type="date" />
 <SInput v-model="time" type="time" step="60" />
 <SInput v-model="quantity" type="number" min="0" max="100" step="1" />
 <SInput v-model="amount" type="number" inputmode="decimal" min="0" step="0.01" />
-<SInput v-model="color" type="color" />`
+<SInput v-model="color" type="color" />
+<SDateRange v-model="dates" :presets="presets" />`
 </script>
 
 <template>
@@ -31,6 +39,7 @@ const example = `<SInput v-model="date" type="date" />
         <SField v-slot="{ control }" label="Amount (SGD)" :description="`Preview: ${formattedAmount}`"><SInput v-bind="control" v-model="values.amount" type="number" name="amount" inputmode="decimal" min="0" step="0.01" /></SField>
         <SField v-slot="{ control }" label="Color" :description="`Value: ${values.color}`"><SInput v-bind="control" v-model="values.color" type="color" name="color" /></SField>
         <SField v-slot="{ control }" label="Range" :description="`Value: ${values.range} · 0–100, step 5`"><SInput v-bind="control" v-model="values.range" type="range" name="range" min="0" max="100" step="5" /></SField>
+        <SDateRange v-model="dates" :presets="presets" class="col-span-full" />
       </SForm>
       <p class="mt-5 text-xs leading-relaxed text-content-muted">Currency uses a decimal number input with a separate formatted preview. Formatting while typing, currency selection, and amount validation belong to your application.</p>
     </div>

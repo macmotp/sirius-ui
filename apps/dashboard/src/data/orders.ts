@@ -1,3 +1,4 @@
+import { getDateRangeError } from '@sirius-ui/vue'
 import type { SPaginationData } from '@sirius-ui/vue'
 
 export type OrderStatus = 'processing' | 'fulfilled' | 'cancelled'
@@ -57,10 +58,7 @@ export function ordersQueryFromUrl(url: string): OrdersQuery {
   return query
 }
 export function filterError(filters: OrderFilters): string {
-  for (const value of [filters.from, filters.to]) {
-    if (value && (!/^\d{4}-\d{2}-\d{2}$/.test(value) || !Number.isFinite(Date.parse(value)) || new Date(value).toISOString().slice(0, 10) !== value)) return 'Enter valid dates for the date range.'
-  }
-  return filters.from && filters.to && filters.from > filters.to ? 'The start date must be on or before the end date.' : ''
+  return getDateRangeError(filters)
 }
 export function ordersCsv(rows: readonly Order[]): string {
   const cell = (value: string | number) => {

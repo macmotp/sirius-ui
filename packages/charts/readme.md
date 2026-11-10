@@ -2,6 +2,7 @@
 
 Optional, lightweight Vue charts for SiriusUI: line, bar and donut charts with SVG rendering and plain token-based CSS. These cover trends, category comparisons and part-to-whole composition. There is no chart engine, icon library, Tailwind requirement, API client or dependency on @sirius-ui/vue. Vue is external; @sirius-ui/theme supplies runtime tokens. This workspace is private scaffolding and is not published to npm yet.
 
+- [SSparkline API](#ssparkline): a compact trend line for summary cards.
 - [SLineChart API](#slinechart-contract): ordered trends, straight/rounded lines and per-series patterns.
 - [SBarChart API](bar-chart.md): horizontal/vertical comparisons, single/grouped series, zero-based lengths and per-series colors.
 - [SDonutChart API](donut-chart.md): part-to-whole slices, shares, center total and per-slice colors.
@@ -158,3 +159,25 @@ The line uses --sirius-primary-content for clearer contrast than a shade-400 fil
 - Future chart types can share proven layout helpers; do not introduce chart-engine adapters or speculative plotting infrastructure before a real need exists.
 
 Run `npm run check` from the repository root. Tests cover SVG/table naming and escaping, numerical edge cases, gaps, state precedence, keyboard/pointer inspection, resize/cleanup across state changes, CSS isolation and package boundaries. Renderer tests do not replace browser verification.
+
+
+## SSparkline
+
+Use SSparkline for a compact trend inside a metric card or another summary. It draws a responsive SVG line in the surrounding text color.
+
+```vue
+<SSparkline :data="[16, 21, 19, 27, 24, 33, 37]" label="Net sales generally rose over the past week" />
+```
+
+Import `SSparkline` and `SSparklineProps` from `@sirius-ui/charts` and import the package stylesheet once in the app.
+
+| Prop | Default | Behavior |
+| --- | --- | --- |
+| `data` | Required | Readonly array of numbers or nulls in display order. Null and nonfinite values leave gaps. A single observation is shown as a dot. |
+| `label` | Unset | Accessible text summary of the trend. When omitted, the graphic is decorative. |
+| `height` | 44 | Height in pixels, with a 12px minimum |
+| `smooth` | True | Use rounded curves. Set false for straight line segments. |
+| `showValues` | False | Enable hover, tap and keyboard inspection of available observations. |
+| `valueFormatter` | Locale-aware number | Optional function from a numeric observation to its displayed value. |
+
+The vertical scale fits the series and horizontal positions are evenly spaced. For exact values and comparisons across series, use SLineChart. Enable showValues to highlight the nearest available point and show its value in a compact overlay. Tab to focus, use the arrow keys to inspect points, and press Escape to dismiss. Values are announced to assistive technology. The sparkline has no axes or legends.
