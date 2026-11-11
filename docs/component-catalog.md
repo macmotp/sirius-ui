@@ -9,7 +9,7 @@ Use this catalog to choose public exports and find their contracts and working e
 
 ## Setup
 
-These are private workspaces. Use packages available in this repository or your consuming project's configured package source. See the [contributor guide](../CONTRIBUTING.md#local-setup) for the supported toolchain.
+The packages are prepared for `0.1.0-alpha.0`. After publication, use the `alpha` tag to install them. See [installation](../readme.md#installation) for package selection and CSS setup. In an installed package, this catalog and its linked guides are available under `dist/docs`. Repository example links target the matching release tag.
 
 | Using | Styles to import once in the app entry |
 | --- | --- |

@@ -1,19 +1,54 @@
 {
   "name": "@sirius-ui/charts",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "license": "MIT",
-  "private": true,
   "type": "module",
-  "files": ["dist"],
-  "sideEffects": ["**/*.css"],
+  "files": [
+    "dist",
+    "bar-chart.md",
+    "donut-chart.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./style.css": "./dist/style.css"
   },
   "scripts": {
-    "build": "vite build && vue-tsc --project tsconfig.build.json",
-    "typecheck": "vue-tsc --noEmit --project tsconfig.json"
+    "build": "vite build && vue-tsc --project tsconfig.build.json && node ../../scripts/build-package-docs.mjs",
+    "typecheck": "vue-tsc --noEmit --project tsconfig.json",
+    "prepack": "npm run build"
   },
-  "dependencies": { "@sirius-ui/theme": "0.0.0" },
-  "peerDependencies": { "vue": "^3.5.0" }
+  "dependencies": {
+    "@sirius-ui/theme": "0.1.0-alpha.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "description": "Lightweight SVG line, bar, donut charts and sparklines for Vue 3.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macmotp/sirius-ui.git",
+    "directory": "packages/charts"
+  },
+  "homepage": "https://github.com/macmotp/sirius-ui/tree/main/packages/charts#readme",
+  "bugs": {
+    "url": "https://github.com/macmotp/sirius-ui/issues"
+  },
+  "keywords": [
+    "sirius-ui",
+    "vue",
+    "design-system",
+    "ui-components",
+    "typescript"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

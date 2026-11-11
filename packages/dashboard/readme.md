@@ -1,6 +1,10 @@
 # @sirius-ui/dashboard
 
-Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, `SDashboardPageHeader`, `SMetricCard`, and `SUserCard`. This private workspace is not published yet. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
+Release preparation targets `0.1.0-alpha.0`. After publication, install with `yarn add @sirius-ui/dashboard@alpha`. Vue components require Vue 3.5 or newer in the Vue 3 line.
+
+For agents using an installed package, start at `node_modules/@sirius-ui/dashboard/dist/docs/readme.md`. It contains the component catalog, usage guides, and dashboard patterns for this version.
+
+Agent usage guide for Sirius dashboard composition: `SDashboardLayout`, `SDashboardNav`, `SDashboardPageHeader`, `SMetricCard`, and `SUserCard`. `SDashboardLayout` composes `@sirius-ui/vue` primitives and the shared theme. Use it for a desktop navigation rail, sticky header and page content, with a native modal SDrawer navigation panel below 64rem. The original shell was built from functional requirements without importing a purchased template.
 
 ## Start here
 
@@ -292,7 +296,7 @@ Public types are `STimelineItem` and `STimelineProps`. The timeline presents rec
 
 ## Acme page examples
 
-See [dashboard patterns](../../docs/dashboard-patterns.md) for the Acme page compositions and [the component catalog](../../docs/component-catalog.md) for public imports and examples.
+See [dashboard patterns](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/docs/dashboard-patterns.md) for the Acme page compositions and [the component catalog](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/docs/component-catalog.md) for public imports and examples.
 
 
 ## Acme account and header examples
@@ -305,7 +309,7 @@ DemoAppearance is a controlled settings view. Its primary and background pickers
 
 ## Configurable icons
 
-The shared packages have no icon-library dependency. Use `createSiriusIcons` for app-wide mappings or `provideSiriusIcons` for reactive subtree overrides, with dependency-free control glyphs as fallbacks. Both playgrounds demonstrate Lucide and Heroicons; choose Icon set in the primitive header or dashboard Settings. See [icon configuration](../../docs/icons.md) for the complete semantic map, adapter examples, accessibility contract and installer guidance.
+The shared packages have no icon-library dependency. Use `createSiriusIcons` for app-wide mappings or `provideSiriusIcons` for reactive subtree overrides, with dependency-free control glyphs as fallbacks. Both playgrounds demonstrate Lucide and Heroicons; choose Icon set in the primitive header or dashboard Settings. See [icon configuration](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/docs/icons.md) for the complete semantic map, adapter examples, accessibility contract and installer guidance.
 
 ## Settings page composition
 

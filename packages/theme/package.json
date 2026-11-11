@@ -1,16 +1,41 @@
 {
   "name": "@sirius-ui/theme",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "license": "MIT",
-  "private": true,
   "type": "module",
-  "files": ["dist"],
-  "sideEffects": ["**/*.css"],
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": "./dist/index.css",
     "./tailwind.css": "./dist/tailwind.css"
   },
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs && node ../../scripts/build-package-docs.mjs",
+    "prepack": "npm run build"
+  },
+  "description": "CSS tokens and optional Tailwind CSS 4 mappings for SiriusUI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macmotp/sirius-ui.git",
+    "directory": "packages/theme"
+  },
+  "homepage": "https://github.com/macmotp/sirius-ui/tree/main/packages/theme#readme",
+  "bugs": {
+    "url": "https://github.com/macmotp/sirius-ui/issues"
+  },
+  "keywords": [
+    "sirius-ui",
+    "css",
+    "design-tokens",
+    "tailwindcss"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha",
+    "registry": "https://registry.npmjs.org/"
   }
 }

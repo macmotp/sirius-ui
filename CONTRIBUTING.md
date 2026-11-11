@@ -60,4 +60,4 @@ Explain the problem and the resulting behavior. Include relevant validation and 
 
 SiriusUI uses the [MIT License](LICENSE). Contributions are provided under the same license. Preserve the copyright and license notices; keep package license files consistent with the root license.
 
-Packages are currently marked private to prevent accidental publication. There is no release process yet. Do not publish packages as part of an unrelated change.
+The four libraries are prepared for public alpha publication. The root and demo apps remain private. Follow [release preparation](docs/releasing.md) to check packed consumers and publish an authorized release.

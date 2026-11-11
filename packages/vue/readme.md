@@ -1,17 +1,20 @@
 # @sirius-ui/vue
 
+Release preparation targets `0.1.0-alpha.0`. After publication, install with `yarn add @sirius-ui/vue@alpha`. Vue components require Vue 3.5 or newer in the Vue 3 line.
+
+For agents using an installed package, start at `node_modules/@sirius-ui/vue/dist/docs/readme.md`. It contains the component catalog, usage guides, and dashboard patterns for this version.
+
 Reusable Vue 3 components and composables styled with the SiriusUI theme. `SButton`, `SForm`, `SField`, `SInput`, `STextarea`, `SSelect`, `SCheckbox`, `SRadio`, `SSwitch`, `SGrid`, `SCard`, `SBadge`, `SAlert`, `SDialog`, `STagsInput`, `SCombobox`, `SDropdown`, `STabs`, `STooltip`, `SAvatar`, `SSkeleton`, `SDivider`, `SEmptyState`, `SDrawer`, `SAccordion`, `SBreadcrumbs`, `STable`, `SPagination`, `SToast`, `SToaster`, `SProgress`, `SPopover`, and `SFileUpload` are implemented.
 
-The package is a private local workspace and has not been published. It exports ES modules, TypeScript declarations, and compiled CSS without Preflight. External installation instructions will follow when distribution is configured.
+The package exports ES modules, TypeScript declarations, and compiled CSS without Preflight.
 
 ## Styling setup
 
-After building the workspaces, consuming applications import components and their CSS:
+Consuming applications import components and their CSS:
 
 ```vue
 <script setup lang="ts">
 import { SButton } from '@sirius-ui/vue'
-import { Plus } from '@lucide/vue'
 import '@sirius-ui/vue/style.css'
 </script>
 
@@ -20,7 +23,7 @@ import '@sirius-ui/vue/style.css'
 </template>
 ```
 
-The CSS export includes shared tokens and component utilities without a reset. Applications do not need Tailwind to use the compiled CSS. Applications own InterVariable font loading, palette selection, and appearance; see [the theme guide](../theme/readme.md).
+The CSS export includes shared tokens and component utilities without a reset. Applications do not need Tailwind to use the compiled CSS. Applications own InterVariable font loading, palette selection, and appearance; see [the theme guide](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/packages/theme/readme.md).
 
 The playground loads workspace sources and their CSS directly. The library build extracts the stylesheet into `dist/style.css`; consuming applications must import the CSS export explicitly. Vue remains a peer dependency and is excluded from the bundle.
 
@@ -442,7 +445,7 @@ npm run check
 
 The first command serves the playground with live updates. The second checks workspace types, builds the packages and playground, and runs theme and component tests.
 
-See [the contributor guide](../../CONTRIBUTING.md), [architecture](../../docs/architecture.md), and [theme guide](../theme/readme.md).
+See [the contributor guide](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/CONTRIBUTING.md), [architecture](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/docs/architecture.md), and [theme guide](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/packages/theme/readme.md).
 
 
 ## SGrid
@@ -828,7 +831,7 @@ Items have a unique string `value`, `label`, optional `content` and `disabled`. 
 
 ## Internal Vue conventions
 
-Components use Vue 3.5 template refs and shallow refs for primitive local state. Dialog and drawer share an internal native-modal lifecycle composable; their public props, events, slots and styles are unchanged. Lifecycle regression tests cover independent instances, reopening during exit and pending-timer cleanup on unmount. See [architecture](../../docs/architecture.md) and the installed Vue workflow for implementation guidance.
+Components use Vue 3.5 template refs and shallow refs for primitive local state. Dialog and drawer share an internal native-modal lifecycle composable; their public props, events, slots and styles are unchanged. Lifecycle regression tests cover independent instances, reopening during exit and pending-timer cleanup on unmount. See [architecture](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/docs/architecture.md) and the installed Vue workflow for implementation guidance.
 
 ## SBreadcrumbs
 
@@ -1129,4 +1132,4 @@ This frontend control can be used with a Laravel upload endpoint. Replacing a me
 
 ## Configurable icons
 
-The shared packages have no icon-library dependency. Use `createSiriusIcons` for app-wide mappings or `provideSiriusIcons` for reactive subtree overrides, with dependency-free control glyphs as fallbacks. Both playgrounds demonstrate Lucide and Heroicons; choose Icon set in the primitive header or dashboard Settings. See [icon configuration](../../docs/icons.md) for the complete semantic map, adapter examples, accessibility contract and installer guidance.
+The shared packages have no icon-library dependency. Use `createSiriusIcons` for app-wide mappings or `provideSiriusIcons` for reactive subtree overrides, with dependency-free control glyphs as fallbacks. Both playgrounds demonstrate Lucide and Heroicons; choose Icon set in the primitive header or dashboard Settings. See [icon configuration](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/docs/icons.md) for the complete semantic map, adapter examples, accessibility contract and installer guidance.

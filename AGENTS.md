@@ -11,7 +11,7 @@ These instructions apply throughout this repository. Read `readme.md`, `CONTRIBU
 - `apps/dashboard` demonstrates dashboard shells with application-owned navigation, content and preferences. Keep composed layouts out of the primitive playground.
 - `apps/playground` demonstrates the packages. Application branding, appearance persistence, and demo state belong here, rather than in the library.
 - Keep routes, authentication, API calls, store-specific state, and other business logic in consuming applications.
-- The packages are private scaffolds for an open-source project. Do not change publication flags or introduce release automation as an incidental change.
+- The four libraries are prepared for public alpha publication. The root and demo apps remain private. Follow [release preparation](docs/releasing.md) for packaging and an authorized publication.
 
 ## Implementation conventions
 

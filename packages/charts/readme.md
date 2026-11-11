@@ -1,6 +1,10 @@
 # @sirius-ui/charts
 
-Optional, lightweight Vue charts for SiriusUI: line, bar and donut charts with SVG rendering and plain token-based CSS. These cover trends, category comparisons and part-to-whole composition. There is no chart engine, icon library, Tailwind requirement, API client or dependency on @sirius-ui/vue. Vue is external; @sirius-ui/theme supplies runtime tokens. This workspace is private scaffolding and is not published to npm yet.
+Release preparation targets `0.1.0-alpha.0`. After publication, install with `yarn add @sirius-ui/charts@alpha`. Vue components require Vue 3.5 or newer in the Vue 3 line.
+
+For agents using an installed package, start at `node_modules/@sirius-ui/charts/dist/docs/readme.md`. It contains the component catalog, usage guides, and dashboard patterns for this version.
+
+Optional, lightweight Vue charts for SiriusUI: line, bar and donut charts with SVG rendering and plain token-based CSS. These cover trends, category comparisons and part-to-whole composition. There is no chart engine, icon library, Tailwind requirement, API client or dependency on @sirius-ui/vue. Vue is external; @sirius-ui/theme supplies runtime tokens. This package is prepared for an initial alpha release.
 
 - [SSparkline API](#ssparkline): a compact trend line for summary cards.
 - [SLineChart API](#slinechart-contract): ordered trends, straight/rounded lines and per-series patterns.
