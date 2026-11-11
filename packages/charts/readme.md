@@ -1,6 +1,6 @@
 # @sirius-ui/charts
 
-Release preparation targets `0.1.0-alpha.0`. After publication, install with `yarn add @sirius-ui/charts@alpha`. Vue components require Vue 3.5 or newer in the Vue 3 line.
+Release preparation targets `0.1.0-alpha.1`. After publication, install with `yarn add @sirius-ui/charts@alpha`. Vue components require Vue 3.5 or newer in the Vue 3 line.
 
 For agents using an installed package, start at `node_modules/@sirius-ui/charts/dist/docs/readme.md`. It contains the component catalog, usage guides, and dashboard patterns for this version.
 

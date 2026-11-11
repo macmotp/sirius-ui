@@ -1,0 +1,19 @@
+@import 'tailwindcss';
+@import '@sirius-ui/theme/tailwind.css';
+@source '../../../packages/vue/src';
+@source '../../../packages/auth/src';
+
+@layer base {
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--sirius-canvas);
+    color: var(--sirius-content);
+    font-family: var(--sirius-font-sans);
+  }
+  :focus-visible { outline: 2px solid var(--sirius-focus); outline-offset: 3px; }
+}
+
+.auth-logo {
+  mask: url('../../../sirius_ui.svg') center / contain no-repeat;
+}

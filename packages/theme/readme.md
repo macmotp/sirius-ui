@@ -1,6 +1,6 @@
 # @sirius-ui/theme
 
-Release preparation targets `0.1.0-alpha.0`. After publication, install with `yarn add @sirius-ui/theme@alpha`.
+Release preparation targets `0.1.0-alpha.1`. After publication, install with `yarn add @sirius-ui/theme@alpha`.
 
 For agents using an installed package, start at `node_modules/@sirius-ui/theme/dist/docs/readme.md`. It contains the component catalog, usage guides, and dashboard patterns for this version.
 
@@ -90,7 +90,7 @@ Every color role exposes the same token family. Replace `primary` below with `su
 | `--sirius-primary-soft` | `bg-primary-soft` | Shade 50 in light mode, shade 950 in dark mode |
 | `--sirius-primary-content` | `text-primary-content` | Readable foreground for soft backgrounds: shade 800 in light mode, shade 300 in dark mode |
 
-Use `text-on-*` on filled backgrounds and `text-*-content` on soft backgrounds. The role fill is intentionally bright; it is not the foreground for an alert on a pale surface. These role foreground/background pairs are contrast-tested in both appearances. Solid buttons separately use the white `--sirius-on-solid` token (`text-on-solid`); white on shade-400 fills has insufficient normal-text contrast. See [the button guide](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.0/packages/vue/readme.md#accessibility-and-loading) for that limitation.
+Use `text-on-*` on filled backgrounds and `text-*-content` on soft backgrounds. The role fill is intentionally bright; it is not the foreground for an alert on a pale surface. These role foreground/background pairs are contrast-tested in both appearances. Solid buttons separately use the white `--sirius-on-solid` token (`text-on-solid`); white on shade-400 fills has insufficient normal-text contrast. See [the button guide](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.1/packages/vue/readme.md#accessibility-and-loading) for that limitation.
 
 **Migration:** named themes and `data-sirius-theme` have been removed. Use `data-sirius-color` and `data-sirius-background` instead. Secondary and info tokens/utilities have been removed. For soft status backgrounds use `text-success-content`, `text-warning-content`, or `text-danger-content`, rather than the bright fill color as text. The `data-theme` appearance API is unchanged; old theme or brand preferences are not read.
 

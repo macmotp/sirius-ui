@@ -26,6 +26,8 @@ Open the URL printed by Vite, normally `http://127.0.0.1:5173`. Package source c
 | `packages/charts/src` | Optional SVG chart components, layout math and isolated CSS |
 | `packages/dashboard/src` | Composed application shells built on the primitives |
 | `apps/dashboard/src` | Dashboard demonstrations with app-owned navigation and data |
+| `packages/auth/src` | Auth layouts and controlled form templates |
+| `apps/auth/src` | Auth template previews with local form state |
 | `docs/architecture.md` | Package boundaries and architectural decisions |
 
 Read [AGENTS.md](AGENTS.md) for implementation conventions and [the theme guide](packages/theme/readme.md) for the token API.
@@ -46,7 +48,7 @@ For dependency changes, use Yarn from the root and include the resulting `yarn.l
 npm run check
 ```
 
-This runs type checks, builds all four libraries and both demo apps, and tests CSS exports, Tailwind integration, and built-component behavior. More targeted commands are listed in [the README](readme.md#getting-started).
+This runs type checks, builds the libraries and demo apps, and tests CSS exports, Tailwind integration, and built-component behavior. More targeted commands are listed in [the README](readme.md#getting-started).
 
 For visible changes, also check the playground at narrow and wide widths, in light and dark modes, and with the accent and background palette options. Verify that status colors remain fixed while changing accents and backgrounds. Use the keyboard to reach and operate interactive controls. Check long content, disabled states, labels, focus indicators, and relevant status announcements.
 
@@ -60,4 +62,4 @@ Explain the problem and the resulting behavior. Include relevant validation and 
 
 SiriusUI uses the [MIT License](LICENSE). Contributions are provided under the same license. Preserve the copyright and license notices; keep package license files consistent with the root license.
 
-The four libraries are prepared for public alpha publication. The root and demo apps remain private. Follow [release preparation](docs/releasing.md) to check packed consumers and publish an authorized release.
+The five libraries are prepared for public alpha publication. The root and demo apps remain private. Follow [release preparation](docs/releasing.md) to check packed consumers and publish an authorized release.

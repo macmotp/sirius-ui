@@ -9,7 +9,7 @@ Use this catalog to choose public exports and find their contracts and working e
 
 ## Setup
 
-The packages are prepared for `0.1.0-alpha.0`. After publication, use the `alpha` tag to install them. See [installation](../readme.md#installation) for package selection and CSS setup. In an installed package, this catalog and its linked guides are available under `dist/docs`. Repository example links target the matching release tag.
+The packages are prepared for `0.1.0-alpha.1`. After publication, use the `alpha` tag to install them. See [installation](../readme.md#installation) for package selection and CSS setup. In an installed package, this catalog and its linked guides are available under `dist/docs`. Repository example links target the matching release tag.
 
 | Using | Styles to import once in the app entry |
 | --- | --- |
@@ -109,3 +109,18 @@ Use a single page title. If the shell header already renders the page's `h1`, pa
 | `SSparkline` | Compact trend in a metric card or summary | [Guide](../packages/charts/readme.md#ssparkline) · [Source](../packages/charts/src/components/SSparkline.vue) | [Demo](../apps/dashboard/src/components/DemoCards.vue) |
 
 Chart inputs are ordered application data. Supply titles, units, and consistent formatters. For a small trend in a dashboard card, supply `SSparkline` through `SMetricCard`'s `chart` slot. Import charts explicitly in the consuming app.
+
+## `@sirius-ui/auth`
+
+Use these controlled templates for authentication pages. Import from `@sirius-ui/auth` and load its stylesheet alongside the core Vue stylesheet. See the [shared form contract](../packages/auth/readme.md#shared-form-contract) for processing, feedback, and model ownership.
+
+| Export | Use for | Contract | Working example |
+| --- | --- | --- | --- |
+| `SAuthLayout` | Centered or split page with one heading and optional branding | [Guide](../packages/auth/readme.md#sauthlayout) · [Source](../packages/auth/src/components/SAuthLayout.vue) | [Demo](../apps/auth/src/App.vue) |
+| `SLoginForm` | Email/password sign-in and remember choice | [Guide](../packages/auth/readme.md#sloginform) · [Source](../packages/auth/src/components/SLoginForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
+| `SRegisterForm` | Name, email, password, and confirmation | [Guide](../packages/auth/readme.md#sregisterform) · [Source](../packages/auth/src/components/SRegisterForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
+| `SForgotPasswordForm` | Request a password reset link | [Guide](../packages/auth/readme.md#sforgotpasswordform) · [Source](../packages/auth/src/components/SForgotPasswordForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
+| `SResetPasswordForm` | Enter a new password and confirmation | [Guide](../packages/auth/readme.md#sresetpasswordform) · [Source](../packages/auth/src/components/SResetPasswordForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
+| `SConfirmPasswordForm` | Confirm a password before an app action | [Guide](../packages/auth/readme.md#sconfirmpasswordform) · [Source](../packages/auth/src/components/SConfirmPasswordForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
+| `STwoFactorForm` | Submit an authenticator code or a recovery code | [Guide](../packages/auth/readme.md#stwofactorform) · [Source](../packages/auth/src/components/STwoFactorForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
+| `SEmailVerification` | Verification instructions, resend, and sign-out actions | [Guide](../packages/auth/readme.md#semailverification) · [Source](../packages/auth/src/components/SEmailVerification.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |

@@ -6,7 +6,7 @@ Start with the [component catalog](docs/component-catalog.md) to choose public e
 
 ## Installation
 
-The four libraries are prepared for an initial `0.1.0-alpha.0` release. These registry commands apply after publication under the `alpha` tag. Vue components require Vue `^3.5.0`.
+The five libraries are prepared for the `0.1.0-alpha.1` release. These registry commands apply after publication under the `alpha` tag. Vue components require Vue `^3.5.0`.
 
 ```sh
 yarn add @sirius-ui/vue@alpha
@@ -20,12 +20,19 @@ yarn add @sirius-ui/dashboard@alpha
 yarn add @sirius-ui/charts@alpha
 ```
 
+For authentication layouts and controlled forms, add the auth package.
+
+```sh
+yarn add @sirius-ui/auth@alpha
+```
+
 Import the styles for the packages you use once in your application entry.
 
 ```ts
 import '@sirius-ui/vue/style.css'
 import '@sirius-ui/dashboard/style.css'
 import '@sirius-ui/charts/style.css'
+import '@sirius-ui/auth/style.css'
 ```
 
 Compiled CSS includes theme tokens and component styles. Your application can use its own CSS or Tailwind to style slot content. The application owns resets, font loading, appearance, and its preferred icon set. See [icon configuration](docs/icons.md).
@@ -49,12 +56,13 @@ import { SButton, SCard } from '@sirius-ui/vue'
 | `@sirius-ui/vue` | Vue primitives, forms, overlays, and data display | [Vue](packages/vue/readme.md) |
 | `@sirius-ui/dashboard` | Dashboard shell, navigation, cards, lists, and timelines | [Dashboard](packages/dashboard/readme.md) |
 | `@sirius-ui/charts` | SVG line, bar, donut charts, and sparklines | [Charts](packages/charts/readme.md) |
+| `@sirius-ui/auth` | Auth layouts and controlled form templates | [Auth](packages/auth/readme.md) |
 
 The theme is installed through the component packages' dependencies. Install `@sirius-ui/theme@alpha` directly if your application imports its CSS tokens or Tailwind entry.
 
 ## Agent documentation
 
-Each library includes a documentation bundle at `node_modules/@sirius-ui/<package>/dist/docs/readme.md`. Follow that entry to the catalog and read the relevant contracts. The bundle contains the guides for all four packages, so agents can choose components before adding an optional package. Source and working-example links point to the corresponding Git release tag.
+Each library includes a documentation bundle at `node_modules/@sirius-ui/<package>/dist/docs/readme.md`. Follow that entry to the catalog and read the relevant contracts. The bundle contains the guides for all five packages, so agents can choose components before adding an optional package. Source and working-example links point to the corresponding Git release tag.
 
 ## Getting started
 
@@ -64,9 +72,10 @@ To develop SiriusUI itself, use the supported Node version from package.json and
 yarn install --frozen-lockfile
 npm run dev
 npm run dev:dashboard
+npm run dev:auth
 ```
 
-The primitive playground normally runs at http://127.0.0.1:5173 and the Acme dashboard at http://127.0.0.1:5180. Acme includes Overview, Cards, Tables, Calendar, Charts, and Settings.
+The primitive playground normally runs at http://127.0.0.1:5173, the Acme dashboard at http://127.0.0.1:5180, and the auth preview at http://127.0.0.1:5190. Acme includes Overview, Cards, Tables, Calendar, Charts, and Settings.
 
 ```sh
 npm run check

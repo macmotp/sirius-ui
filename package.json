@@ -21,9 +21,11 @@
     "check": "npm run build:packages && npm run typecheck && npm run build:apps && node --test packages/*/tests/*.test.mjs",
     "dev:dashboard": "npm run dev --workspace @sirius-ui/dashboard-demo",
     "preview:dashboard": "npm run preview --workspace @sirius-ui/dashboard-demo",
-    "build:packages": "npm run build --workspace @sirius-ui/theme && npm run build --workspace @sirius-ui/vue && npm run build --workspace @sirius-ui/charts && npm run build --workspace @sirius-ui/dashboard",
-    "build:apps": "npm run build --workspace @sirius-ui/playground && npm run build --workspace @sirius-ui/dashboard-demo",
-    "check:packages": "npm run build:packages && node scripts/check-packages.mjs"
+    "build:packages": "npm run build --workspace @sirius-ui/theme && npm run build --workspace @sirius-ui/vue && npm run build --workspace @sirius-ui/charts && npm run build --workspace @sirius-ui/dashboard && npm run build --workspace @sirius-ui/auth",
+    "build:apps": "npm run build --workspace @sirius-ui/playground && npm run build --workspace @sirius-ui/dashboard-demo && npm run build --workspace @sirius-ui/auth-demo",
+    "check:packages": "npm run build:packages && node scripts/check-packages.mjs",
+    "dev:auth": "npm run dev --workspace @sirius-ui/auth-demo",
+    "preview:auth": "npm run preview --workspace @sirius-ui/auth-demo"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

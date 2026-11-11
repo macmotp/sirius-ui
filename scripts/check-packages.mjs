@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const directory = await mkdtemp(join(tmpdir(), 'sirius-packages-'))
-const packages = ['theme', 'vue', 'charts', 'dashboard']
+const packages = ['theme', 'vue', 'charts', 'dashboard', 'auth']
 const dependencies = {}
 const license = await readFile(join(root, 'LICENSE'), 'utf8')
 const offline = process.argv.includes('--offline')
@@ -40,7 +40,7 @@ for (const name of packages) {
   assert.ok(paths.includes('dist/docs/packages/vue/readme.md'))
   assert.ok(paths.every(path => path === 'package.json' || path === 'LICENSE' || path.endsWith('.md') || path.startsWith('dist/')))
   for (const target of exportTargets(manifest.exports)) assert.ok(paths.includes(target.slice(2)), `${name} missing ${target}`)
-  dependencies[manifest.name] = `file:${join(directory, result.filename)}`
+  dependencies[manifest.name] = `file:${result.filename}`
   console.log(`${manifest.name}@${manifest.version}: ${result.files.length} files, ${Math.round(result.size / 1024)} KiB packed`)
 }
 
@@ -62,6 +62,7 @@ await writeFile(join(directory, 'src/main.ts'), `import { createApp } from 'vue'
 import '@sirius-ui/vue/style.css'
 import '@sirius-ui/dashboard/style.css'
 import '@sirius-ui/charts/style.css'
+import '@sirius-ui/auth/style.css'
 import App from './App.vue'
 createApp(App).mount('#app')
 `)
@@ -71,12 +72,19 @@ import { SButton, SCard, SField, SInput, STable, SPagination } from '@sirius-ui/
 import type { STableColumn, SPaginationData } from '@sirius-ui/vue'
 import { SDashboardLayout, SMetricCard } from '@sirius-ui/dashboard'
 import { SLineChart } from '@sirius-ui/charts'
+import { SAuthLayout, SLoginForm } from '@sirius-ui/auth'
+import type { SLoginValue } from '@sirius-ui/auth'
+const showAuth = shallowRef(true)
+const credentials = shallowRef<SLoginValue>({ email: '', password: '', remember: false })
 const title = shallowRef('')
 const columns: STableColumn<{ id: number }>[] = [{ key: 'id', label: 'Order' }]
 const pagination: SPaginationData = { current_page: 1, last_page: 1, total: 1 }
 </script>
 <template>
-  <SDashboardLayout main-labelledby="page-title">
+  <SAuthLayout v-if="showAuth" title="Welcome back">
+    <SLoginForm v-model="credentials" />
+  </SAuthLayout>
+  <SDashboardLayout v-else main-labelledby="page-title">
     <template #brand>Acme</template>
     <template #navigation><a href="/">Overview</a></template>
     <h1 id="page-title">Overview</h1>
@@ -107,9 +115,13 @@ import { renderToString } from '@vue/server-renderer'
 import { SButton } from '@sirius-ui/vue'
 import { SMetricCard } from '@sirius-ui/dashboard'
 import { SLineChart } from '@sirius-ui/charts'
+import { SAuthLayout, SLoginForm } from '@sirius-ui/auth'
 assert.match(await renderToString(h(SButton, {}, () => 'Ready')), /Ready/)
 assert.match(await renderToString(h(SMetricCard, { label: 'Orders', value: '1' })), /Orders/)
 assert.match(await renderToString(h(SLineChart, { title: 'Orders over time', data: [{ label: 'Mon', value: 1 }] })), /Orders over time/)
+assert.match(await renderToString(h(SAuthLayout, { title: 'Welcome back' }, {
+  default: () => h(SLoginForm, { modelValue: { email: '', password: '', remember: false } }),
+})), /autocomplete="current-password"/)
 `)
 run('node', ['render.mjs'])
 

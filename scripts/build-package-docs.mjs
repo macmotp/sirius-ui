@@ -12,6 +12,7 @@ const files = [
   'packages/theme/readme.md',
   'packages/vue/readme.md',
   'packages/dashboard/readme.md',
+  'packages/auth/readme.md',
   'packages/charts/readme.md',
   'packages/charts/bar-chart.md',
   'packages/charts/donut-chart.md',
@@ -45,5 +46,5 @@ Start with the [component catalog](docs/component-catalog.md), then read the gui
 
 Reuse public exports and preserve their defaults, models, events, slots, and keyboard and focus behavior unless the task calls for a change. Keep project-specific routes, requests, permissions, and state in the consuming app. Configure the app's preferred icon set through [icon mappings](docs/icons.md).
 
-This bundle contains the guides for all four SiriusUI packages at this version. Install the packages needed by your app. Source and working-example links use the matching repository release tag.
+This bundle contains the SiriusUI package guides, including previews whose release status is described in their guide. Install the packages needed by your app. Source and working-example links use the matching repository release tag.
 `)

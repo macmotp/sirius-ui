@@ -1,0 +1,53 @@
+{
+  "name": "@sirius-ui/auth",
+  "version": "0.1.0-alpha.1",
+  "license": "MIT",
+  "description": "Vue authentication layouts and controlled form templates for SiriusUI.",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "build": "vite build && vue-tsc --project tsconfig.build.json && node ../../scripts/build-package-docs.mjs",
+    "typecheck": "vue-tsc --noEmit --project tsconfig.json",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@sirius-ui/theme": "0.1.0-alpha.1",
+    "@sirius-ui/vue": "0.1.0-alpha.1"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macmotp/sirius-ui.git",
+    "directory": "packages/auth"
+  },
+  "homepage": "https://github.com/macmotp/sirius-ui/tree/main/packages/auth#readme",
+  "bugs": {
+    "url": "https://github.com/macmotp/sirius-ui/issues"
+  },
+  "keywords": [
+    "sirius-ui",
+    "vue",
+    "design-system",
+    "ui-components",
+    "typescript"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
