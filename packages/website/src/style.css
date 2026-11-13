@@ -1,0 +1,6 @@
+/* Website sections without a reset. Applications own fonts and page content. */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import '@sirius-ui/theme/tailwind.css';
+@source './components';

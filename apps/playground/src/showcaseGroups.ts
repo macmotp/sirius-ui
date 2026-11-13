@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 import FoundationsShowcase from './components/FoundationsShowcase.vue'
 import ButtonShowcase from './components/ButtonShowcase.vue'
+import CopyShowcase from './components/CopyShowcase.vue'
 import DropdownShowcase from './components/DropdownShowcase.vue'
 import FormShowcase from './components/FormShowcase.vue'
 import ChoiceShowcase from './components/ChoiceShowcase.vue'
@@ -40,7 +41,7 @@ export const showcaseGroups: ShowcaseGroup[] = [
   {
     id: 'actions', title: 'Actions',
     description: 'Buttons, links, and menus for the next action.',
-    components: [ButtonShowcase, DropdownShowcase],
+    components: [ButtonShowcase, CopyShowcase, DropdownShowcase],
   },
   {
     id: 'forms', title: 'Forms',

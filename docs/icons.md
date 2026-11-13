@@ -48,6 +48,7 @@ const icons = createSiriusIcons({ close: heroicon(XMarkIcon) })
 | --- | --- | --- |
 | close | X | XMarkIcon |
 | check | Check | CheckIcon |
+| copy | Copy | DocumentDuplicateIcon |
 | minus | Minus | MinusIcon |
 | chevronDown | ChevronDown | ChevronDownIcon |
 | chevronLeft | ChevronLeft | ChevronLeftIcon |

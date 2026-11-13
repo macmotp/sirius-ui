@@ -1,6 +1,6 @@
 # SiriusUI dashboard patterns
 
-Use these patterns to assemble pages with the [component catalog](component-catalog.md). Acme is a running Vue application with local fixtures. Follow its component wiring and supply the consuming project's routes, data, permissions, persistence, and copy.
+Use these patterns with the [agent guide](agent-guide.md) and [component catalog](component-catalog.md). Acme is a running Vue application with local fixtures. Follow its component wiring and supply the consuming project's routes, data, permissions, persistence, and copy.
 
 ## Dashboard shell
 

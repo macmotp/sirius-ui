@@ -1,11 +1,11 @@
 # SiriusUI component catalog
 
-Use this catalog to choose public exports and find their contracts and working examples. Start with [dashboard patterns](dashboard-patterns.md) when building a whole page or combining components.
+Use this catalog to choose public exports and find their contracts and working examples. Start with the [agent guide](agent-guide.md) for implementation and generic-request composition rules, then use [dashboard patterns](dashboard-patterns.md) or [website patterns](website-patterns.md) to compose a page.
 
 1. Choose a component by task. Import its named export from the package in the section heading.
 2. Read the **Guide** sections for the components you chose. Check **Source** when the guide leaves a contract unclear or when changing a shared component. The component's props import points to its TypeScript definitions where applicable.
-3. Open the **Working example** to see how data and handlers are wired. Import from the public package entry in your own app. Treat `apps/playground`, `apps/dashboard`, and `apps/shared` as examples.
-4. Use the consuming app's router, API, permissions, and state. Give controls accessible names, use stable data IDs, and exercise loading, empty, and error states when they apply.
+3. Open the **Working example** to see how data and handlers are wired. Import from the public package entry in your own app. Treat all `apps/*` files as application examples, including the dashboard, auth, website, playground, and shared helpers.
+4. Use the consuming app's router, API, permissions, and state. Preserve documented component defaults and interaction contracts. Give controls accessible names, use stable data IDs, and exercise loading, empty, and error states when they apply.
 
 ## Setup
 
@@ -29,6 +29,7 @@ Run `npm run dev` for the primitive examples and `npm run dev:dashboard` for Acm
 | Export | Use for | Contract | Working example |
 | --- | --- | --- | --- |
 | `SButton` | Action, anchor download, or router link | [Guide](../packages/vue/readme.md#sbutton) · [Source](../packages/vue/src/components/SButton.vue) | [Demo](../apps/playground/src/components/ButtonShowcase.vue) |
+| `SCopyButton` | Copy supplied text with pending, success, and error feedback | [Guide](../packages/vue/readme.md#scopybutton) · [Source](../packages/vue/src/components/SCopyButton.vue) | [Demo](../apps/playground/src/components/CopyShowcase.vue) |
 | `SDropdown` | Keyboard-operated menu of discrete actions | [Guide](../packages/vue/readme.md#sdropdown) · [Source](../packages/vue/src/components/SDropdown.vue) | [Demo](../apps/playground/src/components/DropdownShowcase.vue) |
 | `STabs` | Switch between related panels in one view | [Guide](../packages/vue/readme.md#stabs) · [Source](../packages/vue/src/components/STabs.vue) | [Demo](../apps/playground/src/components/TabsShowcase.vue) |
 | `SBreadcrumbs` | Page hierarchy with linked ancestors | [Guide](../packages/vue/readme.md#sbreadcrumbs) · [Source](../packages/vue/src/components/SBreadcrumbs.vue) | [Demo](../apps/playground/src/components/BreadcrumbsShowcase.vue) |
@@ -124,3 +125,30 @@ Use these controlled templates for authentication pages. Import from `@sirius-ui
 | `SConfirmPasswordForm` | Confirm a password before an app action | [Guide](../packages/auth/readme.md#sconfirmpasswordform) · [Source](../packages/auth/src/components/SConfirmPasswordForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
 | `STwoFactorForm` | Submit an authenticator code or a recovery code | [Guide](../packages/auth/readme.md#stwofactorform) · [Source](../packages/auth/src/components/STwoFactorForm.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
 | `SEmailVerification` | Verification instructions, resend, and sign-out actions | [Guide](../packages/auth/readme.md#semailverification) · [Source](../packages/auth/src/components/SEmailVerification.vue) | [Demo](../apps/auth/src/AuthDemoForm.vue) |
+
+## `@sirius-ui/website` private preview
+
+Use website sections for public-facing pages. Import from `@sirius-ui/website` and load `@sirius-ui/website/style.css` alongside the core Vue stylesheet. The [website guide](../packages/website/readme.md) describes the private preview's component and app boundaries.
+
+For original studio compositions and section variations, see the [Sections showcase](../apps/website/src/pages/StudioSections.vue) and its [hero examples](../apps/website/src/components/StudioHeroExamples.vue), [feature examples](../apps/website/src/components/StudioFeatureExamples.vue), [CTA examples](../apps/website/src/components/StudioCtaExamples.vue), [newsletter examples](../apps/website/src/components/StudioNewsletterExamples.vue), [stats examples](../apps/website/src/components/StudioStatsExamples.vue), [testimonial examples](../apps/website/src/components/StudioTestimonialExamples.vue), [blog examples](../apps/website/src/components/StudioBlogExamples.vue), [contact examples](../apps/website/src/components/StudioContactExamples.vue), [team examples](../apps/website/src/components/StudioTeamExamples.vue), and [footer example](../apps/website/src/components/StudioFooterExamples.vue).
+
+| Export | Use for | Contract | Working example |
+| --- | --- | --- | --- |
+| `SWebsiteLayout` | Skip link and main landmark with header/footer slots | [Guide](../packages/website/readme.md#swebsitelayout) · [Source](../packages/website/src/components/SWebsiteLayout.vue) | [Demo](../apps/website/src/App.vue) |
+| `SWebsiteHeader` | Desktop navigation and a mobile drawer | [Guide](../packages/website/readme.md#swebsiteheader) · [Source](../packages/website/src/components/SWebsiteHeader.vue) | [Demo](../apps/website/src/App.vue) |
+| `SWebsiteFooter` | Grouped footer links or centered navigation with app-owned social icons | [Guide](../packages/website/readme.md#swebsitefooter) · [Source](../packages/website/src/components/SWebsiteFooter.vue) | [Demo](../apps/website/src/App.vue) |
+| `SWebsiteHero` | Page introduction with actions and optional media | [Guide](../packages/website/readme.md#swebsitehero) · [Source](../packages/website/src/components/SWebsiteHero.vue) | [Demo](../apps/website/src/pages/StudioHome.vue) |
+| `SWebsiteSection` | Consistent content width, section heading, and contextual controls | [Guide](../packages/website/readme.md#swebsitesection) · [Source](../packages/website/src/components/SWebsiteSection.vue) | [Demo](../apps/website/src/pages/StudioProjects.vue) |
+| `SWebsiteFeatures` | Icon columns, a 2 × 2 grid, or a feature list beside media | [Guide](../packages/website/readme.md#swebsitefeatures) · [Source](../packages/website/src/components/SWebsiteFeatures.vue) | [Demo](../apps/website/src/components/StudioFeatureExamples.vue) |
+| `SProjectCard` | Linked project preview and metadata | [Guide](../packages/website/readme.md#sprojectcard) · [Source](../packages/website/src/components/SProjectCard.vue) | [Demo](../apps/website/src/components/StudioProjectGrid.vue) |
+| `SWebsiteCta` | Banner, simple, centered, gradient, or image call to action | [Guide](../packages/website/readme.md#swebsitecta) · [Source](../packages/website/src/components/SWebsiteCta.vue) | [Demo](../apps/website/src/pages/StudioHome.vue) |
+| `SWebsiteNewsletter` | Controlled email sign-up with details or a simple accent band | [Guide](../packages/website/readme.md#swebsitenewsletter) · [Source](../packages/website/src/components/SWebsiteNewsletter.vue) | [Demo](../apps/website/src/components/StudioNewsletterExamples.vue) |
+| `SWebsiteStats` | Joined stat tiles, a list beside imagery, or figures alongside supporting prose | [Guide](../packages/website/readme.md#swebsitestats) · [Source](../packages/website/src/components/SWebsiteStats.vue) | [Demo](../apps/website/src/components/StudioStatsExamples.vue) |
+| `SWebsiteTestimonials` | Centered quotes, a quote beside imagery, or multiple partner quotes | [Guide](../packages/website/readme.md#swebsitetestimonials) · [Source](../packages/website/src/components/SWebsiteTestimonials.vue) | [Demo](../apps/website/src/components/StudioTestimonialExamples.vue) |
+| `SPricingCard` | Formatted plan prices, features, and app-owned selection controls | [Guide](../packages/website/readme.md#spricingcard) · [Source](../packages/website/src/components/SPricingCard.vue) | [Demo](../apps/website/src/pages/StudioPricing.vue) |
+| `SWebsiteBlog` | Text columns, image columns, or a horizontal article list | [Guide](../packages/website/readme.md#swebsiteblog) · [Source](../packages/website/src/components/SWebsiteBlog.vue) | [Demo](../apps/website/src/components/StudioBlogExamples.vue) |
+| `SWebsiteContact` | Contact details beside an app-owned form, or a location grid | [Guide](../packages/website/readme.md#swebsitecontact) · [Source](../packages/website/src/components/SWebsiteContact.vue) | [Demo](../apps/website/src/components/StudioContactExamples.vue) |
+| `SWebsiteTeam` | Compact team profiles or a larger circular portrait grid | [Guide](../packages/website/readme.md#swebsiteteam) · [Source](../packages/website/src/components/SWebsiteTeam.vue) | [Demo](../apps/website/src/components/StudioTeamExamples.vue) |
+| `SArticleCard` | Linked editorial preview with category, date, and author | [Guide](../packages/website/readme.md#sarticlecard) · [Source](../packages/website/src/components/SArticleCard.vue) | [Demo](../apps/website/src/components/StudioArticleGrid.vue) |
+
+The website showcase includes a category menu with shareable `#sections/<category>` targets, plus the original homepage, services/process, portfolio, pricing, FAQ, enquiry, team, journal, CTA, and footer compositions. See [navigation and extension rules](../packages/website/readme.md#navigating-and-extending-the-section-showcase). Use shared app compositions for Acme content and public components for reusable UI.

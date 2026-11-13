@@ -1,7 +1,7 @@
 import { computed, inject, provide, toValue } from 'vue'
 import type { App, Component, InjectionKey, MaybeRefOrGetter, Plugin } from 'vue'
 
-export type SIconName = 'close' | 'check' | 'minus' | 'chevronDown' | 'chevronLeft' | 'chevronRight' | 'loading' | 'sortAscending' | 'sortDescending' | 'sort' | 'info' | 'success' | 'warning' | 'danger' | 'file' | 'upload' | 'user' | 'inbox' | 'menu'
+export type SIconName = 'close' | 'check' | 'copy' | 'minus' | 'chevronDown' | 'chevronLeft' | 'chevronRight' | 'loading' | 'sortAscending' | 'sortDescending' | 'sort' | 'info' | 'success' | 'warning' | 'danger' | 'file' | 'upload' | 'user' | 'inbox' | 'menu'
 export type SIconMap = Partial<Record<SIconName, Component>> & Record<string, Component | undefined>
 type IconResolver = (name: string) => Component | undefined
 const iconKey: InjectionKey<IconResolver> = Symbol('sirius-icons')

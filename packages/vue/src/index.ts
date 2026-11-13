@@ -2,6 +2,8 @@ import './style.css'
 
 export { default as SButton } from './components/SButton.vue'
 export type { SButtonAs, SButtonColor, SButtonVariant, SButtonSize, SButtonProps } from './components/SButton.types'
+export { default as SCopyButton } from './components/SCopyButton.vue'
+export type { SCopyButtonProps, SCopyButtonState } from './components/SCopyButton.types'
 
 export { default as SForm } from './components/SForm.vue'
 export type { SFormColumns, SFormProps } from './components/SForm.types'

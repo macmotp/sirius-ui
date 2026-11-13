@@ -28,6 +28,8 @@ Open the URL printed by Vite, normally `http://127.0.0.1:5173`. Package source c
 | `apps/dashboard/src` | Dashboard demonstrations with app-owned navigation and data |
 | `packages/auth/src` | Auth layouts and controlled form templates |
 | `apps/auth/src` | Auth template previews with local form state |
+| `packages/website/src` | Website framing and reusable content sections |
+| `apps/website/src` | Acme Studio website pages and original project artwork |
 | `docs/architecture.md` | Package boundaries and architectural decisions |
 
 Read [AGENTS.md](AGENTS.md) for implementation conventions and [the theme guide](packages/theme/readme.md) for the token API.

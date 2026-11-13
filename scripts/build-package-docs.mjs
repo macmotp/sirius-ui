@@ -6,6 +6,8 @@ const root = fileURLToPath(new URL('../', import.meta.url))
 const manifest = JSON.parse(await readFile(resolve('package.json'), 'utf8'))
 const destination = resolve('dist/docs')
 const files = [
+  'docs/agent-guide.md',
+  'docs/website-patterns.md',
   'docs/component-catalog.md',
   'docs/dashboard-patterns.md',
   'docs/icons.md',
@@ -13,6 +15,7 @@ const files = [
   'packages/vue/readme.md',
   'packages/dashboard/readme.md',
   'packages/auth/readme.md',
+  'packages/website/readme.md',
   'packages/charts/readme.md',
   'packages/charts/bar-chart.md',
   'packages/charts/donut-chart.md',
@@ -42,9 +45,9 @@ for (const file of files) {
 
 await writeFile(resolve(destination, 'readme.md'), `# SiriusUI ${manifest.version}
 
-Start with the [component catalog](docs/component-catalog.md), then read the guide sections for the components involved. Use [dashboard patterns](docs/dashboard-patterns.md) when composing a page.
+Start with the [agent guide](docs/agent-guide.md), choose public exports from the [component catalog](docs/component-catalog.md), then read only the relevant contracts. Use [dashboard patterns](docs/dashboard-patterns.md) or [website patterns](docs/website-patterns.md) when composing a page.
 
-Reuse public exports and preserve their defaults, models, events, slots, and keyboard and focus behavior unless the task calls for a change. Keep project-specific routes, requests, permissions, and state in the consuming app. Configure the app's preferred icon set through [icon mappings](docs/icons.md).
+For generic requests, map the user’s intent to the appropriate collection and a minimal page composition. Follow the agent guide’s composition rules; adapt app-owned content and supported variants while preserving chosen component internals. Reuse public exports and preserve their defaults, models, events, slots, and keyboard and focus behavior unless the task calls for a change. Keep project-specific routes, requests, permissions, and state in the consuming app. Configure the app's preferred icon set through [icon mappings](docs/icons.md).
 
 This bundle contains the SiriusUI package guides, including previews whose release status is described in their guide. Install the packages needed by your app. Source and working-example links use the matching repository release tag.
 `)

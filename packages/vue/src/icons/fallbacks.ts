@@ -4,6 +4,7 @@ import type { SIconName } from './context'
 export const fallbackPaths: Record<SIconName, string> = {
   close: 'm6 6 12 12M18 6 6 18',
   check: 'm5 12 4 4L19 6',
+  copy: 'M9 9h12v12H9V9ZM15 9V3H3v12h6',
   minus: 'M5 12h14',
   chevronDown: 'm6 9 6 6 6-6',
   chevronLeft: 'm15 6-6 6 6 6',

@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 // Compile the actual demo SFCs for the existing Vue test renderer. This exercises
 // client setup/input handlers rather than duplicating their behavior in fixtures.
-export async function loadDemo() {
+export async function loadDemo(app = 'dashboard') {
   const directory = await mkdtemp(resolve(tmpdir(), 'sirius-demo-tests-'))
   const compiled = new Map()
   async function compile(path) {
@@ -17,7 +17,7 @@ export async function loadDemo() {
     compiled.set(path, output)
     const source = await readFile(path, 'utf8')
     const content = extname(path) === '.vue'
-      ? compileScript(parse(source, { filename: path }).descriptor, { id: path, inlineTemplate: true }).content
+      ? compileScript(parse(source, { filename: path }).descriptor, { id: path, inlineTemplate: true, templateOptions: { compilerOptions: { hoistStatic: false } } }).content
       : source
     let code = ts.transpileModule(content, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText
     const imports = [...code.matchAll(/from\s+['"]([^'"]+)['"]/g)]
@@ -37,11 +37,11 @@ export async function loadDemo() {
   }
   return {
     async component(name) {
-      const path = fileURLToPath(new URL(`../../../apps/dashboard/src/${name}`, import.meta.url))
+      const path = fileURLToPath(new URL(`../../../apps/${app}/src/${name}`, import.meta.url))
       return (await import(pathToFileURL(await compile(path)).href)).default
     },
     async module(name) {
-      const path = fileURLToPath(new URL(`../../../apps/dashboard/src/${name}`, import.meta.url))
+      const path = fileURLToPath(new URL(`../../../apps/${app}/src/${name}`, import.meta.url))
       return import(pathToFileURL(await compile(path)).href)
     },
     close: () => rm(directory, { recursive: true, force: true }),

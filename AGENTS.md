@@ -9,6 +9,7 @@ These instructions apply throughout this repository. Read `readme.md`, `CONTRIBU
 - `packages/charts` owns optional SVG chart components. It depends only on the theme and Vue, and must not be imported by core primitives. Export chart APIs from `packages/charts/src/index.ts`.
 - `packages/dashboard` owns composed application shells built on `packages/vue`, with usage contracts in its own readme. Export its public APIs from `packages/dashboard/src/index.ts`.
 - `packages/auth` owns auth layouts and controlled form templates built on `packages/vue`. Its private preview app lives in `apps/auth`. Authentication requests and credential lifecycle belong to the consuming app.
+- `packages/website` owns reusable website framing and content sections built on `packages/vue`. Its preview lives in `apps/website`. Page content, routing, media, and contact requests belong to the app.
 - `apps/dashboard` demonstrates dashboard shells with application-owned navigation, content and preferences. Keep composed layouts out of the primitive playground.
 - `apps/playground` demonstrates the packages. Application branding, appearance persistence, and demo state belong here, rather than in the library.
 - Keep routes, authentication, API calls, store-specific state, and other business logic in consuming applications.
@@ -16,7 +17,8 @@ These instructions apply throughout this repository. Read `readme.md`, `CONTRIBU
 
 ## Implementation conventions
 
-- For component selection or page composition, start with the [component catalog](docs/component-catalog.md). Read the contracts and examples for the components involved.
+- For consuming-app work, start with the [agent guide](docs/agent-guide.md). For component selection or page composition, use the [component catalog](docs/component-catalog.md) and the relevant [website](docs/website-patterns.md) or [dashboard](docs/dashboard-patterns.md) patterns. Read the contracts and examples for the components involved.
+- For broad app requests, follow the [intent and composition rules](docs/agent-guide.md#translate-a-generic-request-into-a-composition): choose the appropriate collection and a minimal supported page outline, preserve selected component internals, and adapt content, variants, and section order to the actual goal. Do not populate every available section or fabricate proof to fill templates.
 - Reuse existing public exports and compose project-specific behavior in the app. Preserve existing defaults, props, models, slots, events, and keyboard and focus behavior unless the task calls for a change.
 - Use TypeScript, Vue single-file components with `<script setup lang="ts">`, and explicit props, events, and slots.
 - Name public Vue components with the `S` prefix and PascalCase filenames, for example `SButton.vue`. Export public APIs from `packages/vue/src/index.ts`.

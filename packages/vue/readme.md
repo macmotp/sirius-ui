@@ -1133,3 +1133,38 @@ This frontend control can be used with a Laravel upload endpoint. Replacing a me
 ## Configurable icons
 
 The shared packages have no icon-library dependency. Use `createSiriusIcons` for app-wide mappings or `provideSiriusIcons` for reactive subtree overrides, with dependency-free control glyphs as fallbacks. Both playgrounds demonstrate Lucide and Heroicons; choose Icon set in the primitive header or dashboard Settings. See [icon configuration](https://github.com/macmotp/sirius-ui/blob/v0.1.0-alpha.1/docs/icons.md) for the complete semantic map, adapter examples, accessibility contract and installer guidance.
+
+## SCopyButton
+
+Copies a supplied string on user activation. It composes SButton and the configured semantic copy/check/warning icons.
+
+```vue
+<script setup lang="ts">
+import { SCopyButton } from '@sirius-ui/vue'
+const code = 'const greeting = "Hello"\nconsole.log(greeting)\n'
+</script>
+
+<template>
+  <pre><code>{{ code }}</code></pre>
+  <SCopyButton :text="code" label="Copy code" copied-label="Code copied" />
+</template>
+```
+
+| Prop | Default | Contract |
+| --- | --- | --- |
+| `text` | Required | Exact string to copy, preserving whitespace and newlines |
+| `label` | Copy | Initial button text |
+| `copiedLabel` | Copied | Button text and live announcement after success |
+| `errorLabel` | Copy failed | Button text after failure |
+| `errorDescription` | Select the text and copy it manually. | Visible guidance, associated with the button and included in the failure announcement |
+| `disabled` | false | Blocks copying |
+| `size` / `variant` / `color` | sm / ghost / primary | Same options as SButton |
+| `resetDelay` | 2000 | Feedback duration in milliseconds. Zero or negative values keep feedback until another activation or a text change. Nonfinite values use 2000 |
+
+`copied(text)` fires after the browser confirms a successful write. `error(error)` fires when the Clipboard API is unavailable or the write fails. Default and `icon` slots receive `{ copied, failed, pending }`. Custom icon content remains decorative. Give an icon-only button an accessible name through aria-label.
+
+A pending write blocks repeated activation. Changing text resets feedback and invalidates any pending result's feedback/events, while the write itself finishes. Unmount clears feedback timers and ignores pending results. The component always uses a native button, including inside forms. Native attrs/class/style apply to that button. Existing aria-describedby values are preserved when failure guidance is added.
+
+Copying uses the browser's [Clipboard writeText API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText), which requires a secure context and may be denied by the browser. Keep the source text selectable for manual copying. A mounted polite status announces results. The component writes only after a click and owns no model or persistence.
+
+See the Actions playground for editable values, code copying, and a disabled example. Public types are SCopyButtonProps and SCopyButtonState.

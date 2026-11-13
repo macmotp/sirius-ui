@@ -2,7 +2,7 @@
 
 Reusable Vue 3 components, CSS tokens, optional charts, and dashboard compositions for building interfaces with AI agents.
 
-Start with the [component catalog](docs/component-catalog.md) to choose public exports and read their contracts. Use [dashboard patterns](docs/dashboard-patterns.md) when assembling pages. Agents should preserve component defaults, models, slots, events, and keyboard and focus behavior unless the task calls for a change. Applications own routes, API calls, permissions, and state.
+Start with the [agent guide](docs/agent-guide.md), then use the [component catalog](docs/component-catalog.md) to choose public exports and read their contracts. Use [dashboard patterns](docs/dashboard-patterns.md) when assembling pages. Agents should preserve component defaults, models, slots, events, and keyboard and focus behavior unless the task calls for a change. Applications own routes, API calls, permissions, and state.
 
 ## Installation
 
@@ -57,12 +57,15 @@ import { SButton, SCard } from '@sirius-ui/vue'
 | `@sirius-ui/dashboard` | Dashboard shell, navigation, cards, lists, and timelines | [Dashboard](packages/dashboard/readme.md) |
 | `@sirius-ui/charts` | SVG line, bar, donut charts, and sparklines | [Charts](packages/charts/readme.md) |
 | `@sirius-ui/auth` | Auth layouts and controlled form templates | [Auth](packages/auth/readme.md) |
+| `@sirius-ui/website` | Website framing and sections, currently a private preview | [Website](packages/website/readme.md) |
 
 The theme is installed through the component packages' dependencies. Install `@sirius-ui/theme@alpha` directly if your application imports its CSS tokens or Tailwind entry.
 
 ## Agent documentation
 
-Each library includes a documentation bundle at `node_modules/@sirius-ui/<package>/dist/docs/readme.md`. Follow that entry to the catalog and read the relevant contracts. The bundle contains the guides for all five packages, so agents can choose components before adding an optional package. Source and working-example links point to the corresponding Git release tag.
+The [agent guide](docs/agent-guide.md) defines how to translate generic requests into suitable page compositions, how components fit together, which adaptations belong in the app, and how to verify the result. Use [website patterns](docs/website-patterns.md) for public-facing pages and [dashboard patterns](docs/dashboard-patterns.md) for application shells.
+
+Each prepared library includes a documentation bundle at `node_modules/@sirius-ui/<package>/dist/docs/readme.md`. Follow that entry to the catalog and read the relevant contracts. The bundle contains all package guides, including the private website preview, so agents can choose components before adding an optional package. Check release availability and installed exports first; preview documentation does not make a private workspace installable from npm. Source and working-example links point to the corresponding Git release tag.
 
 ## Getting started
 
@@ -73,16 +76,17 @@ yarn install --frozen-lockfile
 npm run dev
 npm run dev:dashboard
 npm run dev:auth
+npm run dev:website
 ```
 
-The primitive playground normally runs at http://127.0.0.1:5173, the Acme dashboard at http://127.0.0.1:5180, and the auth preview at http://127.0.0.1:5190. Acme includes Overview, Cards, Tables, Calendar, Charts, and Settings.
+The primitive playground normally runs at http://127.0.0.1:5173, the Acme dashboard at http://127.0.0.1:5180, the auth preview at http://127.0.0.1:5190, and the website preview at http://127.0.0.1:5200. Acme Studio includes Home, About, Projects, Project detail, Contact, Services, Service detail, Pricing, FAQ, Blog, and Article.
 
 ```sh
 npm run check
 npm run check:packages
 ```
 
-The first command checks library builds, consumer types, both demos, and component tests. The second installs actual package archives in a temporary consumer and checks types, production bundling, server rendering, and documentation links.
+The first command checks library builds, consumer types, all demo apps, and component tests. The second installs actual package archives in a temporary consumer and checks types, production bundling, server rendering, and documentation links.
 
 See [contributing](CONTRIBUTING.md), [implementation rules](AGENTS.md), and [release preparation](docs/releasing.md).
 
